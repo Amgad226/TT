@@ -2,28 +2,13 @@
 <!DOCTYPE html>
 <html lang="en">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <input href="#2" type="submit" value="login" class="btn btn-sm btn-soft-primary w-100"
-    onclick="{
-                        let data = new FormData
-
-          data.append('email','ayham@gmail.com');
-          data.append('password',123456);
-        fetch(`https:/triptipsa.herokuapp.com/api/login`
-        , {
-        method: 'POST',
-        body:data,
-
-    
-        }).then((response) => response.json())
-        .then((data) => alert(JSON.stringify(data)));
-    }">
 
     <!-- Head -->
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1, shrink-to-fit=no, viewport-fit=cover">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <title>Messenger - 2.0.1</title>
+        <title>TT</title>
 
         <!-- Favicon -->
         <link rel="shortcut icon" href="./assets/img/favicon/favicon.ico" type="image/x-icon">
@@ -33,21 +18,35 @@
     	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700" rel="stylesheet">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-
         <!-- Template CSS -->
-        <?php $mode='dark'; ?>
-        {{-- {{ $mode}} --}}
-        <link rel="stylesheet" href="{{asset('assets/css/template.bundle.css')}}"        >
-        <link rel="stylesheet" href="{{asset('assets/css/template.dark.bundle.css')}}" media="(prefers-color-scheme:{{ $mode}} )">
+        {{-- <link rel="stylesheet" href="{{asset('assets/css/template.bundle.css')}}"> --}}
+        <link rel="stylesheet" href="{{asset('assets/css/template.dark.bundle.css')}}" >
     </head>
 
+    
     <body>
+        <!-- Notification -->
+        <div class="toast" style="  top: 10%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: example;animation-duration: 3s;">
+       
+            <div style=" max-height:85px;  max-width:240px;min-width:240px;min-height:85  ;overflow: hidden;  ">
+                
+                <div class="toast-body " style="  ;border: 3px rgb(32, 3, 138) solid;" >
+                    <div  style="  font-size: 24px; "><i class="headarToast"><p>Toast</p></i></div>
+                    <div class="bodyToast" style=" font-size: 12px;max-height:8px;  max-width:240px;">toast  dasasd asda s asdasdas</div>
+ 
+                </div>
+            </div>
+        </div>
+        <!-- Notification -->
+
+        
         <!-- Layout -->
         <div class="layout overflow-hidden">
+
             <!-- Navigation -->
             <nav class="navigation d-flex flex-column text-center navbar navbar-light hide-scrollbar">
-                <!-- Brand -->
-                <a href="#" title="Messenger" class="d-none d-xl-block mb-6" >
+                <!-- logo -->
+                <a href="#" title="Messenger" class="d-none d-xl-block mb-6" onclick="{$(`.toast`).toast({ delay: 6000 });$('.toast').toast('show'); }">
                     <svg version="1.1" width="46px" height="46px" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 46 46" enable-background="new 0 0 46 46" xml:space="preserve">
                         <polygon opacity="0.7" points="45,11 36,11 35.5,1 "/>
                         <polygon points="35.5,1 25.4,14.1 39,21 "/>
@@ -57,19 +56,16 @@
                         <polygon points="28,36 4.5,44 17,26 "/>
                         <polygon points="17,26 1,26 10.8,20.1 "/>
                     </svg>
-
                 </a>
 
                 <!-- Nav items -->
                 <ul class="d-flex nav navbar-nav flex-row flex-xl-column flex-grow-1 justify-content-between justify-content-xl-center align-items-center w-100 py-4 py-lg-2 px-lg-3" role="tablist">
+                
                     <!-- Invisible item to center nav vertically -->
-                    <li class="nav-item d-none d-xl-block invisible flex-xl-grow-1">
-                        <a class="nav-link py-0 py-lg-8" href="#" title="">
+                    <li class="nav-item d-none d-xl-block invisible ">{{-- flex-xl-grow-1 --}}
+                        <a class="nav-link " href="#" title="">
                             <div class="icon icon-xl">
-                                
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                  class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"class="feather feather-x"> <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                             </div>
                         </a>
                     </li>
@@ -98,44 +94,43 @@
                             <div class="icon icon-xl icon-badged">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-message-square"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
                                 <div class="badge badge-circle bg-primary">
-                                    <span>4</span>
+                                    <span>0</span>
                                 </div>
                             </div>
                         </a>
                     </li>
 
                     <!-- Notification -->
-                    <li class="nav-item">
+                    <li class="nav-item  d-xl-block">
                         <a class="nav-link py-0 py-lg-8" id="tab-notifications" href="#tab-content-notifications" title="Notifications" data-bs-toggle="tab" role="tab">
                             <div class="icon icon-xl">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
                             </div>
                         </a>
                     </li>
+
+                      <!-- theme -->
+                      <li class="nav-item d-  d-xl-block ">
+                        <a class="nav-link py-0 py-lg-8" id="tab-support" href="#tab-content-support" title="Support" data-bs-toggle="tab" role="tab">
+                            <div class="icon icon-xl">        
+                                <svg style="cursor: pointer;"class="toggel"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">    <switch>        <g fill="#a7a6a8" class="color000000 svgShape">            <path d="M52 4v8a4 4 0 0 1-8 0V4a4 4 0 0 1 8 0zm-4 76a4 4 0 0 0-4 4v8a4 4 0 0 0 8 0v-8a4 4 0 0 0-4-4zM14.059 14.059a4 4 0 0 0 0 5.657l5.657 5.657a4 4 0 0 0 5.657-5.657l-5.657-5.657a4 4 0 0 0-5.657 0zm56.568 56.568a4 4 0 0 0 0 5.657l5.657 5.657a4 4 0 0 0 5.657-5.657l-5.657-5.657a4 4 0 0 0-5.657 0zM0 48a4 4 0 0 0 4 4h8a4 4 0 0 0 0-8H4a4 4 0 0 0-4 4zm80 0a4 4 0 0 0 4 4h8a4 4 0 0 0 0-8h-8a4 4 0 0 0-4 4zM14.059 81.941a4 4 0 0 0 5.657 0l5.656-5.657a4 4 0 0 0-5.656-5.657l-5.657 5.657a4 4 0 0 0 0 5.657zm56.568-56.568a4 4 0 0 0 5.657 0l5.657-5.657a4 4 0 0 0-5.657-5.657l-5.657 5.657a4 4 0 0 0 0 5.657zM72 48c0 13.255-10.745 24-24 24S24 61.255 24 48s10.745-24 24-24 24 10.745 24 24zm-8 0c0-8.837-7.163-16-16-16s-16 7.163-16 16 7.163 16 16 16 16-7.163 16-16z" class="color000000 svgShape"/>        </g>    </switch></svg>
+                            </div>
+                        </a>
+                    </li>
+
                     <!-- Settings -->
-                    <li class="nav-item d-none d-xl-block">
+                    <li class="nav-item d- d-xl-block flex-xl-grow-1">
                         <a class="nav-link py-0 py-lg-8" id="tab-settings" href="#tab-content-settings" title="Settings" data-bs-toggle="tab" role="tab">
                             <div class="icon icon-xl">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
                             </div>
                         </a>
                     </li>
-                    <!-- Support -->
-                    <li class="nav-item d-none d-xl-block flex-xl-grow-1">
-                        {{-- <a class="nav-link py-0 py-lg-8" id="tab-support" href="#tab-content-support" title="Support" data-bs-toggle="tab" role="tab">
-                            <div class="icon icon-xl">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layout"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                            </div>
-                        </a> --}}
-                    </li>
-                    <li class="nav-item d-none d-xl-block flex-xl-grow-1">
-                  
-                    </li>
-                    {{-- {{asset(Auth::user()->img)}} --}}
+       
                     <!-- Profile -->
-                    <li class="nav-item">
+                    <li class="nav-item " >
                         <a href="#" class="nav-link p-0 mt-lg-2" data-bs-toggle="modal" data-bs-target="#modal-profile">
-                            <div class="avatar avatar-online mx-auto d-none d-xl-block">
+                            <div class="avatar avatar-online mx-auto d- d-xl-block">
                                 <div class="avatar ">
                                     <img class="avatar-img" src="{{asset(Auth::user()->img)}}" alt="">
                                 </div>
@@ -144,13 +139,26 @@
                     </li>
                 </ul>
             </nav>
-
             <!-- Navigation -->
 
+            
             <!-- Sidebar -->
             <aside class="sidebar bg-light">
+           
+                 <!-- Mobile: close -->
+                <div class="col-2 d-xl-none welcome-text to-return-home" style="left: 90%; top:4%;   z-index: 1;  position: absolute;">
+                    <a class="icon icon-lg text-muted" href="#" data-toggle-chat="">
+                        <svg  width="24px" height="24px" viewBox="0 0 24 24" id="_24x24_On_Light_Arrow-Right" data-name="24x24/On Light/Arrow-Right" xmlns="http://www.w3.org/2000/svg">
+                            <rect id="view-box" width="24" height="24" fill="none"/>
+                            <path fill="var(--arrow)" id="Shape" d="M.22,10.22A.75.75,0,0,0,1.28,11.28l5-5a.75.75,0,0,0,0-1.061l-5-5A.75.75,0,0,0,.22,1.28l4.47,4.47Z" transform="translate(9.25 6.25)" fill="#141124"/>
+                        </svg>
+                    </a>
+                </div>
+                 <!-- Mobile: close -->
+
                 <div class="tab-content h-100" role="tablist">
-                    <!-- all USERS -->
+                  
+                    <!-- all users -->
                     <div class="tab-pane fade h-100" id="tab-content-create-chat" role="tabpanel">
                         <div class="d-flex flex-column h-100">
                             <div class="hide-scrollbar">
@@ -332,7 +340,7 @@
                         </div>
                     </div>
 
-                   <!-- Notifications - Notices -->
+                   <!-- Notifications  -->
                    <div class="tab-pane fade h-100" id="tab-content-notifications" role="tabpanel">
                     <div class="d-flex flex-column h-100">
                         <div class="hide-scrollbar">
@@ -745,71 +753,72 @@
                 </div>
             </aside>
             <!-- Sidebar -->
-
+         
+            
             <!-- Chat -->
             <main class="main is-visible" data-dropzone-area="">
-                <div class="container h-100">
+        
+                <div class="container h-100" >
                     
+                    <!-- Mobile: close -->
+                        <div class="col-2 d-xl-none welcome-text" style=" left:5%; top:4%; z-index: 1; position: absolute;  z-index: 1; width:50%; width:50%;">
+                            <a class="icon icon-lg text-muted" href="#" data-toggle-chat="">
+                                <svg fill="var(--arrow)" width="50px" height="50px" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">    <path d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z"/>    <path fill="var(--arrow)"  d="M25.3 34.7L15.6 25l9.7-9.7 1.4 1.4-8.3 8.3 8.3 8.3z"/>    <path fill="var(--arrow)"   d="M17 24h17v2H17z"/></svg>
+                            </a>
+                        </div>
+            
+                    <!-- Mobile: close -->
                     
                     <div class="d-flex flex-column h-100 position-relative">
+                      
                         <!-- Chat: Header -->
-                        <br  class="welcome-text"  style="display: block;" >
-                        <br  class="welcome-text"  style="display: block;" >
-                        <br  class="welcome-text"  style="display: block;" >
-                        <br  class="welcome-text"  style="display: block;" >
-                        <br  class="welcome-text"  style="display: block;" >
-                        <br  class="welcome-text"  style="display: block;" >
-                        <br  class="welcome-text"  style="display: block;" >
-                        <br  class="welcome-text"  style="display: block;" >
-                        <br  class="welcome-text"  style="display: block;" >
-                        <br  class="welcome-text"  style="display: block;" >
-                        <br  class="welcome-text"  style="display: block;" >
-                        <br  class="welcome-text"  style="display: block;" >
-                        <br  class="welcome-text"  style="display: block;" >
-                        <br  class="welcome-text"  style="display: block;" >
-                        <br  class="welcome-text"  style="display: block;" >
-                        <div class="welcome-text"  style="display: block; font-size: 50px;  text-align: center; text-transform: uppercase; font-family: Lucida Console, Courier New, monospace;color: #4c6aaf;">
-                            Welcome in TT  </div>
-                        <div class="app-bar-name-and-img" style="display: none;">  
-                        <div class="chat-header border-bottom py-4 py-lg-7">
-                            <div class="row align-items-center">
+               
+                        <div class="welcome-text welcome"  style="">
+                             Welcome in TT 
+                        </div>
+                           
+                      <div class="app-bar-name-and-img" style="display: none;">  
+                            <div class="chat-header border-bottom py-4 py-lg-7">
+                                <div class="row align-items-center">
 
-                                <!-- Mobile: close -->
-                                <div class="col-2 d-xl-none">
-                                    <a class="icon icon-lg text-muted" href="#" data-toggle-chat="">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                                    </a>
-                                </div>
-                                <!-- Mobile: close -->
+                                    <!-- Mobile: close -->
+                                    <div class="col-2 d-xl-none app-bar-name-and-img" style="display: none;">
+                                        <a class="icon icon-lg text-muted" href="#" data-toggle-chat="">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" color="var(--arrow)" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg>
 
-                                <!-- Content -->
+                                        </a>
+                                    </div>
+                                    <!-- Mobile: close -->
 
-                                <div class="col-8 col-xl-12">
-                                    <div class="row align-items-center text-center text-xl-start">
-                                        <!-- Title -->
-                                        <div class="col-12 col-xl-6">
-                                            <div class="row align-items-center gx-5">
-                                                <div class="col-auto">
-                                                    <div class="avatar avatar-online d-none d-xl-inline-block">
-                                                        <img class="avatar-img" id='chat-img' src="{{asset($recieve_img)}}" alt="">
+                                    <!-- Content -->
+
+                                    <div class="col-8 col-xl-12">
+                                        <div class="row align-items-center text-center text-xl-start">
+                                            <!-- Title -->
+                                            <div class="col-12 col-xl-6">
+                                                <div class="row align-items-center gx-5">
+                                                    <div class="col-auto">
+                                                        <div class="avatar avatar-online d-none d-xl-inline-block">
+                                                            <img class="avatar-img" id='chat-img' src="{{asset($recieve_img)}}" alt="">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col overflow-hidden" style="margin-top: 10px">
+                                                        <h5 class="text-truncate" id="chat-name" style="font-size: 25px;"> </h5>
+                                                        <p class="text-truncate d-none">is typing<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></p>
                                                     </div>
                                                 </div>
-
-                                                <div class="col overflow-hidden" style="margin-top: 10px">
-                                                    <h5 class="text-truncate" id="chat-name" style="font-size: 25px;"> </h5>
-                                                    <p class="text-truncate d-none">is typing<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></p>
-                                                </div>
                                             </div>
+                                        
                                         </div>
-                                    
                                     </div>
+                                
+
                                 </div>
-                    
+
 
                             </div>
-
-                        </div>
-                    </div>
+                      </div>
                         <!-- Chat: Header -->
 
                         <!-- Chat: Content -->
@@ -831,6 +840,7 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <!-- Chat: Content -->
                         
 
@@ -880,20 +890,115 @@
                             <!-- Chat: Form -->
                         </div>
                      </div>
+                     
                         <!-- Chat: Footer -->
                     </div>
 
                 </div>
+             
             </main>
-        {{-- </div>  --}}
             <!-- Chat -->
 
-          
+
         </div>
-        <!-- Layout -->
+        
+        <!-- Modal: Profile -->
+         <div class="modal fade" id="modal-profile" tabindex="-1" aria-labelledby="modal-profile" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-fullscreen-xl-down">
+            <div class="modal-content">
+
+                <!-- Modal body -->
+                <div class="modal-body py-0">
+                    <!-- Header -->
+                    <div class="profile modal-gx-n">
+                        <div class="profile-img text-primary rounded-top-xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 400 140.74"><defs><style>.cls-2{fill:#fff;opacity:0.1;}</style></defs><g><g><path d="M400,125A1278.49,1278.49,0,0,1,0,125V0H400Z"/><path class="cls-2" d="M361.13,128c.07.83.15,1.65.27,2.46h0Q380.73,128,400,125V87l-1,0a38,38,0,0,0-38,38c0,.86,0,1.71.09,2.55C361.11,127.72,361.12,127.88,361.13,128Z"/><path class="cls-2" d="M12.14,119.53c.07.79.15,1.57.26,2.34v0c.13.84.28,1.66.46,2.48l.07.3c.18.8.39,1.59.62,2.37h0q33.09,4.88,66.36,8,.58-1,1.09-2l.09-.18a36.35,36.35,0,0,0,1.81-4.24l.08-.24q.33-.94.6-1.9l.12-.41a36.26,36.26,0,0,0,.91-4.42c0-.19,0-.37.07-.56q.11-.86.18-1.73c0-.21,0-.42,0-.63,0-.75.08-1.51.08-2.28a36.5,36.5,0,0,0-73,0c0,.83,0,1.64.09,2.45C12.1,119.15,12.12,119.34,12.14,119.53Z"/><circle class="cls-2" cx="94.5" cy="57.5" r="22.5"/><path class="cls-2" d="M276,0a43,43,0,0,0,43,43A43,43,0,0,0,362,0Z"/></g></g></svg>
+
+                            <div class="position-absolute top-0 start-0 py-6 px-5">
+                                <button type="button" class="btn-close btn-close-white btn-close-arrow opacity-100" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                        </div>
+
+                        <div class="profile-body">
+                            <div class="avatar avatar-xl">
+                                <img class="avatar-img" src="{{asset(Auth::user()->img)}}" alt="#">
+                            </div>
+
+                            <h4 class="mb-1">{{Auth::user()->name}}</h4>
+                            {{-- <p>last seen 5 minutes ago</p> --}}
+                        </div>
+                    </div>
+                    <!-- Header -->
+
+                    <hr class="hr-bold modal-gx-n my-0">
+
+                    <!-- List -->
+                    <ul class="list-group list-group-flush">
+       
+                        <li class="list-group-item">
+                            <div class="row align-items-center gx-6">
+                                <div class="col">
+                                    <h5>E-mail</h5>
+                                    <p>{{Auth::user()->email}}</p>
+                                </div>
+
+                                <div class="col-auto">
+                                    <div class="btn btn-sm btn-icon btn-dark">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="list-group-item">
+                            <div class="row align-items-center gx-6">
+                                <div class="col">
+                                    <h5>Phone</h5>
+                                    <p>1-800-275-2273</p>
+                                </div>
+
+                                <div class="col-auto">
+                                    <div class="btn btn-sm btn-icon btn-dark">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone-call"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <!-- List  -->
+
+                    <hr class="hr-bold modal-gx-n my-0">
+
+                    <!-- List -->
+                    <ul class="list-group list-group-flush">
+          
+                    </ul>
+                    <!-- List -->
+
+                    <hr class="hr-bold modal-gx-n my-0">
+
+                    <!-- List -->
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <a href="#tab-settings" class="text-reset" data-theme-toggle="tab" title="Settings" data-bs-dismiss="modal">Settings</a>
+                        </li>
+
+                        <li class="list-group-item">
+                            <form action="{{route('logout')}}" method="post">
+                                @csrf
+                                <input type="submit" value="Logout"  class="text-danger"style=" background-color: transparent !important ; border:solid 0px #3e444f;">
+                        </li>
+                    </ul>
+                    <!-- List -->
+                </div>
+                <!-- Modal body -->
+
+            </div>
+            </div>
+         </div>
 
         <!-- Modal: Invite -->
-        <div class="modal fade" id="modal-invite" tabindex="-1" aria-labelledby="modal-invite" aria-hidden="true">
+        {{-- <div class="modal fade" id="modal-invite" tabindex="-1" aria-labelledby="modal-invite" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-xl-down">
                 <div class="modal-content">
 
@@ -958,105 +1063,9 @@
 
                 </div>
             </div>
-        </div>
-
-        <!-- Modal: Profile -->
-        <div class="modal fade" id="modal-profile" tabindex="-1" aria-labelledby="modal-profile" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-fullscreen-xl-down">
-                <div class="modal-content">
-
-                    <!-- Modal body -->
-                    <div class="modal-body py-0">
-                        <!-- Header -->
-                        <div class="profile modal-gx-n">
-                            <div class="profile-img text-primary rounded-top-xl">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 400 140.74"><defs><style>.cls-2{fill:#fff;opacity:0.1;}</style></defs><g><g><path d="M400,125A1278.49,1278.49,0,0,1,0,125V0H400Z"/><path class="cls-2" d="M361.13,128c.07.83.15,1.65.27,2.46h0Q380.73,128,400,125V87l-1,0a38,38,0,0,0-38,38c0,.86,0,1.71.09,2.55C361.11,127.72,361.12,127.88,361.13,128Z"/><path class="cls-2" d="M12.14,119.53c.07.79.15,1.57.26,2.34v0c.13.84.28,1.66.46,2.48l.07.3c.18.8.39,1.59.62,2.37h0q33.09,4.88,66.36,8,.58-1,1.09-2l.09-.18a36.35,36.35,0,0,0,1.81-4.24l.08-.24q.33-.94.6-1.9l.12-.41a36.26,36.26,0,0,0,.91-4.42c0-.19,0-.37.07-.56q.11-.86.18-1.73c0-.21,0-.42,0-.63,0-.75.08-1.51.08-2.28a36.5,36.5,0,0,0-73,0c0,.83,0,1.64.09,2.45C12.1,119.15,12.12,119.34,12.14,119.53Z"/><circle class="cls-2" cx="94.5" cy="57.5" r="22.5"/><path class="cls-2" d="M276,0a43,43,0,0,0,43,43A43,43,0,0,0,362,0Z"/></g></g></svg>
-
-                                <div class="position-absolute top-0 start-0 py-6 px-5">
-                                    <button type="button" class="btn-close btn-close-white btn-close-arrow opacity-100" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                            </div>
-
-                            <div class="profile-body">
-                                <div class="avatar avatar-xl">
-                                    <img class="avatar-img" src="{{asset(Auth::user()->img)}}" alt="#">
-                                </div>
-
-                                <h4 class="mb-1">{{Auth::user()->name}}</h4>
-                                {{-- <p>last seen 5 minutes ago</p> --}}
-                            </div>
-                        </div>
-                        <!-- Header -->
-
-                        <hr class="hr-bold modal-gx-n my-0">
-
-                        <!-- List -->
-                        <ul class="list-group list-group-flush">
-           
-                            <li class="list-group-item">
-                                <div class="row align-items-center gx-6">
-                                    <div class="col">
-                                        <h5>E-mail</h5>
-                                        <p>{{Auth::user()->email}}</p>
-                                    </div>
-
-                                    <div class="col-auto">
-                                        <div class="btn btn-sm btn-icon btn-dark">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="list-group-item">
-                                <div class="row align-items-center gx-6">
-                                    <div class="col">
-                                        <h5>Phone</h5>
-                                        <p>1-800-275-2273</p>
-                                    </div>
-
-                                    <div class="col-auto">
-                                        <div class="btn btn-sm btn-icon btn-dark">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone-call"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <!-- List  -->
-
-                        <hr class="hr-bold modal-gx-n my-0">
-
-                        <!-- List -->
-                        <ul class="list-group list-group-flush">
-              
-                        </ul>
-                        <!-- List -->
-
-                        <hr class="hr-bold modal-gx-n my-0">
-
-                        <!-- List -->
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <a href="#tab-settings" class="text-reset" data-theme-toggle="tab" title="Settings" data-bs-dismiss="modal">Settings</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <form action="{{route('logout')}}" method="post">
-                                    @csrf
-                                    <input type="submit" value="Logout"  class="text-danger"style=" background-color: transparent !important ; border:solid 0px #3e444f;">
-                            </li>
-                        </ul>
-                        <!-- List -->
-                    </div>
-                    <!-- Modal body -->
-
-                </div>
-            </div>
-        </div>
-
+        </div> --}}
         <!-- Modal: User profile -->
-        <div class="modal fade" id="modal-user-profile" tabindex="-1" aria-labelledby="modal-user-profile" aria-hidden="true">
+        {{-- <div class="modal fade" id="modal-user-profile" tabindex="-1" aria-labelledby="modal-user-profile" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-xl-down">
                 <div class="modal-content">
 
@@ -1074,7 +1083,7 @@
 
                             <div class="profile-body">
                                 <div class="avatar avatar-xl">
-                                    {{-- <img class="avatar-img" src="./assets/img/avatars/9.jpg" alt="#"> --}}
+                                   <!--  <img class="avatar-img" src="./assets/img/avatars/9.jpg" alt="#">  -->
 
                                     <a href="#" class="badge badge-lg badge-circle bg-primary text-white border-outline position-absolute bottom-0 end-0">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
@@ -1178,10 +1187,10 @@
 
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Modal: Media Preview -->
-        <div class="modal fade" id="modal-media-preview" tabindex="-1" aria-hidden="true">
+        {{-- <div class="modal fade" id="modal-media-preview" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered modal-fullscreen-xl-down">
                 <div class="modal-content">
 
@@ -1247,66 +1256,62 @@
                     <!-- Modal: Footer -->
                 </div>
             </div>
-        </div>
+        </div> --}}
+        
+        <!-- Layout -->
 
-  
-            
-            {{-- <h1>{{asset ('js/messenger.js')}}</h1> --}}
+
         <!-- Scripts -->
         <script src="{{ asset ('assets/js/template.js')}}" ></script>
         <script src="{{ asset ('assets/js/vendor.js')  }}" ></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="{{ asset ('js/messenger.js')}}" ></script>
         <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-        {{-- <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script> --}}
         <script src="{{ asset ('assets/js/ss.js')  }}" crossorigin="anonymous"></script>
         <script src="{{ asset ('assets/js/moment.js')  }}" crossorigin="anonymous"></script>
-
-
-        {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
-        
-    
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-        </html>
-        {{-- {{ csrf_token() }} --}}
-      
         <script>
-       let userId={{Auth::id();}}
-       
-    //  Pusher.logToConsole = true;
 
-    var pusher = new Pusher('802b2b4536e206d4fd81', {
-    cluster: 'eu',
-//   authEndpoint: 'http://127.0.0.1:8000/broadcasting/auth',
-  authEndpoint: 'http://127.0.0.1:8000/api/pusher/auth',
-// authEndpoint: 'http://192.168.43.194:8000/api/pusher/auth',
-
-  auth: { 
-    headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-}
-
-    });
-
-    var channel = pusher.subscribe(`private-Messenger.${userId}`);
-    channel.bind('new-message', function(data) {
-      addMessage(data.message)
+            let userId={{Auth::id();}}
+            //Pusher.logToConsole = true;
+            var pusher = new Pusher('802b2b4536e206d4fd81', {
+            cluster: 'eu',
+            //authEndpoint: 'http://127.0.0.1:8000/broadcasting/auth',
+            authEndpoint: 'http://127.0.0.1:8000/api/pusher/auth',
+            auth: 
+            { 
+              headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+            }
+            });
+            var channel = pusher.subscribe(`private-Messenger.${userId}`);
+            channel.bind('new-message', function(data) {
+                $(document).ready(function(){});      
+    
+            // user id from pusher   user id from chat 
+            if(data.message.user_id==response_conversation_user_id)
+            addMessage(data.message)
+    
+            else{
+                $('.headarToast').empty();
+                $('.headarToast').append(data.message.user.name);
+                $('.bodyToast').empty();
+                $('.bodyToast').append(data.message.body);
+                $(".toast").toast({ delay: 3000 });
+                $('.toast').toast({animation: true});
+                $('.toast').toast('show');
+                console.log( data.message.user.name+' sent message');
+                } 
+            });
         
-        // let user_id_in_chat={{$user_id_in_chat}}
+            channel.bind('pusher:subscription_error', function(data) {
+                console.log(data);
+            });
         
         
-        // if(data.message.user_id==user_id_in_chat)
-        // {
-        //     alert(data);
-        //   addMessage(data.message)
-        // }
- 
-
-   });
-   
-   channel.bind('pusher:subscription_error', function(data) {
-       console.log(data);
-   });
-
         </script>
-        </body>
 
+
+    </body>
+   
+</html>

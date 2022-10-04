@@ -18,10 +18,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('as',function(){return 12;});
-Route::get('as',function(){return 12;})->name('aaa');
+// Auth::routes(['register' => false]);
 
-Route::get('/a/{id?}',[MessengerController::class,'index'])->middleware('auth')->name('messenger');
+// Route::get('as',function(){return 12;});
+Route::get('as',function(){return response('you shoud login');})->name('loginn');
+
+Route::get('/a/{id?}',[MessengerController::class,'index'])->middleware('auth:sanctum')->name('messenger');
 
 
 Route::get('/', function () {
@@ -30,9 +32,10 @@ Route::get('/', function () {
 })->middleware('auth');
 
 Auth::routes();
-
+Route::view('aa','messenger_copy');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 // Route::get('/home',function(){return 12;});
 // Route::post('/broadcasting/auth', [PusherController::class, 'pusherAuth'])
 // ->middleware('auth');
 // Route::post('search_chat'    ,[MessageController::class,'search_chat'])->middleware('auth')->name('search.chat');
+// 

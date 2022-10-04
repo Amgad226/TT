@@ -1,5 +1,38 @@
 // const a ='http://192.168.43.194:8000';
 const a ='http://127.0.0.1:8000';
+var dark= true;
+$(`.toggel`).on('click',function(e){
+    // console.log(dark);
+    // alert(1);
+    if(dark)
+    {
+        //light mode
+        dark=false;
+        $('head').append('<link rel="stylesheet" type="text/css" href="assets/css/template.bundle.css">');
+        $(".toggel").empty(); 
+
+        $(".toggel").append(` 
+        <svg  style="cursor: pointer;"class="toggel" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+        <path fill="#95aac9" d="M29.56 19.36a1 1 0 0 0-1.21.07A10.49 10.49 0 0 1 21.51 22 10.17 10.17 0 0 1 11.2 12a9.94 9.94 0 0 1 4.28-8.1 1 1 0 0 0 .36-1.17 1 1 0 0 0-1-.64A14.1 14.1 0 0 0 2 16a14.21 14.21 0 0 0 14.37 14 14.34 14.34 0 0 0 13.57-9.44 1 1 0 0 0-.38-1.2ZM16.37 28A12.2 12.2 0 0 1 4 16a12 12 0 0 1 7.57-11.11A11.82 11.82 0 0 0 9.2 12a12.17 12.17 0 0 0 12.31 12 12.49 12.49 0 0 0 4.89-1 12.5 12.5 0 0 1-10.03 5Z" data-name="Layer 46"/>
+        </svg>
+        `);
+    }
+    else
+    {
+        //dark mode
+        dark=true;
+        $('head').append('<link rel="stylesheet" type="text/css" href="assets/css/template.dark.bundle.css">');
+        $(".toggel").empty(); 
+        $(".toggel").append(` 
+       
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><switch><g fill="#a7a6a8" class="color000000 svgShape">
+<path d="M52 4v8a4 4 0 0 1-8 0V4a4 4 0 0 1 8 0zm-4 76a4 4 0 0 0-4 4v8a4 4 0 0 0 8 0v-8a4 4 0 0 0-4-4zM14.059 14.059a4 4 0 0 0 0 5.657l5.657 5.657a4 4 0 0 0 5.657-5.657l-5.657-5.657a4 4 0 0 0-5.657 0zm56.568 56.568a4 4 0 0 0 0 5.657l5.657 5.657a4 4 0 0 0 5.657-5.657l-5.657-5.657a4 4 0 0 0-5.657 0zM0 48a4 4 0 0 0 4 4h8a4 4 0 0 0 0-8H4a4 4 0 0 0-4 4zm80 0a4 4 0 0 0 4 4h8a4 4 0 0 0 0-8h-8a4 4 0 0 0-4 4zM14.059 81.941a4 4 0 0 0 5.657 0l5.656-5.657a4 4 0 0 0-5.656-5.657l-5.657 5.657a4 4 0 0 0 0 5.657zm56.568-56.568a4 4 0 0 0 5.657 0l5.657-5.657a4 4 0 0 0-5.657-5.657l-5.657 5.657a4 4 0 0 0 0 5.657zM72 48c0 13.255-10.745 24-24 24S24 61.255 24 48s10.745-24 24-24 24 10.745 24 24zm-8 0c0-8.837-7.163-16-16-16s-16 7.163-16 16 7.163 16 16 16 16-7.163 16-16z" class="color000000 svgShape"/></g></switch></svg>
+        `);
+    }
+
+});
+
+ 
 const tokenn =  $('meta[name="csrf-token"]').attr('content')
 
 $("#targetttt").on('submit',function(e){
@@ -179,9 +212,6 @@ const addMessage = function(msg ,c = '' ,isAnimate = true){
     //   }, 1000);
       
     $("#soso").append(`
-    
-    
-
 <div class="message ${c} ">
 
     <div class="message-inner" >
@@ -233,7 +263,7 @@ const getConversations=function(){
   
         for(i in response)
         {
-            // console.log(response[i].conversation.last_massege.body);
+            // console.log(response[i].conversation.lable);
         conversation(response[i])
         }
     
@@ -241,11 +271,18 @@ const getConversations=function(){
     })
 }
 
-const conversation=function(chat){
-    $('#chat-list').append(`
+$(`.zz`).on('click',function(e){
+    $("main").addClass("is-visible");
 
-    <a href="#" id="roro" data-messages=${chat.conversation.id} class="card border-0 text-reset">
-    <div  class="card-body">
+});
+
+const conversation=function(chat){
+
+    $('#chat-list').append(`
+    
+  
+    <a  onclick="{ $('main').addClass('is-visible');}" href="" id="roro" data-messages=${chat.conversation.id} class="card border-0 text-reset zz">
+    <div  class="card-body zz"      >
         <div class="row gx-5">
             <div class="col-auto">
                 <div class="avatar avatar-online">
@@ -258,7 +295,7 @@ const conversation=function(chat){
                 <div class="d-flex align-items-center mb-3">
                     <h5 class="me-auto mb-0">
                        
-                    ${chat.conversation.partiscipants[0].name}</h5>
+                    ${chat.conversation.lable}</h5>
                     <span class="text-muted extra-small ms-2">${moment(chat.conversation.last_massege.created_at).fromNow()}</span>
                 </div>
 
@@ -281,26 +318,54 @@ const conversation=function(chat){
 
     `)
 }
+// var messageSent=false;
+var u=0;
+var response_conversation_user_id=0
+
+$(`.welcome-text`).on('click',function(e){
+    $(".to-return-home").removeClass("welcome-text");
+    $(".footer-input-chat").css("display", "none");
+    $(".app-bar-name-and-img").css("display", "none");
+    $(".welcome-text").css("display", "block");
+    $(".form-ccontainer").css("display", "none");
+    $(".to-return-home").addClass("welcome-text");
+});
+
+
 
 $(`#chat-list`).on('click','[data-messages]',function(e){
-    // alert(111);
+
+    $(".to-return-home").removeClass("welcome-text");
     $(".footer-input-chat").css("display", "block");
     $(".app-bar-name-and-img").css("display", "block");
     $(".welcome-text").css("display", "none");
     $(".form-ccontainer").css("display", "block");
-    
+    $(".to-return-home").addClass("welcome-text");
+
     e.preventDefault();
     let id =$(this).attr('data-messages');
     $(`#soso`).empty();
     $('input[name=conversation_id]').val(id)
     $.get(a+`/api/conversations/${id}/messages` , function(response){
+        // console.log(response.conversation.partiscipants[0].pivot.user_id);
+        // console.log(userId);
+        // var e= userId;
+        //  u=response.conversation.partiscipants[0].pivot.user_id;
+         response_conversation_user_id=response.conversation.partiscipants[0].pivot.user_id;
+
+        // console.log(response.conversation.partiscipants[0]);
+        // if(response.conversation.partiscipants[0].pivot.user_id==e)
+        // {
+        // console.log('ok');
+        // messageSent=true
+            
+        // }
         
-        $('#chat-name').text(response.conversation.partiscipants[0].name);
+        $('#chat-name').text(response.conversation.lable);
         $('#chat-img').attr('src',response.conversation.partiscipants[0].img);
         for(i in response.messeges)
         {
             // alert(1)
-            // console.log(userId);
         let msg = response.messeges[i];
         let c  = msg.user_id ==userId ? 'message-out' :'';
         addMessage(msg , c ,false)
@@ -558,7 +623,7 @@ $(".say_hi").on('submit',function(e){
     // let msg=$(this).find('textarea').val()
     $.post($(this).attr('action') ,$(this).serialize() , function(response){
     });
-    alert('Welcome message arrived , go to chat to complete coversation')
+    alert('Welcome message arrived , go to chat to complete conversation')
 
 });
 
@@ -569,12 +634,6 @@ $(document).ready(function(){
 
 const getUsers=function(){
     $.get(a+'/api/getUsers',function(response){
-        // $.get(a+'/api/friend',function(response){
-// alert(2)
-
-
-// response.each(function(index,value){
-   
 
         for(i in response) 
         {
@@ -639,3 +698,4 @@ const getUsers=function(){
 
     });
 }
+

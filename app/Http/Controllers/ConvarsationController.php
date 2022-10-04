@@ -31,52 +31,34 @@ class ConvarsationController extends Controller
     }
     
     public function getUsers(){
-        
         $friends= User::where('id','<>',Auth::id())->get();
-        
         // return $t;
         $f= DB::table('friends')->
         select('user2_id')->
         where('user1_id',Auth::id())->
         where('acceptable',1)->
         distinct()->
-       
         get()->
         map(function ($query) {
             return $query->user2_id;
           });
-        
-        // return $f;
-        // select('user2_id')->
         $users = DB::table('users')->where('id','<>',Auth::id())->whereNotIn('id', $f)->get();
         return $users;
+    }    
+    // public function show( $id){
 
-        // distinct()->
-        // get();
-  
-    }
-
-  
-
-
-
-    
-    public function show( $id){
-
-        $chats=Conversation::with([
-        'lastMassege',
-        'partiscipants'=>function( $query)  {
-            $query->where('id','<>',Auth::id());
-        }
-     ])
-      ->where('user_id',Auth::id())->get();
-     return  $chats;
-     $chats =Participant::with('conversation')->where('user_id',Auth::id())->get();
-     // $chats->makeHidden(['conversation_id','user_id','role','joined_at',]);
-        return  $chats->conversation;
-
-
-    }
+    //     $chats=Conversation::with([
+    //     'lastMassege',
+    //     'partiscipants'=>function( $query)  {
+    //         $query->where('id','<>',Auth::id());
+    //     }
+    //  ])
+    //   ->where('user_id',Auth::id())->get();
+    //  return  $chats;
+    //  $chats =Participant::with('conversation')->where('user_id',Auth::id())->get();
+    //  // $chats->makeHidden(['conversation_id','user_id','role','joined_at',]);
+    //     return  $chats[0]->conversation;
+    // }
 
     public function addParticipant(Request $request ,Conversation $conversation){
         

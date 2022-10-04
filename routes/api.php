@@ -31,21 +31,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('login',[MessageController::class,'login']);
 
 
-// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//     return '11111111111111111';
-//  })->name('api.message.store');
-// Route::get('conversations',function(){dd(1);});
 
 Route::middleware('auth:sanctum')->group(function(){
-    Route::get('conversations',[ConvarsationController::class,'index']);
+    Route::get('conversations',[ConvarsationController::class,'index']); //عرض محادثاتي 
     
-    Route::get('conversations/{id}',[ConvarsationController::class,'show']);
+    // Route::get('conversations/{id}',[ConvarsationController::class,'show']); // عرض محادثاتي يس باي 
+
     Route::get('getUsers',[ConvarsationController::class,'getUsers']);
+    
     Route::post('conversations/{conversation}/participants',[ConvarsationController::class,'addParticipant']);
     Route::delete('conversations/{conversation}/participants',[ConvarsationController::class,'removeParticipant']);
     
     // MessengerController
     Route::post('messages'    ,[MessageController::class,'store'])->name('api.message.store');
+    Route::post('createGroup'    ,[MessageController::class,'createGroup']);
+    
     Route::get('conversations/{id}/messages',[MessageController::class,'index']);
     Route::get('messages/{id}',[MessageController::class,'destroy']);
     Route::post('search_chat'    ,[MessageController::class,'search_chat'])->name('search.chat');

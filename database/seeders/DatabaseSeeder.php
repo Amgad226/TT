@@ -32,15 +32,15 @@ class DatabaseSeeder extends Seeder
         $pass=Hash::make('amgad123');
 
         // \App\Models\User::factory(10)->create();
-        User::create(['name'=>'amgad','email'=>'amgad@gmail.com','password'=>($pass)  ,'img'=>'/storage/img/amgad.jpg'  ]);
-        User::create(['name'=>'ayham','email'=>'ayham@gmail.com','password'=>($pass)  ,'img'=>'/storage/img/ayham.jpg'  ]);
-        User::create(['name'=>'rozet','email'=>'rozet@gmail.com','password'=>($pass)  ,'img'=>'/storage/img/rozet.jpg'  ]);
-        User::create(['name'=>'ahmad','email'=>'ahmad@gmail.com','password'=>($pass)  ,'img'=>'/storage/img/ahmad.jpg'  ]);
-        User::create(['name'=>'samer','email'=>'samer@gmail.com','password'=>($pass)  ,'img'=>'/storage/img/samer.jpg'  ]);
-        User::create(['name'=>'dana','email'=>'dana@gmail.com','password'=>($pass)  ,'img'=>'/storage/img/dana.jpg'  ]);
-        User::create(['name'=>'Ali','email'=>'Ali@gmail.com','password'=>($pass)  ,'img'=>'/storage/img/ali.jpg'  ]);
+        User::create(['name'=>'amgad' ,'email'=>'amgad@gmail.com' ,'password'=>($pass)  ,'img'=>'/storage/img/amgad.jpg'  ]);
+        User::create(['name'=>'ayham' ,'email'=>'ayham@gmail.com' ,'password'=>($pass)  ,'img'=>'/storage/img/ayham.jpg'  ]);
+        User::create(['name'=>'rozet' ,'email'=>'rozet@gmail.com' ,'password'=>($pass)  ,'img'=>'/storage/img/rozet.jpg'  ]);
+        User::create(['name'=>'ahmad' ,'email'=>'ahmad@gmail.com' ,'password'=>($pass)  ,'img'=>'/storage/img/ahmad.jpg'  ]);
+        User::create(['name'=>'samer' ,'email'=>'samer@gmail.com' ,'password'=>($pass)  ,'img'=>'/storage/img/samer.jpg'  ]);
+        User::create(['name'=>'dana'  ,'email'=>'dana@gmail.com'  ,'password'=>($pass)  ,'img'=>'/storage/img/dana.jpg'  ]);
+        User::create(['name'=>'Ali'   ,'email'=>'Ali@gmail.com'   ,'password'=>($pass)  ,'img'=>'/storage/img/ali.jpg'  ]);
         User::create(['name'=>'hesham','email'=>'hisham@gmail.com','password'=>($pass)  ,'img'=>'/storage/img/hesham.jpg'  ]);
-        User::create(['name'=>'joli','email'=>'joli@gmail.com','password'=>($pass)  ,'img'=>'/storage/img/user_default.png'  ]);
+        User::create(['name'=>'joli'  ,'email'=>'joli@gmail.com'  ,'password'=>($pass)  ,'img'=>'/storage/img/user_default.png'  ]);
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
