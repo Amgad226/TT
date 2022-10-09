@@ -35,7 +35,7 @@ Auth::routes();
 Route::view('aa','messenger_copy');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 // Route::get('/home',function(){return 12;});
+Route::view('home','home');
 // Route::post('/broadcasting/auth', [PusherController::class, 'pusherAuth'])
 // ->middleware('auth');
-// Route::post('search_chat'    ,[MessageController::class,'search_chat'])->middleware('auth')->name('search.chat');
 // 

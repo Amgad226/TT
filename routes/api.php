@@ -8,8 +8,12 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PusherController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Broadcast;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Stmt\Return_;
 
 /*
@@ -31,9 +35,29 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('login',[MessageController::class,'login']);
 
 
+Route::post('/sound',function(Request $request){
+
+
+$url=$request->sound;
+
+$img=file_get_contents($url);
+ 
+$path=public_path('voice_records');
+if(!File::exists($path))
+File::makeDirectory($path,0777,true);
+$name=Auth::user()->name.'__'.uniqid().'.wav';
+file_put_contents(public_path('voice_records/'.$name), $img);
+return response()->json(('voice_records/'.$name));
+// Storage::disk('local')->put(public_path('/a.wav') ,$img);
+
+})->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->group(function(){
+    
     Route::get('conversations',[ConvarsationController::class,'index']); //عرض محادثاتي 
+    Route::post('readAllMessages',[ConvarsationController::class,'readAllMessages']);
+    Route::post('readMessage',[ConvarsationController::class,'readMessage']);
+    Route::post('countUnReadMessage',[ConvarsationController::class,'countUnReadMessage']);
     
     // Route::get('conversations/{id}',[ConvarsationController::class,'show']); // عرض محادثاتي يس باي 
 
@@ -45,7 +69,7 @@ Route::middleware('auth:sanctum')->group(function(){
     // MessengerController
     Route::post('messages'    ,[MessageController::class,'store'])->name('api.message.store');
     Route::post('createGroup'    ,[MessageController::class,'createGroup']);
-    
+            
     Route::get('conversations/{id}/messages',[MessageController::class,'index']);
     Route::get('messages/{id}',[MessageController::class,'destroy']);
     Route::post('search_chat'    ,[MessageController::class,'search_chat'])->name('search.chat');

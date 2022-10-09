@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\MessageCreated;
+use App\Events\MessageCreatedInGroup;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\Notification;
@@ -20,10 +21,12 @@ use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Validation\Rule;
 use Throwable;
 // use Validator;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
 
 class MessageController extends Controller
 {
@@ -132,22 +135,43 @@ class MessageController extends Controller
 
 
     public function createGroup(Request $request){
-
         $validator = Validator::make($request->all(), [
+            // 'message' => ['required', 'string'],
 
             'users_id*' => [],
-            'name'=>[],
+            'groupName'=>[],
+            'img'=>'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+
         ]);
 
         // dd(gettype($request->users_id));
-        $users_id = explode(",", $request->users_id);
+    
   
-        if ($validator->fails()) {$errors = [];foreach ($validator->errors()->messages() as $key => $value) {    $key = 'message';    $errors[$key] = is_array($value) ? implode(',', $value) : $value;}return response()->json([    'message' => $errors['message'],    'html' => '<spam class="fa fa-times" style=" position:relative ;bottom:-12px; right:-10px;z-index:12;"></spam> ',    'status' => 0], 200);}
-        $groupName=($request->name!=null)?$request->name:'group';
+        if ($validator->fails()) {$errors = [];foreach ($validator->errors()->messages() as $key => $value) {    $key = 'message';    $errors[$key] = is_array($value) ? implode(',', $value) : $value;}return response()->json([    'message' => $errors['message'],    'status' => 0], 200);}
+        $users_id = explode(",", $request->users_id);
+    
+        if (request()->hasFile('img')){
+            $extension='.'.$request->img->getclientoriginalextension();
+            $path=public_path('/img/group');
+            // dd($path);
+            if(!File::exists( $path))
+            File::makeDirectory( $path,0777,true);
+            $Name= $request->groupName;  
+            $uniqid_img='('.uniqid().')';
+            $image=$request->file('img') ; 
+            $image->move($path,$uniqid_img.$Name.$extension);
+            $imgToDB='img/group/'.$uniqid_img.$Name.$extension;
+        }
+        // dd( $imgToDB);
+         array_push($users_id,(string)Auth::id());
+         // dd($users_id);
+
+        $groupName=($request->groupName!=null)?$request->groupName:'group';
         $group=Conversation::create([
             'user_id',Auth::id(),
             'lable'=>$groupName,
             'type'=>'group',
+            'img'=>$imgToDB,
         ]);
         $group->update(['user_id'=>Auth::id()]);
 
@@ -161,17 +185,19 @@ class MessageController extends Controller
 
     public function store(Request $request)
     {
+        
         // dd(1);
+//  return $audio;
         $validator = Validator::make($request->all(), [
 
-            'message' => ['required', 'string'],
+            'message' => ['string'],
             'type'=>[],
             // 'conversation_id'=>[Rule::requiredIf(function() use ($request)  { return ! $request->input('user_id');}  ),'int', 'exists:conversations:id'],
             // 'user_id'=>[Rule::requiredIf(function() use ($request)  { return ! $request->input('conversation_id');}  ),'int', 'exists:users:id'],
 
         ]);
 
-        if ($validator->fails()) {$errors = [];foreach ($validator->errors()->messages() as $key => $value) {    $key = 'message';    $errors[$key] = is_array($value) ? implode(',', $value) : $value;}return response()->json([    'message' => $errors['message'],    'html' => '<spam class="fa fa-times" style=" position:relative ;bottom:-12px; right:-10px;z-index:12;"></spam> ',    'status' => 0], 200);}
+        if ($validator->fails()) {$errors = [];foreach ($validator->errors()->messages() as $key => $value) {    $key = 'message';    $errors[$key] = is_array($value) ? implode(',', $value) : $value;}return response()->json([    'message' => $errors['message'],    'status' => 0], 200);}
        
         $type=$request->type;
         if($type==null)
@@ -185,10 +211,13 @@ class MessageController extends Controller
         try {
 
             if ($conversation_id) {
+                
                 //اذا باعتلي 
                 //conversation_id
                 //ف المحادثة موجودة ورح ابعت الرسالة عهي المحادثة 
                 $conversation = Conversation::findOrFail($conversation_id);
+                // return($conversation->partiscipants->where('id','<>',Auth::id())->first()->img);
+                $type=$conversation->type;
             } else {
 
                 /* 
@@ -203,10 +232,11 @@ class MessageController extends Controller
                 $conversationn = DB::table('conversations')->
                 join('partiscipants', 'conversations.id', '=', 'partiscipants.conversation_id')->
                 join('partiscipants as par2', 'partiscipants.conversation_id', '=', 'par2.conversation_id')->
-                where([['partiscipants.user_id', Auth::id()],  ['par2.user_id', $request->user_id]])->
-                orWhere([['partiscipants.user_id', $request->user_id],  ['par2.user_id', Auth::id()]])->
+             
+                where([['partiscipants.user_id', Auth::id()],['conversations.type','peer'], ['par2.user_id', $request->user_id]])->
+                orWhere([['partiscipants.user_id', $request->user_id],['conversations.type','peer'],  ['par2.user_id', Auth::id()]])->
                 first();
-
+                // return $conversationn;
                 if ($conversationn != null) {
                      $conversation = Conversation::find($conversationn->id);
                 }
@@ -221,8 +251,9 @@ class MessageController extends Controller
                 $conversation = Conversation::create([
                     'user_id' => $user->id,
                     'type' => $type,
+                    'img'=>$reciver_user->img
                 ]);
-                $conversation->lable=$name;
+                $conversation->lable=$name.'  '.Auth::user()->name;
                 $conversation->save;
                 
                 // $conversation->partiscipants()->attach([$user->id ,$user_id]);
@@ -230,23 +261,69 @@ class MessageController extends Controller
                 Participant::create(['user_id' => $user_id, 'conversation_id' => $conversation->id]);
             }
 
-            $message = $conversation->messages()->create([
+            if($request->messageType!='audio'){
+                $msg=$request->message;
+                $text = <<<END
+                    <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;"><p>{$msg} <span class="sended  fas fa-check" style="position:relative ;bottom:-12px;right:-10px;z-index:12;visibility:"></span> </p></div> 
+                END;
+                  
+
+                   $message = $conversation->messages()->create([
                 //conversation_id  from relation 
                 'user_id' => Auth::id(),
-                'body' => $request->post('message'),
+                'body' => $text,
             ]);
-
+            }
+            else{
+                $request_body=($request->post('body'));
+                $record_location = <<<END
+                {{asset('{$request_body}')}}
+                END;
+        
+                $audio = <<<END
+                <audio style='border: 5px solid #2787F5; border-radius: 50px;'  controls ><source src="{$request_body }" type="audio/WAV"></audio>
+                END;
+                $message = $conversation->messages()->create([
+                    //conversation_id  from relation 
+                    'user_id' => Auth::id(),
+                    'body' =>$audio,
+                    'type' => $request->post('messageType'),
+                ]);
+            }
+         
+            // return $message->conversation ;   
             DB::statement('
             INSERT INTO resipients (user_id,message_id)
             SELECT user_id ,? FROM partiscipants
             WHERE conversation_id=?
             ', [$message->id, $conversation->id]);
             // return($to->user_id);
+
+            Resipient::where('message_id',$message->id)->where('user_id',Auth::id())->where('read_at',null)->update(['read_at'=>now()]);
+
+
             $conversation->update(['last_message_id' => $message->id]);
             DB::commit();
             $message->load('user');
      
-            event(new MessageCreated($message));
+            // return($type);
+           $other_users= $message->conversation->partiscipants()->where('user_id','<>',Auth::id())->get();
+            // return($other_user[1]);
+
+            if($type=='group')
+            {
+                foreach( $other_users as  $other_user){
+
+            // return($message );
+
+                    event(new MessageCreatedInGroup($message , $other_user));
+                }
+            }
+            else{
+
+                event(new MessageCreated($message ,$type));
+            }
+
             $message['html'] = '<spam class="sended fas fa-check" style=" position:relative ; bottom:-12px; right:-10px; z-index:12; " ></spam> ';
             return response(['obj_msg' => $message, 'status' => 1]);
         } 

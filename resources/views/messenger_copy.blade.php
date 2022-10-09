@@ -4858,7 +4858,6 @@
                         </div>
                     </div>
                     <!-- Modal: Header -->
-
                     <!-- Modal: Body -->
                     <div  class="modal-body p-0">
                         <div class="d-flex align-items-center justify-content-center h-100">
@@ -4884,3 +4883,26 @@
         <script src="./assets/js/template.js"></script>
     </body>
 </html>
+
+{{-- scroll down stack over flow
+ const sendMessage = (selector, isAnimate = true) => {
+     const text = $(selector).val();
+     const $container = $('.form-container');
+     $container.append(`<p>${text}</p>`);
+     if (isAnimate) {
+       $container.animate({
+         scrollTop: $container.prop('scrollHeight')
+       }, 1000);
+     } else {
+       $container.scrollTop($container.prop('scrollHeight'));
+     }
+     $(selector).val('');
+ };
+ $('button:eq(0)').on('click', function() {
+   sendMessage('input[type=text]');
+ });
+ $('button:eq(1)').on('click', function() {
+   sendMessage('input[type=text]', false);
+ }); --}}
+
+  

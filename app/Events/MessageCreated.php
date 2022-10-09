@@ -18,9 +18,11 @@ class MessageCreated implements ShouldBroadcast
 
 
     public $message;
-    public function __construct(Message $message)
+    public $type;
+    public function __construct(Message $message , $type)
     {
         $this->message=$message;
+        $this->type=$type;
     }
 
     /**
@@ -30,10 +32,21 @@ class MessageCreated implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        $other_user=$this->message->conversation->partiscipants()->where('user_id','<>',Auth::id())->first();
-        return new PrivateChannel('Messenger.'.$other_user->id);
+      
+            $other_user=$this->message->conversation->partiscipants()->where('user_id','<>',Auth::id())->first();
+            return new PrivateChannel('Messenger.'.$other_user->id);
+            // return new PrivateChannel('Messenger.'.'2');
+            
+        
+
     }
     public function broadcastAs(){
         return 'new-message';
+    }
+    public function broadcastWith () {
+        return [
+            'message'       =>$this->message,
+        ];
+        // return $this->message;
     }
 }

@@ -10,14 +10,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Resipient extends  Pivot
 {
     use HasFactory,SoftDeletes;
+    protected $table = 'resipients';
+
+    
     public $timestamps=false;
     protected $cast=[
         'read_at'=>'datetime',
 
     ];
-    public function conversation()
+    public function message()
     {
-    return $this->belongsTo(Conversation::class);
+    return $this->belongsTo(Message::class);
     }
     public function user()
     {

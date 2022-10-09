@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Conversation extends Model
 {
@@ -11,8 +13,44 @@ class Conversation extends Model
     protected $table = 'conversations';
 public $timestamps=false;
     protected $fillable=[
-        'user_id','lable' ,'type', 'last_message_id'
+        'user_id','lable' ,'type','img', 'last_message_id'
     ];
+    
+    protected function img(): Attribute
+    {
+        if($this->type!='group')
+        {
+        return Attribute::make(
+            get: fn ($value) =>$this->partiscipants->where('id','<>',Auth::id())->first()->img,
+        );
+        }
+        else
+        {
+        return Attribute::make(
+            get: fn ($value) =>$value,
+        );
+
+        }
+        
+       
+ 
+    }
+    protected function lable(): Attribute
+    {
+        if($this->type!='group')
+        {
+        return Attribute::make(
+            get: fn ($value) =>$this->partiscipants->where('id','<>',Auth::id())->first()->name,
+        );
+        }
+        else
+        {
+        return Attribute::make(
+            get: fn ($value) =>$value,
+        );
+
+        }
+    }    
     public function partiscipants()
     {
         return $this->belongsToMany(User::class,'partiscipants')
