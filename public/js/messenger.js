@@ -1,21 +1,25 @@
 const a ='http://127.0.0.1:8000';
 const tokenn =  $('meta[name="csrf-token"]').attr('content')
 
-// count of message un-read       {done}
-// onclick toust go to chat       {done}
-// store theme and lang in cookie {done}
-// lang                           {done}
-// icon                           {done}
-// send records                   {done}
+// count of message un-read          {done}
+// onclick toust go to chat          {done}
+// store theme and lang in cookie    {done}
+// lang                              {done}
+// icon                              {done}
+// send records                      {done}
+// only 50 messages will be received {done}
+// button to show all message        {done}
+// Loader                            {done}   
+// is typing ...                     {done}   
 // send image 
 // fix search
 // delete message 
-// group info :members ,count msg for all member , description
-// edit group name and img 
 // is typing
 // pwa app 
 // voice chat  
-
+// edit group name and img 
+// group info :members ,count msg for all member , description
+// ----------------------------------------
 
 // ----------switch theme--------------
 
@@ -69,10 +73,27 @@ $(`.toggel`).on('click',function(e){
 
 });
 
+//----------Loader----------
 
+
+//----------Loader----------
+function hideLoader(thiss=''){
+    if(thiss!='')
+    thiss.css('visibility','visible');
+  
+    $('#Loader').addClass('hide');
+}
+function addLoader(thiss=''){
+    if(thiss!='')
+    thiss.css('visibility','hidden');
+  
+    $('#Loader').removeClass('hide');
+}
 //----------send message manually----------
+
 $("#targetttt").on('submit',function(e){
     e.preventDefault();
+    
     let body=$(this).find('.input-have-message').val()
     if(body==''){
         return;
@@ -86,6 +107,7 @@ $("#targetttt").on('submit',function(e){
     }
     
     );
+
     var user={'img':`${userimg}`,"name":`${username}`}
      
     // 'body':body,
@@ -95,9 +117,280 @@ $("#targetttt").on('submit',function(e){
     }
     
     addMessage(msgg,'message-out')
-$(this).find('.input-have-message').val('');
+
+
+    $(this).find('.input-have-message').val('');
+    stopTyping()
 
 });
+const addMessagesToGroup = function(msg ,c = '' ,isAnimate = true ,inGroup=false,audio=false){
+    const $container = $('.form-ccontainer');
+    if (isAnimate) 
+    {
+        $container.animate({
+          scrollTop: $container.prop('scrollHeight')
+        });
+    }
+    // else 
+    // {
+    //     $container.scrollTop($container.prop('scrollHeight'))
+    //     // $container.scrollTop = 9c9;
+    // }
+    // -------------
+
+
+    var something=msg.body;
+
+        var dir;
+        if(c=='')
+        {
+             something=something.replace('visibility:','visibility:hidden')
+          
+        dir=`
+        <img class="avatar" src="${msg.user.img}" alt="" style="">
+        <div  style=" display: flex;flex-direction: column; ">
+                <p style=" font-size:;   position: relative;top: 5px; background-color:  ;margin-bottom:0px "> ${msg.user.name}</p>
+                ${something}
+        </div>   
+        `;
+        
+        }
+      
+        else
+        dir= something;
+            
+        $("#soso").append(`
+        <div class="name-to-group message ${c} ">
+            <div class="message-inner" >
+                   <div class="message-body">
+                         <div class="message-content">
+                               ${dir}
+                        </div> 
+                    </div>
+                    <div class="message-footer">
+                        <span class="extra-small text-muted">${moment(msg.created_at).fromNow()}</span>
+                    </div>
+            </div>
+        </div>
+          `); 
+    
+}
+const addMessage = function(msg ,c = '' ,isAnimate = true ,inGroup=false,audio=false){
+    const $container = $('.form-ccontainer');
+    if (isAnimate) 
+    {
+        $container.animate({
+          scrollTop: $container.prop('scrollHeight')
+        });
+    }
+    // else 
+    // {
+    //     $container.scrollTop($container.prop('scrollHeight'))
+    //     // $container.scrollTop = 9c9;
+    // }
+    // -------------
+
+
+    var something=msg.body;
+  
+
+    if(inGroup==true)
+    {
+
+        var dir;
+        if(c=='')
+        {
+             something=something.replace('visibility:','visibility:hidden')
+          
+        dir=`
+        <img class="avatar" src="${msg.user.img}" alt="" style="">
+        <div  style=" display: flex;flex-direction: column; ">
+                <p style=" font-size:;   position: relative;top: 5px; background-color:  ;margin-bottom:0px "> ${msg.user.name}</p>
+                ${something}
+        </div>   
+        `;
+        
+        }
+      
+        else
+        dir= something;
+            
+        $("#soso").append(`
+        <div class="name-to-group message ${c} ">
+            <div class="message-inner" >
+                   <div class="message-body">
+                         <div class="message-content">
+                               ${dir}
+                        </div> 
+                    </div>
+                    <div class="message-footer">
+                        <span class="extra-small text-muted">${moment(msg.created_at).fromNow()}</span>
+                    </div>
+            </div>
+        </div>
+          `); 
+    
+    }
+     else
+     {
+        if(c=='')
+        {
+             something=something.replace('visibility:','visibility:hidden')
+
+        }
+             $("#soso").append(`
+  
+             <div class="name-to-group message ${c} ">
+        
+                 <div class="message-inner" >
+                     <div class="message-body">
+                         <div class="message-content">
+                            ${something}
+                         </div> 
+                     </div>
+  
+                     <div class="message-footer">
+                         <span class="extra-small text-muted">${moment(msg.created_at).fromNow()}</span>
+                     </div>
+                 </div>
+             </div>
+  
+             `); 
+     }
+    
+ 
+}
+
+//------------messages in chat----------
+var u=0;
+var response_conversation_id=0
+
+$(`#chat-list`).on('click','[data-messages]',function(e){
+    e.preventDefault();
+                                         //to hide (Loader)
+    open_chat($(this).attr('data-messages')  ,$(this));
+    // $(this).css('background-color','red')
+})
+
+const showAllMessages=function(){
+    $(".show-all-messages").css('visibility','hidden'); 
+    addLoader()
+    $(`#soso`).empty();
+    $.get(a+`/api/conversations/${response_conversation_id}/allMessages` , function(response)
+    {
+
+   
+        if(response.conversation.type=='peer')
+        {
+            for(i in response.messeges)
+            {
+                let msg = response.messeges[i];
+                let c  = msg.user_id ==userId ? 'message-out' :'';
+                addMessage(msg , c ,false)
+            }   
+            hideLoader()
+            const $container = $('.form-ccontainer');
+            $container.scrollTop($container.prop('scrollHeight'))
+
+            
+        }
+        else
+        {
+            for(i in response.messeges)
+            {
+            let msg = response.messeges[i];
+            let c  = msg.user_id ==userId ? 'message-out' :'';
+            addMessagesToGroup(msg , c ,false,true)
+            }   
+            hideLoader()
+            const $container = $('.form-ccontainer');
+            $container.scrollTop($container.prop('scrollHeight'))
+
+        }
+        
+    })
+}
+
+const open_chat=function(thiss, toLoader=''){
+    addLoader(toLoader)
+    // alert(1)
+    $(`#soso`).empty();
+    
+    $(".to-return-home").removeClass("welcome-text");
+    $(".footer-input-chat").css("display", "block");
+    $(".app-bar-name-and-img").css("display", "block");
+    $(".welcome-text").css("display", "none");
+    $(".form-ccontainer").css("display", "block");
+    $(".to-return-home").addClass("welcome-text");
+   
+    // e.preventDefault();
+    let id =thiss;
+    // let id =$(thiss).attr('data-messages');
+    // $(`#soso`).empty();
+    $('input[name=conversation_id]').val(id)
+    
+    let data = new FormData
+    data.append('conversation_id',id)
+    fetch('/api/readAllMessages', {
+    method: 'POST',
+    body:data,
+    headers: {
+        'X-CSRF-TOKEN': '${tokenn}'
+        
+    }
+    })
+    // alert()
+    $.get(a+`/api/conversations/${id}/messages` , function(response)
+    {
+
+         response_conversation_id=response.conversation.id;
+         $('#conversation-id-input-target').text(response_conversation_id)
+        //  response_conversation_id=response.conversation.partiscipants[0].pivot.user_id;
+      
+//    alert(response_conversation_id);
+        
+        $('#chat-name').text(response.conversation.lable);
+        $('#chat-img').attr('src',response.conversation.img);
+        // $('#chat-img').attr('src',response.conversation.partiscipants[0].img);
+        
+        if(response.read_more)
+        $(".show-all-messages").css('visibility','visible'); 
+
+        else
+        $(".show-all-messages").css('visibility','hidden'); 
+
+
+        if(response.conversation.type=='peer')
+        {
+            for(i in response.messeges)
+            {
+                let msg = response.messeges[i];
+                let c  = msg.user_id ==userId ? 'message-out' :'';
+                addMessage(msg , c ,false)
+            }   
+            hideLoader(toLoader)
+            const $container = $('.form-ccontainer');
+            $container.scrollTop($container.prop('scrollHeight'))
+
+            
+        }
+        else
+        {
+            for(i in response.messeges)
+            {
+            let msg = response.messeges[i];
+            let c  = msg.user_id ==userId ? 'message-out' :'';
+            addMessagesToGroup(msg , c ,false,true)
+            }   
+            hideLoader(toLoader)
+            const $container = $('.form-ccontainer');
+            $container.scrollTop($container.prop('scrollHeight'))
+
+        }
+        
+    })
+}
+
 
 
 //----------change_pass---------------
@@ -109,7 +402,26 @@ $("#change_pass").on('submit',function(e){
     });
 
 });
-
+function showHidePassword() {
+    var x = document.getElementById("profile-current-password");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+    var x = document.getElementById("profile-new-password");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+    var x = document.getElementById("profile-verify-password");
+    if (x.type === "password") {
+      x.type = "text";
+    } else {
+      x.type = "password";
+    }
+}
 
 //-------------searchhh_chats----------------
 $("#searchhh_chats").on('submit',function(e){
@@ -248,6 +560,8 @@ for(let i = 0; i<
 }
 
 
+
+
 //--------nav bar chat icon--------
 $(`#tab-chats`).on('click',function(e){
     $(`#chat-list`).empty();
@@ -256,6 +570,8 @@ $(`#tab-chats`).on('click',function(e){
 });
 
 const getConversations=function(){
+    
+    addLoader($(`#tab-chats`))
     $.get(a+'/api/conversations',function(response){
   
         for(i in response)
@@ -263,32 +579,33 @@ const getConversations=function(){
             // console.log(response[i].conversation.lable);
         conversation(response[i])
         }
-    
-
+          
+        hideLoader($(`#tab-chats`))
     })
 }
-// data.message.conversation_id
-// var countUnReadMsg;
+
+
 const conversation=function(chat){
-// alert(chat.conversation.img);
-// console.log(chat.conversation.unRead_message);
+
+    
 var countUnReadMsg=chat.conversation.unRead_message
-// alert(countUnReadMsg)
+
 if(countUnReadMsg!=0){
     counter=`
-    <div class="div-count-msg badge badge-circle bg-primary ms-5 eq"  style="visibility:visible" onclick={$(this).css("visibility","hidden");}>
-        <span data-messages=${chat.conversation.id}  class="asa">${countUnReadMsg}</span>
+    <div class="div-count-msg badge badge-circle bg-primary ms-5 unread-message-count"  style="visibility:visible" onclick={$(this).css("visibility","hidden");}>
+        <span data-messages=${chat.conversation.id}  class="unread-message-count">${countUnReadMsg}</span>
     </div>`;
 }
 else{
     counter=`
-    <div class="div-count-msg badge badge-circle bg-primary ms-5  eq" data-messages=${chat.conversation.id} style="visibility:hidden">
-        <span data-messages=${chat.conversation.id} style= class="asa">new message</span>
+    <div class="div-count-msg badge badge-circle bg-primary ms-5  unread-message-count" data-messages=${chat.conversation.id} style="visibility:hidden">
+        <span data-messages=${chat.conversation.id} style= class="unread-message-count">new message</span>
     </div>`;
     
 }
 //  $('.div-count-msg[data-messages=${chat.conversation.id}]').css('display','none');
-// console.log(chat);
+
+
 if(chat.conversation.last_massege.type=='audio')
 {
 message_body_with_slice='record';
@@ -301,22 +618,25 @@ else if(chat.conversation.last_massege.body!=null){
 }
 else
 message_body_with_slice='';
-$('#chat-list').append(`
+  
 
 
-<a  onclick="{ 
-    $('main').addClass('is-visible'); 
+    $('#chat-list').append(`
     
-    $('.eq[data-messages=${chat.conversation.id}]').css('visibility','hidden');
-    $('.eq[data-messages=${chat.conversation.id}]').css('display','none');
-    $('.asa[data-messages=${chat.conversation.id}]').css('display','none');
-    $('.asa[data-messages=${chat.conversation.id}]').css('background','res');
-
-   
-
     
+    <a  onclick="{
+        
+        // $(this).css('visibility','hidden');
+        // setTimeout(() => {
+        //     $(this).css('visibility','');
+        // }, 1000);
+       
+    $('main').addClass('is-visible');
 
-    }" href="" id="roro" data-messages=${chat.conversation.id} class="card border-0 text-reset zz zzz">
+    $('.unread-message-count[data-messages=${chat.conversation.id}]').css('visibility','hidden');
+    $('.unread-message-count[data-messages=${chat.conversation.id}]').css('display','none');
+
+    }" href="" id="roro" data-messages=${chat.conversation.id} class="card border-0 text-reset zz wait-click ">
     <div  class="card-body zz"      >
         <div class="row gx-5">
             <div class="col-auto">
@@ -334,7 +654,7 @@ $('#chat-list').append(`
                     <span class="text-muted extra-small ms-2">${moment(chat.conversation.last_massege.created_at).fromNow()}</span>
                 </div>
 
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center ">
                     <div class="line-clamp me-auto last-message" data-messages=${chat.conversation.id}>
                     ${message_body_with_slice} 
                     </div>
@@ -365,94 +685,21 @@ $(`.welcome-text`).on('click',function(e){
 });
 
 
-//------------messages in chat----------
-var u=0;
-var response_conversation_id=0
-const open_chat=function(thiss){
-    $(`#soso`).empty();
-    
-    $(".to-return-home").removeClass("welcome-text");
-    $(".footer-input-chat").css("display", "block");
-    $(".app-bar-name-and-img").css("display", "block");
-    $(".welcome-text").css("display", "none");
-    $(".form-ccontainer").css("display", "block");
-    $(".to-return-home").addClass("welcome-text");
 
-    // e.preventDefault();
-    let id =thiss;
-    // let id =$(thiss).attr('data-messages');
-    // $(`#soso`).empty();
-    $('input[name=conversation_id]').val(id)
-    
-    let data = new FormData
-    data.append('conversation_id',id)
-    fetch('/api/readAllMessages', {
-    method: 'POST',
-    body:data,
-    headers: {
-        'X-CSRF-TOKEN': '${tokenn}'
-        
-    }
-    })
-    $.get(a+`/api/conversations/${id}/messages` , function(response){
 
-         response_conversation_id=response.conversation.id;
-        //  response_conversation_id=response.conversation.partiscipants[0].pivot.user_id;
-      
-   
-        
-        $('#chat-name').text(response.conversation.lable);
-        $('#chat-img').attr('src',response.conversation.img);
-        // $('#chat-img').attr('src',response.conversation.partiscipants[0].img);
-        
-        if(response.conversation.type=='peer')
-        {
-            for(i in response.messeges)
-            {
-                let msg = response.messeges[i];
-                let c  = msg.user_id ==userId ? 'message-out' :'';
-
-                    addMessage(msg , c ,false)
-              
-    
-            }   
-    const $container = $('.form-ccontainer');
-    $container.scrollTop($container.prop('scrollHeight'))
-
-            
-        }
-        else
-        {
-            for(i in response.messeges)
-            {
-            let msg = response.messeges[i];
-            let c  = msg.user_id ==userId ? 'message-out' :'';
-
-            addMessagesToGroup(msg , c ,false,true)
-            }   
-            const $container = $('.form-ccontainer');
-            $container.scrollTop($container.prop('scrollHeight'))
-
-        }
-        
-    })
-}
-$(`#chat-list`).on('click','[data-messages]',function(e){
-    e.preventDefault();
-
-open_chat($(this).attr('data-messages'));
-})
 
 
 
 //-------notifications----
 $(`#tab-notifications`).on('click',function(e){
     $(`#cards-notification`).empty();
-    getNotification();
+    getNotification($(`#tab-notifications`));
 
 });
 
-const getNotification=function(){
+const getNotification=function(toLoader){
+    addLoader(toLoader)
+
     $.get(a+'/api/getNotification',function(response){
   
         for(i in response)
@@ -460,10 +707,146 @@ const getNotification=function(){
             // alert(response[i].type);
         notification(response[i])
         }
+    hideLoader(toLoader)
+
     })
 }
 
 
+const notification=function(chat){
+    if(chat.type=='request')
+    {
+    $('#cards-notification').append(`
+    
+    <div id="cardNoti"  class="card border-0 mb-5">
+    <div class="card-body">
+
+        <div class="row gx-5">
+            <div class="col-auto">
+                <!-- Avatar -->
+                <a href="#" class="avatar">
+                    <img class="avatar-img" src="${chat.img}" alt="">
+
+                    <div class="badge badge-circle bg-primary border-outline position-absolute bottom-0 end-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    </div>
+                </a>
+            </div>
+
+            <div class="col">
+                <div class="d-flex align-items-center mb-2">
+                    <h5 class="me-auto mb-0">
+                        <a href="#">${chat.title}</a>
+                        <a href="#"> </a>
+                      
+                    </h5>
+                    <span class="extra-small text-muted ms-2">${chat.created_at}</span>
+                    
+                </div>
+
+                <div class="d-flex">
+                    <div class="me-auto">${chat.body}</div>
+
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-footer">
+        <div class="row gx-4">
+            <div id = 'button-notification'class="col button-notification">
+                <input href="#2" type="submit" value="${stringHide}" class="btn btn-sm btn-soft-primary w-100"
+                onclick="{
+                    let data = new FormData
+                    data.append('_token','${tokenn}')
+                    data.append('notification_id','${chat.id}')
+                    fetch('/api/refusFriend/${chat.refernce}', {
+                    method: 'POST',
+                    body:data,
+                    headers: {
+                        'X-CSRF-TOKEN': '${tokenn}'
+                        
+                    }
+                    })
+            
+                // this.parentNode.parentNode.style.display = 'none';
+                this.parentNode.parentNode.replaceWith('deleted succesfuly')
+                
+                
+                }">
+            </div>
+            <div id = 'button-notification' class="col button-notification">
+                <input href="#" value="${stringConfirm}" class="btn btn-sm btn-primary w-100" onclick="{
+                    let data = new FormData
+                    data.append('_token','${tokenn}')
+                    data.append('notification_id','${chat.id}')
+                
+                    fetch('/api/acceptFriend/${chat.refernce}', {
+                    method: 'POST',
+                    body:data,
+                    headers: {
+                        'X-CSRF-TOKEN': '${tokenn}'
+                    }
+                    })
+                    this.parentNode.parentNode.replaceWith('added succesfuly')
+
+                    }">
+            </div>
+        </div>
+    </div>
+ </div>
+    
+    `)
+    }
+
+    else 
+    {
+    $('#cards-notification').append(` 
+     <div class="card-list mt-8">
+
+
+    <!-- Card -->
+    <div class="card border-0 mb-5">
+        <div class="card-body">
+
+            <div class="row gx-5">
+                <div class="col-auto">
+                    <!-- Avatar -->
+                    <div class="avatar">
+                        <span class="avatar-text bg-success">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        </span>
+
+                        <div class="badge badge-circle bg-success border-outline position-absolute bottom-0 end-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="d-flex align-items-center mb-2">
+                        <h5 class="me-auto mb-0"> ${stringPasswordChanged}</h5>
+                        <span class="extra-small text-muted ms-2">${chat.created_at}</span>
+                    </div>
+
+                    <div class="d-flex">
+                        <div class="me-auto">${stringPasswordUpdated}</div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Card -->
+ </div>`)
+    }
+
+
+
+}
 
 
 
@@ -471,9 +854,80 @@ const getNotification=function(){
 styleHi=" text-decoration: none;border-radius: 9px;border:solid 1px #3e444f;cursor : pointer;padding:0px 15px ;text-align: center;color:#fff;background-color: #16191c ; display:block"
 $(`#tab-friends`).on('click',function(e){
     $(`#users_in_searsh`).empty();
-    getFriends();
+    getFriends($(`#tab-friends`));
 
 });
+
+const getFriends=function(toLoader){
+    // $.get(a+'/api/getUsers',function(response){
+    addLoader(toLoader)
+
+        $.get(a+'/api/getFriend',function(response){
+        for(i in response) 
+        {
+    // alert(response[i].id)
+
+         $('#users_in_searsh').append(`
+
+            <div id="users_in_searsh" class="card-list">
+          
+            <div class="card border-0">
+                <div id="users-body" class="card-body">
+        
+                    <div class="row align-items-center gx-5">
+                        <div class="col-auto">
+                            <a href="#" class="avatar avatar-online">
+                             
+                                <img class="avatar-img" src="${response[i].img}" alt="">
+                                
+                                
+                            </a>
+                        </div>
+        
+                        <div class="col">
+                            <h5>
+                              <a href="#">${response[i].name}</a></h5>
+                             <!-- <p>${response[i].last_seen_at}</p> -->
+                        </div>
+        
+                        <div  class="col-auto">
+                        <input type="submit" value="${stringHi}" user-id=${response[i].id}  style="${styleHi}" 
+                        onclick="
+                        {
+                            alert('message sended')
+                            let data = new FormData
+                            data.append('_token','${tokenn}')
+                            data.append(  'message', '${stringHi}' )
+                            data.append('user_id',$(this).attr('user-id'));
+                            fetch('${a}'+'/api/messages', {
+                                method: 'POST',
+                                body:data,
+                                headers: {
+                                    'X-CSRF-TOKEN': +'${tokenn}'
+                                }
+                                })
+                         }" >
+                      
+                            
+                         
+                        </div>
+        
+                    </div>
+        
+                </div>
+            </div>
+            <!-- Card -->
+        
+                 </div>
+                 <br>
+         `)
+        }
+    $('#lodder').addClass('hide');
+    hideLoader(toLoader)
+
+        // user(response[i])
+    });
+}
 
 
 
@@ -482,9 +936,80 @@ $(`#tab-friends`).on('click',function(e){
 //---------get users----------
 $(`#tab-all-users`).on('click',function(e){
     $(`#all_users_in_app`).empty();
-    getUsers();
+    getUsers($(`#tab-all-users`));
 
 });
+
+const getUsers=function(toLoader){
+    addLoader(toLoader)
+
+    $.get(a+'/api/getUsers',function(response){
+
+        for(i in response) 
+        {
+             // alert(response[i].id)
+
+            $('#all_users_in_app').append(`
+
+            
+            <div id="user_in_all_user" class="card-list">
+          
+            <div class="card border-0">
+                <div id="users-body" class="card-body">
+        
+                    <div class="row align-items-center gx-5">
+                        <div class="col-auto">
+                            <a href="#" class="avatar avatar-online">
+                             
+                                <img class="avatar-img" src="${response[i].img}" alt="">
+                                
+                                
+                            </a>
+                        </div>
+        
+                        <div class="col">
+                            <h5>
+                              <a href="#">${response[i].name}</a></h5>
+                             <!-- <p>${response[i].last_seen_at}</p> -->
+                        </div>
+        
+                        <div  class="col-auto">
+
+                        <input class="addfriend" type="submit" value="${stringAdd}" user-id=${response[i].id} " 
+                        onclick="
+                        {   
+                            
+                            $(this).attr('class','addfriend_done')
+                            let data = new FormData
+                            data.append('_token','${tokenn}')
+                            data.append('user_id',$(this).attr('user-id'));
+                            fetch('${a}'+'/api/addFriend', {
+                                method: 'POST',
+                                body:data,
+                                headers: {
+                                    'X-CSRF-TOKEN': +'${tokenn}'
+                                }
+                                })
+                         }" >
+                     
+                             
+                        </div>
+        
+                    </div>
+        
+                </div>
+            </div>
+            <!-- Card -->
+        
+         </div>
+         <br>
+            `)
+        }
+    hideLoader(toLoader)
+
+
+    });
+}
 
 
 
@@ -608,8 +1133,10 @@ $("#groupForm").on('submit',function(e){
 
 
 // --------------responsive-----------
+//to show message page in mobile
 $(`.zz`).on('click',function(e){
     $("main").addClass("is-visible");
+    
 });
 
 
@@ -628,7 +1155,9 @@ $(".say_hi").on('submit',function(e){
 
 
 $(document).ready(function () {
+    
     getConversations();
+
 
     // $('#groupForm').validate({ // initialize the plugin
     //     rules: {
@@ -650,3 +1179,7 @@ $(document).ready(function () {
 
 });
 // const a ='http://192.168.43.194:8000';
+
+
+
+

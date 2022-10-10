@@ -31,6 +31,8 @@ window.Echo = new Echo({
     key: import.meta.env.VITE_PUSHER_APP_KEY,
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
     forceTLS: true,
+    authEndpoint: 'http://127.0.0.1:8000/api/pusher/auth',
+
     auth: {
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

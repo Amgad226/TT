@@ -18,6 +18,7 @@ body{
 }
 :root
 {
+    --loder:#fff;
     --arrow:#fff;
     /* --arroww:rgb(168, 135, 135); */
     --bs-blue:#2787F5;
@@ -166,4 +167,7 @@ button:hover{
     text-align: center;
     color:#fff;
     background-color: #16191c 
+}
+.hide{
+    visibility: hidden;
 }

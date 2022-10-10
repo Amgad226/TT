@@ -28,32 +28,71 @@
     {{-- $(this).attr('chat-id') --}}
     
     <body>
-        {{-- <div  --}}
-        {{-- onclick="{open_chat($(`.toast`).attr('chat-id'));}" >@@@@@@@@@@@@@@@@@@@@@@</div> --}}
-        {{-- {{URL::to('/storage/img/samer.jpg');}} --}}
+   
+
+
+
+
+        <div class="" id="Loader" style="  top: 40%;  right: 35%;  z-index: 100000;  position: absolute;">
+            <div class="loader"></div>
+        </div>
+<style>.loader {
+    /* border: 16px solid #5f5b5b;  */
+    border: 5px solid var(--loder); 
+     /* border-top: 20px solid #adadad; */
+    border-top: 40px solid #3498db; 
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin .5s linear infinite;
+  }
+  .loader {
+    border: 5px solid var(--loder); 
+    border-top: 60px solid #4965A6; 
+    border-bottom: 20px solid var(--loder); 
+    border-left: 10px solid transparent ; 
+    border-right: 30px solid transparent ; 
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin .5s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }</style>
+
+
+
+
+    
         <!-- Notification -->
         <div class="toast" style="  top: 10%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: example;animation-duration: 3s;">
-            <div class="goToChat"  onclick="{open_chat($(this).attr('chat-id'));}"  chat-id='1'  style=" max-height:85px;  max-width:240px;min-width:240px;min-height:85  ;overflow: hidden;  ">
+            <div class="goToChat"  onclick="{open_chat($(this).attr('chat-id'));}"  chat-id=12  style=" max-height:85px;  max-width:240px;min-width:240px;min-height:85  ;overflow: hidden;  ">
                 <div class="toast-body " style="  ;border: 3px rgb(32, 3, 138) solid;" >
                     <div  style="  font-size: 24px; "><i class="headarToast"><p>Toast</p></i></div>
-                    <div class="bodyToast" style=" font-size: 12px;max-height:8px;  max-width:240px;">toast  dasasd asda s asdasdas</div>
+                    <div class="bodyToast" style=" font-size: 12px;max-height:8px;  max-width:240px;">toast  dunread-message-countsd asda s asdasdas</div>
                 </div>
             </div>
         </div>
         <!-- Notification -->
-{{-- <div calss ="one" message-id='1'></div>
-<div calss ="one" message-id='2'></div>
-<div calss ="one" message-id='3'></div> --}}
+
         
         <!-- Layout -->
         <div class="layout overflow-hidden">
             {{-- <img src="http://127.0.0.1:8000/img/group/(633d9613f1610)first%20group.jpg" alt="#" class="avatar-img"> --}}
 
             <!-- Navigation -->
-            <nav class="navigation d-flex flex-column text-center navbar navbar-light hide-scrollbar">
+            <nav class=" navigation d-flex flex-column text-center navbar navbar-light hide-scrollbar">
                 <!-- logo -->
                 
-                 <a href="#" title="TT" class="d-none d-xl-block mb-6  welcome-text to-return-home" onclick="{  $(`.toast`).toast({ delay: 6000 });$('.toast').toast('show');  play();}">
+                 <a href="#" title="TT" class="d-none d-xl-block mb-6  welcome-text to-return-home" onclick="{ 
+                     $(`#soso`).empty();
+                  
+                    $(`.toast`).toast({ delay: 6000 });$('.toast').toast('show'); 
+                     play();
+                     }">
                     <svg version="1.1" width="46px" height="46px" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 46 46" enable-background="new 0 0 46 46" xml:space="preserve">
                         <polygon opacity="0.7" points="45,11 36,11 35.5,1 "/>
                         <polygon points="35.5,1 25.4,14.1 39,21 "/>
@@ -67,14 +106,14 @@
                 </a>
 
                 <!-- Nav items -->
-                <ul class="d-flex nav navbar-nav flex-row flex-xl-column flex-grow-1 justify-content-between justify-content-xl-center align-items-center w-100 py-4 py-lg-2 px-lg-3" role="tablist">
+                <ul class="  security-chats d-flex nav navbar-nav flex-row flex-xl-column flex-grow-1 justify-content-between justify-content-xl-center align-items-center w-100 py-4 py-lg-2 px-lg-3" role="tablist">
                 
 
                  
 
 
                     <!-- Invisible item to center nav vertically -->
-                    <li class="nav-item d-none d-xl-block invisible ">{{-- flex-xl-grow-1 --}}
+                    <li class="nav-item d-none d-xl-block invisible " >{{-- flex-xl-grow-1 --}}
                         <a class="nav-link " href="#" title="">
                             <div class="icon icon-xl">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"class="feather feather-x"> <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
@@ -83,7 +122,7 @@
                     </li>
 
                     <!-- New chat -->
-                      <li class="nav-item ">
+                      <li class="nav-item " >
                         <a class="nav-link py-0 py-lg-8 tap-friend-group" id="tab-create-chat" href="#tab-content-create-chat" title="Create group" data-bs-toggle="tab" role="tab">
                             <div class="icon icon-xl ">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
@@ -347,33 +386,16 @@
 
                                                     <input scrept name="name" type="text" class="form-control form-control-lg ps-0" placeholder="{{__('Search users')}}" aria-label="Search for messages or users...">
                                                 </div>
-                                                {{-- <input  type="subimt"  value="ddddddddddddddddddddddd" class="form-control form-control-lg ps-0" placeholder="Search messages or users" > --}}
 
                                             </form>
                                         </div>
                                      <!-- list for all users -->
                                     <div id="all_users_in_app">
-                                        {{-- @foreach ($friends as $friend)
-                                    
-                                        <br>
-                                 
-                                       @endforeach --}}
+                                   
                                     </div>
 
                                  
-                                        {{-- <ul class="nav nav-pills nav-justified" role="tablist">
-                                            <li class="nav-item">
-                                                <a class="nav-link active" data-bs-toggle="pill" href="#create-chat-info" role="tab" aria-controls="create-chat-info" aria-selected="true">
-                                                    Details
-                                                </a>
-                                            </li>
-
-                                            <li class="nav-item">
-                                                <a class="nav-link" data-bs-toggle="pill" href="#create-chat-members" role="tab" aria-controls="create-chat-members" aria-selected="true">
-                                                    People
-                                                </a>
-                                            </li>
-                                        </ul> --}}
+                                   
                                     </div>
                                     <!-- Tabs content -->
                                
@@ -382,16 +404,7 @@
 
                             </div>
 
-                            <!-- Button -->
-                            {{-- <div class="container mt-n4 mb-8 position-relative">
-                                <button class="btn btn-lg btn-primary w-100 d-flex align-items-center" type="button">
-                                    Start chat
-                                    <span class="icon ms-auto">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                                    </span>
-                                </button>
-                            </div> --}}
-                            <!-- Button -->
+                       
                         </div>
                     </div>
 
@@ -433,26 +446,7 @@
                                             <input type= "hidden"  name="user_id" value=1>
                                             <input type= "submit"  value="Hi">
                                             </form> 
-                                         @php
-                                            $last_letter='';
-                                         @endphp
-                                        @foreach ($friends as $friend)
-                                         @php 
-                                            $letter=substr($friend->name,0,1);
-                                         @endphp 
-                                            @if($last_letter!=$letter)
-
-                                            <div class="my-5">
-                                                <small class="text-uppercase text-muted">{{$letter}}</small>
-                                            </div>
-                                            @endif
-                                            @php
-                                            $last_letter=$letter;
-                                            @endphp 
-            
-                                  
-                                         @endforeach
-                                        <!-- Card --> 
+                                   
 
                                     </div>
 
@@ -491,7 +485,7 @@
                                     </div>
 
                                     <!-- Chats -->
-                                    <div  class="card-list" id="chat-list">
+                                    <div  class="card-list  security-chats" id="chat-list">
                                             <div id="card_to_append_search">
                                                
 
@@ -526,249 +520,16 @@
                                     </div>
                                     <!-- Title -->
                                     <div id="cards-notification">
-                                            {{-- {{dd(22);}} --}}
-                                            @foreach ($notifications as $notification )
-                                            @if ($notification->type=='request')
-                                            <div class="card border-0 mb-5">
-                                                <div class="card-body">
-
-                                                    <div class="row gx-5">
-                                                        <div class="col-auto">
-                                                            <!-- Avatar -->
-                                                            <a href="#" class="avatar">
-                                                                <img class="avatar-img" src="{{$notification->user->img}}" alt="">
-
-                                                                <div class="badge badge-circle bg-primary border-outline position-absolute bottom-0 end-0">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                                                </div>
-                                                            </a>
-                                                        </div>
-
-                                                        <div class="col">
-                                                            <div class="d-flex align-items-center mb-2">
-                                                                <h5 class="me-auto mb-0">
-                                                                    <a href="#">{{$notification->title}}</a>
-                                                                </h5>
-                                                                <span class="extra-small text-muted ms-2">{{$notification->created_at}}</span>
-                                                            </div>
-
-                                                            <div class="d-flex">
-                                                                <div class="me-auto">{{$notification->body}}</div>
-
-                                                                {{-- <div class="dropdown ms-5">
-                                                                    <a class="icon text-muted" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                                                                    </a>
-                                                                    <ul class="dropdown-menu">
-                                                                        <li><a class="dropdown-item" href="#">Show less often</a></li>
-                                                                        <li><a class="dropdown-item" href="#">Hide</a></li>
-                                                                    </ul>
-                                                                </div> --}}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="card-footer">
-                                                    <div class="row gx-4">
-                                                        <div class="col">
-                                                            <input href="#2" type="submit" value="Hide" class="btn btn-sm btn-soft-primary w-100"
-                                                            onclick="{
-                                                            let data = new FormData
-                                                            data.append('_token','{{csrf_token()}}')
-                                                            fetch('/api/friend/1', {
-                                                            method: 'DELETE',
-                                                            body:data,
-                                                            headers: {
-                                                                'X-CSRF-TOKEN': '{{csrf_token()}}'
-                                                            }
-                                                            })
-                                                            }">
-                                                        </div>
-                                                        <div class="col">
-                                                            <input href="#" value="Confirm" class="btn btn-sm btn-primary w-100" onclick="{
-                                                                let data = new FormData
-                                                                data.append('_token','{{csrf_token()}}')
-                                                                fetch('/api/friend/1', {
-                                                                method: 'PUT',
-                                                                body:data,
-                                                                headers: {
-                                                                    'X-CSRF-TOKEN': '{{csrf_token()}}'
-                                                                }
-                                                                })
-                                                                }">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            @endif
-                                            @if ($notification ->type=='password')
-                                            <div class="card-list mt-8">
-                                                <!-- Title -->
-                                            
-                                                <!-- Title -->
-            
-                                                <!-- Card -->
-                                                <div class="card border-0 mb-5">
-                                                    <div class="card-body">
-            
-                                                        <div class="row gx-5">
-                                                            <div class="col-auto">
-                                                                <!-- Avatar -->
-                                                                <div class="avatar">
-                                                                    <span class="avatar-text bg-success">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                                                                    </span>
-            
-                                                                    <div class="badge badge-circle bg-success border-outline position-absolute bottom-0 end-0">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-            
-                                                            <div class="col">
-                                                                <div class="d-flex align-items-center mb-2">
-                                                                    <h5 class="me-auto mb-0">{{__('Password Changed')}} </h5>
-                                                                    <span class="extra-small text-muted ms-2">{{$notification->created_at}}</span>
-                                                                </div>
-            
-                                                                <div class="d-flex">
-                                                                    <div class="me-auto">{{__('Your password has been updated successfully.')}}</div>
-            
-                                                                    {{-- <div class="dropdown ms-5">
-                                                                        <a class="icon text-muted" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                                                                        </a>
-                                                                        <ul class="dropdown-menu">
-                                                                            <li><a class="dropdown-item" href="#">Show less often</a></li>
-                                                                            <li><a class="dropdown-item" href="#">Hide</a></li>
-                                                                        </ul>
-                                                                    </div> --}}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-            
-                                                    </div>
-                                                </div>
-                                                <!-- Card -->
-                                            </div>
-                                            @endif
-
-                                            @endforeach
+                                          
+                               
                                     </div>
 
 
 
-
-                                    {{-- <div class="card border-0 mb-5">
-                                        <div class="card-body">
-
-                                            <div class="row gx-5">
-                                                <div class="col-auto">
-                                                    <!-- Avatar -->
-                                                    <a href="#" class="avatar">
-                                                        <img class="avatar-img" src="assets/img/avatars/11.jpg" alt="">
-
-                                                        <div class="badge badge-circle bg-primary border-outline position-absolute bottom-0 end-0">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                                                        </div>
-                                                    </a>
-                                                </div>
-
-                                                <div class="col">
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <h5 class="me-auto mb-0">
-                                                            <a href="#">Mila White</a>
-                                                        </h5>
-                                                        <span class="extra-small text-muted ms-2">08:45 PM</span>
-                                                    </div>
-
-                                                    <div class="d-flex">
-                                                        <div class="me-auto">Send you a friend request.</div>
-
-                                                        <div class="dropdown ms-5">
-                                                            <a class="icon text-muted" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                                                            </a>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a class="dropdown-item" href="#">Show less often</a></li>
-                                                                <li><a class="dropdown-item" href="#">Hide</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="card-footer">
-                                            <div class="row gx-4">
-                                                <div class="col">
-                                                    <a href="#" class="btn btn-sm btn-soft-primary w-100">Hide</a>
-                                                </div>
-                                                <div class="col">
-                                                    <a href="#" class="btn btn-sm btn-primary w-100">Confirm</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> --}}
-                                    <!-- Card -->
 
                               
                                 </div>
-                                <!-- Today -->
-
-                                    {{-- <!-- Card  password-->
-                                    <div class="card-list mt-8">
-                                    <!-- Title -->
-                                  
-                                    <!-- Title -->
-
-                                    <!-- Card -->
-                                    <div class="card border-0 mb-5">
-                                        <div class="card-body">
-
-                                            <div class="row gx-5">
-                                                <div class="col-auto">
-                                                    <!-- Avatar -->
-                                                    <div class="avatar">
-                                                        <span class="avatar-text bg-success">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                                                        </span>
-
-                                                        <div class="badge badge-circle bg-success border-outline position-absolute bottom-0 end-0">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col">
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <h5 class="me-auto mb-0">Password Changed</h5>
-                                                        <span class="extra-small text-muted ms-2">08:45 PM</span>
-                                                    </div>
-
-                                                    <div class="d-flex">
-                                                        <div class="me-auto">Your password has been <br> updated successfully.</div>
-
-                                                        <div class="dropdown ms-5">
-                                                            <a class="icon text-muted" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                                                            </a>
-                                                            <ul class="dropdown-menu">
-                                                                <li><a class="dropdown-item" href="#">Show less often</a></li>
-                                                                <li><a class="dropdown-item" href="#">Hide</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <!-- Card -->
-                                </div> --}}
-                                <!-- Yesterday -->
-
+                               
                           
                                 <!-- Card -->
                                
@@ -873,7 +634,7 @@
                                                                     <div class="form-floating mb-6">
                                                                         <input name='c_pass'type="password" class="form-control" id="profile-verify-password" placeholder="{{__('Verify password')}}" autocomplete="">
                                                                         <label for="profile-verify-password">{{__('Verify password')}}</label>
-                                                                        <input  class="" type="checkbox" onclick="myFunction()">{{__('Show password')}}
+                                                                        <input  class="" type="checkbox" onclick="showHidePassword()">{{__('Show password')}}
                                                                         
                                                                     </div>
                                                                     <button type="submit" class="btn btn-block btn-lg btn-primary w-100">{{__('Save')}}</button>
@@ -881,26 +642,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <script>function myFunction() {
-                                                        var x = document.getElementById("profile-current-password");
-                                                        if (x.type === "password") {
-                                                          x.type = "text";
-                                                        } else {
-                                                          x.type = "password";
-                                                        }
-                                                        var x = document.getElementById("profile-new-password");
-                                                        if (x.type === "password") {
-                                                          x.type = "text";
-                                                        } else {
-                                                          x.type = "password";
-                                                        }
-                                                        var x = document.getElementById("profile-verify-password");
-                                                        if (x.type === "password") {
-                                                          x.type = "text";
-                                                        } else {
-                                                          x.type = "password";
-                                                        }
-                                                      }</script>
+                                                   
                                                
                                                 </div>
                                             </div>
@@ -1016,13 +758,13 @@
                                                 <div class="row align-items-center gx-5">
                                                     <div class="col-auto">
                                                         <div class="avatar avatar-online d-none d-xl-inline-block">
-                                                            <img class="avatar-img" id='chat-img' src="{{asset($recieve_img)}}" alt="">
+                                                            <img class="avatar-img" id='chat-img' src="" alt="">
                                                         </div>
                                                     </div>
 
                                                     <div class="col overflow-hidden" style="margin-top: 10px">
                                                         <h5 class="text-truncate" id="chat-name" style="font-size: 25px;"> </h5>
-                                                        <p class="text-truncate d-none">is typing<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></p>
+                                                        <p id="is-typing"class="text-truncate d-none">{{__('is typing')}}<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1041,10 +783,12 @@
                         <!-- Chat: Content -->
                         {{--  --}}
                         <div class="form-ccontainer chat-body hide-scrollbar flex-1 h-100" style="display:none;">
+
+                        <button class="show-all-messages" style="visibility:hidden; width:100%; text-align:center;color:#4C6AAF;background-color:transparent ;    border: .5px solid var(--loder);border-radius: 20px;"   onclick="{showAllMessages()}">show all messages</button>
                             <div class="chat-body-inner" style="padding-bottom:0px; margin:110px;">
                                 {{-- <div class='form-ccontainer'> --}}
-
-                                <div id="soso" class=" py-6 my-lg-12 " style="padding:0px " id="chat-body" >
+                                    {{-- $("#soso").append(` <button class="" >get all messages</button> `);  --}}
+                                    <div id="soso" class=" py-6 my-lg-12 " style="padding:0px " id="chat-body" >
                                     <!-- Message -->
                                     
                             
@@ -1075,8 +819,9 @@
                          {{-- {{  request()->get('id')}} --}}
                          {{-- {{Request::id}} --}}
                                    
-                               <input type="hidden" name= "conversation_id" value="{{$activeChat->id}}">
-                               
+                               <input id ="conversation-id-input-target" type="hidden" name= "conversation_id">
+                               {{--  value="{{$activeChat->id}}" --}}
+
                                 <div class="row align-items-center gx-0">
                                     <div class="col-auto">
                                         
@@ -1089,7 +834,7 @@
 
                                     <div class="col">
                                         <div class="input-group">
-                                            <input name ="message" class="input-have-message form-control px-0" placeholder="{{__('Type your message...')}}" rows="1" data-emoji-input="" data-autosize="true">
+                                            <input name ="message" class="input-have-message form-control px-0"  placeholder="{{__('Type your message...')}}" rows="1" data-emoji-input="" data-autosize="true">
                                             {{-- <input  name= "message" value=> --}}
 
                                             <a href="#" class="input-group-text text-body pe-0" >
@@ -1261,934 +1006,53 @@
             </div>
          </div>
 
-        <!-- Modal: Invite -->
-        <div class="modal fade" id="modal-invite" tabindex="-1" aria-labelledby="modal-invite" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-fullscreen-xl-down">
-                <div class="modal-content">
 
-                    <!-- Modal: Body -->
-                    <div class="modal-body py-0">
-                        <!-- Header -->
-                        <div class="profile modal-gx-n">
-                            <div class="profile-img text-primary rounded-top-xl">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 400 140.74"><defs><style>.cls-2{fill:#fff;opacity:0.1;}</style></defs><g><g><path d="M400,125A1278.49,1278.49,0,0,1,0,125V0H400Z"/><path class="cls-2" d="M361.13,128c.07.83.15,1.65.27,2.46h0Q380.73,128,400,125V87l-1,0a38,38,0,0,0-38,38c0,.86,0,1.71.09,2.55C361.11,127.72,361.12,127.88,361.13,128Z"/><path class="cls-2" d="M12.14,119.53c.07.79.15,1.57.26,2.34v0c.13.84.28,1.66.46,2.48l.07.3c.18.8.39,1.59.62,2.37h0q33.09,4.88,66.36,8,.58-1,1.09-2l.09-.18a36.35,36.35,0,0,0,1.81-4.24l.08-.24q.33-.94.6-1.9l.12-.41a36.26,36.26,0,0,0,.91-4.42c0-.19,0-.37.07-.56q.11-.86.18-1.73c0-.21,0-.42,0-.63,0-.75.08-1.51.08-2.28a36.5,36.5,0,0,0-73,0c0,.83,0,1.64.09,2.45C12.1,119.15,12.12,119.34,12.14,119.53Z"/><circle class="cls-2" cx="94.5" cy="57.5" r="22.5"/><path class="cls-2" d="M276,0a43,43,0,0,0,43,43A43,43,0,0,0,362,0Z"/></g></g></svg>
-
-                                <div class="position-absolute top-0 start-0 p-5">
-                                    <button type="button" class="btn-close btn-close-white btn-close-arrow opacity-100" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                            </div>
-
-                            <div class="profile-body">
-                                <div class="avatar avatar-lg">
-                                    <span class="avatar-text bg-primary">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-                                    </span>
-                                </div>
-
-                                <h4 class="fw-bold mb-1">Invite your friends</h4>
-                                <p style="font-size: 16px;">Send invitation links to your friends</p>
-                            </div>
-                        </div>
-                        <!-- Header -->
-
-                        <hr class="hr-bold modal-gx-n my-0">
-
-                        <!-- Form -->
-                        <div class="modal-py">
-                            <form class="row gy-6">
-                                <div class="col-12">
-                                    <label for="invite-email" class="form-label text-muted">E-mail</label>
-                                    <input type="email" class="form-control form-control-lg" id="invite-email" placeholder="name@example.com">
-                                </div>
-
-                                <div class="col-12">
-                                    <label for="invite-message" class="form-label text-muted">Message</label>
-                                    <textarea class="form-control form-control-lg" id="invite-message" rows="3" placeholder="Custom message"></textarea>
-                                </div>
-                            </form>
-                        </div>
-                        <!-- Form -->
-
-                        <hr class="hr-bold modal-gx-n my-0">
-
-                        <!-- Button -->
-                        <div class="modal-py">
-                            <a href="#" class="btn btn-lg btn-primary w-100 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#invite-modal">
-                                Send
-
-                                <span class="icon ms-auto">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                                </span>
-                            </a>
-                        </div>
-                        <!-- Button -->
-                    </div>
-                    <!-- Modal: Body -->
-
-                </div>
-            </div>
-        </div>
-        <!-- Modal: User profile -->
-        <div class="modal fade" id="modal-user-profile" tabindex="-1" aria-labelledby="modal-user-profile" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-fullscreen-xl-down">
-                <div class="modal-content">
-
-                    <!-- Modal body -->
-                    <div class="modal-body py-0">
-                        <!-- Header -->
-                        <div class="profile modal-gx-n">
-                            <div class="profile-img text-primary rounded-top-xl">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 400 140.74"><defs><style>.cls-2{fill:#fff;opacity:0.1;}</style></defs><g><g><path d="M400,125A1278.49,1278.49,0,0,1,0,125V0H400Z"/><path class="cls-2" d="M361.13,128c.07.83.15,1.65.27,2.46h0Q380.73,128,400,125V87l-1,0a38,38,0,0,0-38,38c0,.86,0,1.71.09,2.55C361.11,127.72,361.12,127.88,361.13,128Z"/><path class="cls-2" d="M12.14,119.53c.07.79.15,1.57.26,2.34v0c.13.84.28,1.66.46,2.48l.07.3c.18.8.39,1.59.62,2.37h0q33.09,4.88,66.36,8,.58-1,1.09-2l.09-.18a36.35,36.35,0,0,0,1.81-4.24l.08-.24q.33-.94.6-1.9l.12-.41a36.26,36.26,0,0,0,.91-4.42c0-.19,0-.37.07-.56q.11-.86.18-1.73c0-.21,0-.42,0-.63,0-.75.08-1.51.08-2.28a36.5,36.5,0,0,0-73,0c0,.83,0,1.64.09,2.45C12.1,119.15,12.12,119.34,12.14,119.53Z"/><circle class="cls-2" cx="94.5" cy="57.5" r="22.5"/><path class="cls-2" d="M276,0a43,43,0,0,0,43,43A43,43,0,0,0,362,0Z"/></g></g></svg>
-
-                                <div class="position-absolute top-0 start-0 p-5">
-                                    <button type="button" class="btn-close btn-close-white btn-close-arrow opacity-100" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                            </div>
-
-                            <div class="profile-body">
-                                <div class="avatar avatar-xl">
-                                   <!--  <img class="avatar-img" src="./assets/img/avatars/9.jpg" alt="#">  -->
-
-                                    <a href="#" class="badge badge-lg badge-circle bg-primary text-white border-outline position-absolute bottom-0 end-0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                                    </a>
-                                </div>
-
-                                <h4 class="mb-1">William Wright</h4>
-                                <p>last seen 5 minutes ago</p>
-                            </div>
-                        </div>
-                        <!-- Header -->
-
-                        <hr class="hr-bold modal-gx-n my-0">
-
-                        <!-- List -->
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <div class="row align-items-center gx-6">
-                                    <div class="col">
-                                        <h5>Location</h5>
-                                        <p>USA, Houston</p>
-                                    </div>
-
-                                    <div class="col-auto">
-                                        <div class="btn btn-sm btn-icon btn-dark">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="list-group-item">
-                                <div class="row align-items-center gx-6">
-                                    <div class="col">
-                                        <h5>E-mail</h5>
-                                        <p>william@studio.com</p>
-                                    </div>
-
-                                    <div class="col-auto">
-                                        <div class="btn btn-sm btn-icon btn-dark">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="list-group-item">
-                                <div class="row align-items-center gx-6">
-                                    <div class="col">
-                                        <h5>Phone</h5>
-                                        <p>1-800-275-2273</p>
-                                    </div>
-
-                                    <div class="col-auto">
-                                        <div class="btn btn-sm btn-icon btn-dark">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone-call"><path d="M15.05 5A5 5 0 0 1 19 8.95M15.05 1A9 9 0 0 1 23 8.94m-1 7.98v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <!-- List -->
-
-                        <hr class="hr-bold modal-gx-n my-0">
-
-                        <!-- List -->
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <div class="row align-items-center gx-6">
-                                    <div class="col">
-                                        <h5>Notifications</h5>
-                                        <p>Enable sound notifications</p>
-                                    </div>
-
-                                    <div class="col-auto">
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input" type="checkbox" id="user-notification-check">
-                                            <label class="form-check-label" for="user-notification-check"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <!-- List -->
-
-                        <hr class="hr-bold modal-gx-n my-0">
-
-                        <!-- List -->
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <a href="#" class="text-reset">Send Message</a>
-                            </li>
-
-                            <li class="list-group-item">
-                                <a href="#" class="text-danger">Block User</a>
-                            </li>
-                        </ul>
-                        <!-- List -->
-                    </div>
-                    <!-- Modal body -->
-
-                </div>
-            </div>
-        </div>
-
-        <!-- Modal: Media Preview -->
-        <div class="modal fade" id="modal-media-preview" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered modal-fullscreen-xl-down">
-                <div class="modal-content">
-
-                    <!-- Modal: Header -->
-                    <div class="modal-header">
-                        <button type="button" class="btn-close btn-close-arrow" data-bs-dismiss="modal" aria-label="Close"></button>
-
-                        <div>
-                            <!-- Dropdown -->
-                            <div class="dropdown">
-                                <a class="icon text-muted" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
-                                </a>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center" href="#">
-                                            Download
-                                            <div class="icon ms-auto">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download-cloud"><polyline points="8 17 12 21 16 17"></polyline><line x1="12" y1="12" x2="12" y2="21"></line><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"></path></svg>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center" href="#">
-                                            Share
-                                            <div class="icon ms-auto">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center text-danger" href="#">
-                                            <span class="me-auto">Delete</span>
-                                            <div class="icon">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <!-- Dropdown -->
-                        </div>
-                    </div>
-                    <!-- Modal: Header -->
-
-                    <!-- Modal: Body -->
-                    <div  class="modal-body p-0">
-                        <div class="d-flex align-items-center justify-content-center h-100">
-                            <img class="img-fluid modal-preview-url" src="#" alt="#">
-                        </div>
-                    </div>
-                    <!-- Modal: Body -->
-
-                    <!-- Modal: Footer -->
-                    <div class="modal-footer">
-                        <div class="w-100 text-center">
-                            <h6><a href="#">Marshall Wallaker</a></h6>
-                            <p class="small">Today at 14:43</p>
-                        </div>
-                    </div>
-                    <!-- Modal: Footer -->
-                </div>
-            </div>
-        </div>
-        
         <!-- Layout -->
         
-          {{-- <button onclick="playAudio()" type="button">Play Audio</button> --}}
-
+    
     
         <!-- Scripts -->
+        <script>
+         
+            let userId=                {{    Auth::id();            }} ;
+            let userimg=              "{{    Auth::user()->img;     }}";
+            let username=             "{{    Auth::user()->name     }}";
+            let stringHi=             "{{    __('Hi')               }}";
+            let stringAdd=            "{{    __('Add')              }}";
+            let stringHide=           "{{    __('Hide')             }}";
+            let stringConfirm=        "{{    __('Confirm')          }}";
+            let stringPasswordChanged="{{    __('Password Changed') }}";
+            let stringPasswordUpdated="{{    __('Your password has been updated successfully.')}}";
+    
+            function play() {
+                var audio = new Audio('{{asset("sound/1.wav")}}');
+                  audio.play();
+            }
+    
+        </script>
+    
         <script src="{{ asset ('assets/js/template.js')}}" ></script>
         <script src="{{ asset ('assets/js/vendor.js')  }}" ></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
-        
         <script src="{{ asset ('js/messenger.js')}}" ></script>
         <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
         <script src="{{ asset ('assets/js/ss.js')  }}" crossorigin="anonymous"></script>
         <script src="{{ asset ('assets/js/moment.js')  }}" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-
-        
-<script>
-          
-
-
-
-        //   var audio = new Audio('{{asset("sound/1.wav")}}');
-        //       audio.play();
-
-            function play() {
-                var audio = new Audio('{{asset("sound/1.wav")}}');
-              audio.play();
-            }
-            // play()
-        
-
-            let userId={{Auth::id();}}
-            let username="{{Auth::user()->name;}}"
-            let userimg="{{Auth::user()->img;}}"
-            // let userimg={{Auth::id();}}
-            //Pusher.logToConsole = true;
-            var pusher = new Pusher('802b2b4536e206d4fd81', {
-            cluster: 'eu',
-            //authEndpoint: 'http://127.0.0.1:8000/broadcasting/auth',
-            authEndpoint: 'http://127.0.0.1:8000/api/pusher/auth',
-            auth: 
-            { 
-              headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-            }
-            });
-            var channel = pusher.subscribe(`private-Messenger.${userId}`);
-            let dataa = new FormData
-            channel.bind('new-message', function(data) {
-                $(document).ready(function(){});  
-                // play();
-
-                // alert( data.message.conversation_id);
-                // alert( response_conversation_id);
-                // console.log($(`.asa[data-messages=${data.message.conversation_id}]`).text()  );
-             var message_body_with_slice=data.message.body.slice(0, 10);
-                $(`.last-message[data-messages=${data.message.conversation_id}]`).replaceWith(`
-                <div class="line-clamp me-auto last-message" data-messages=${data.message.conversation_id}>
-                    ${message_body_with_slice}
-                </div>
-                
-                `);
-                        
-                console.log(data.message.body);
-                // conversation id from pusher   conversation id from chat 
-                if(data.message.conversation_id==response_conversation_id)
-                {
-                    if(data.message.conversation.type=='group'){
-
-                        addMessage(data.message,'',true,true)
-                    }
-                    else{
-
-                        addMessage(data.message,'',true,false)
-                    }
-                    
-                    dataa.append('message_id',data.message.id)
-                    fetch('/api/readMessage', {
-                    method: 'POST',
-                    body:dataa,
-                    headers: {
-                    'X-CSRF-TOKEN': '{{csrf_token()}}'
-                    
-                    }
-                });
-            }
-            
-            else{
-                if($(`.asa[data-messages=${data.message.conversation_id}]`).text()=='')
-                {
-                    // $(`.div-count-msg[data-messages=${data.message.conversation_id}]`).css('visibility','');
-                    // // alert(1)
-                    // $(`.div-count-msg[data-messages=${data.message.conversation_id}]`).css('visibility','hidden');
-                    // alert(1)
-                    $(`.div-count-msg[data-messages=${data.message.conversation_id}]`).css('visibility','');
-                    // setTimeout( alert('amgad'),3000);
-                   
-                }
-                else{
-
-                    $(`.asa[data-messages=${data.message.conversation_id}]`).html(parseInt($(`.asa[data-messages=${data.message.conversation_id}]`).text())+1);
-                    // $(`.eq[data-messages=${data.message.conversation_id}]`).css('background-color','red')
-                }
-                // alert(data.message.conversation_id)
-                // $('.goToChat[chat-id]').html(data.message.conversation_id)
-                $('.goToChat').attr('chat-id',data.message.conversation_id)
-                $('.headarToast').empty();
-                $('.bodyToast').empty();
-                if(data.message.conversation.type=='group')
-                {
-                    $('.headarToast').append(data.message.conversation.lable);
-                    $('.bodyToast').append(data.message.user.name+' : '+message_body_with_slice);
-                    // $('.goToChat[chat-id]').append(data.message.conversation.id);
-                }
-                else
-                {
-                    $('.headarToast').append(data.message.user.name);
-                    $('.bodyToast').append(message_body_with_slice);
-                    
-                }
-                $(".toast").toast({ delay: 3000 });
-                $('.toast').toast({animation: true});
-                $('.toast').toast('show');
-                // console.log( data.message.user.name+' sent message');
-                } 
-            });
-        
-            channel.bind('pusher:subscription_error', function(data) {
-                console.log(data);
-            });
-        
-
-</script>
+        <script src="{{ asset ('js/pusher.js')}}" ></script>
+        <script src="{{ asset ('js/record.js')}}" ></script>
+        <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+        <script src="https://markjivko.com/dist/recorder.js"></script>
+        @vite('resources/js/app.js')    
 
 
-
-
-<script>
-
-const getFriends=function(){
-    // $.get(a+'/api/getUsers',function(response){
-        $.get(a+'/api/getFriend',function(response){
-        for(i in response) 
-        {
-    // alert(response[i].id)
-
-            $('#users_in_searsh').append(`
-
-            <div id="users_in_searsh" class="card-list">
-          
-            <div class="card border-0">
-                <div id="users-body" class="card-body">
-        
-                    <div class="row align-items-center gx-5">
-                        <div class="col-auto">
-                            <a href="#" class="avatar avatar-online">
-                             
-                                <img class="avatar-img" src="${response[i].img}" alt="">
-                                
-                                
-                            </a>
-                        </div>
-        
-                        <div class="col">
-                            <h5>
-                              <a href="#">${response[i].name}</a></h5>
-                             <!-- <p>${response[i].last_seen_at}</p> -->
-                        </div>
-        
-                        <div  class="col-auto">
-                        <input type="submit" value="{{__('Hi')}}" user-id=${response[i].id}  style="${styleHi}" 
-                        onclick="
-                        {
-                            alert('message sended')
-                            let data = new FormData
-                            data.append('_token','${tokenn}')
-                            data.append(  'message', '{{__('Hi')}}' )
-                            data.append('user_id',$(this).attr('user-id'));
-                            fetch('${a}'+'/api/messages', {
-                                method: 'POST',
-                                body:data,
-                                headers: {
-                                    'X-CSRF-TOKEN': +'${tokenn}'
-                                }
-                                })
-                         }" >
-                      
-                            
-                         
-                        </div>
-        
-                    </div>
-        
-                </div>
-            </div>
-            <!-- Card -->
-        
-        </div>
-        <br>
-            `)
-        }
-        // user(response[i])
-    });
-}
-const getUsers=function(){
-    $.get(a+'/api/getUsers',function(response){
-
-        for(i in response) 
-        {
-             // alert(response[i].id)
-
-            $('#all_users_in_app').append(`
-
-            
-            <div id="user_in_all_user" class="card-list">
-          
-            <div class="card border-0">
-                <div id="users-body" class="card-body">
-        
-                    <div class="row align-items-center gx-5">
-                        <div class="col-auto">
-                            <a href="#" class="avatar avatar-online">
-                             
-                                <img class="avatar-img" src="${response[i].img}" alt="">
-                                
-                                
-                            </a>
-                        </div>
-        
-                        <div class="col">
-                            <h5>
-                              <a href="#">${response[i].name}</a></h5>
-                             <!-- <p>${response[i].last_seen_at}</p> -->
-                        </div>
-        
-                        <div  class="col-auto">
-
-                        <input class="addfriend" type="submit" value="{{__('Add')}}" user-id=${response[i].id} " 
-                        onclick="
-                        {   
-                            
-                            $(this).attr('class','addfriend_done')
-                            let data = new FormData
-                            data.append('_token','${tokenn}')
-                            data.append('user_id',$(this).attr('user-id'));
-                            fetch('${a}'+'/api/addFriend', {
-                                method: 'POST',
-                                body:data,
-                                headers: {
-                                    'X-CSRF-TOKEN': +'${tokenn}'
-                                }
-                                })
-                         }" >
-                     
-                             
-                        </div>
-        
-                    </div>
-        
-                </div>
-            </div>
-            <!-- Card -->
-        
-        </div>
-        <br>
-            `)
-        }
-
-    });
-}
-const notification=function(chat){
-    if(chat.type=='request')
-    {
-    $('#cards-notification').append(`
-    
-    <div id="cardNoti"  class="card border-0 mb-5">
-    <div class="card-body">
-
-        <div class="row gx-5">
-            <div class="col-auto">
-                <!-- Avatar -->
-                <a href="#" class="avatar">
-                    <img class="avatar-img" src="${chat.img}" alt="">
-
-                    <div class="badge badge-circle bg-primary border-outline position-absolute bottom-0 end-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    </div>
-                </a>
-            </div>
-
-            <div class="col">
-                <div class="d-flex align-items-center mb-2">
-                    <h5 class="me-auto mb-0">
-                        <a href="#">${chat.title}</a>
-                        <a href="#"> </a>
-                      
-                    </h5>
-                    <span class="extra-small text-muted ms-2">${chat.created_at}</span>
-                    
-                </div>
-
-                <div class="d-flex">
-                    <div class="me-auto">${chat.body}</div>
-
-                   
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card-footer">
-        <div class="row gx-4">
-            <div id = 'button-notification'class="col button-notification">
-                <input href="#2" type="submit" value="Hide" class="btn btn-sm btn-soft-primary w-100"
-                onclick="{
-                    let data = new FormData
-                    data.append('_token','${tokenn}')
-                    data.append('notification_id','${chat.id}')
-                    fetch('/api/refusFriend/${chat.refernce}', {
-                    method: 'POST',
-                    body:data,
-                    headers: {
-                        'X-CSRF-TOKEN': '${tokenn}'
-                        
-                    }
-                    })
-            
-                // this.parentNode.parentNode.style.display = 'none';
-                this.parentNode.parentNode.replaceWith('deleted succesfuly')
-                
-                
-                }">
-            </div>
-            <div id = 'button-notification' class="col button-notification">
-                <input href="#" value="Confirm" class="btn btn-sm btn-primary w-100" onclick="{
-                    let data = new FormData
-                    data.append('_token','${tokenn}')
-                    data.append('notification_id','${chat.id}')
-                
-                    fetch('/api/acceptFriend/${chat.refernce}', {
-                    method: 'POST',
-                    body:data,
-                    headers: {
-                        'X-CSRF-TOKEN': '${tokenn}'
-                    }
-                    })
-                    this.parentNode.parentNode.replaceWith('added succesfuly')
-
-                    }">
-            </div>
-        </div>
-    </div>
- </div>
-    
-    `)
-    }
-
-    else 
-    {
-    $('#cards-notification').append(` 
-     <div class="card-list mt-8">
-
-
-    <!-- Card -->
-    <div class="card border-0 mb-5">
-        <div class="card-body">
-
-            <div class="row gx-5">
-                <div class="col-auto">
-                    <!-- Avatar -->
-                    <div class="avatar">
-                        <span class="avatar-text bg-success">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                        </span>
-
-                        <div class="badge badge-circle bg-success border-outline position-absolute bottom-0 end-0">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-ccw"><polyline points="1 4 1 10 7 10"></polyline><polyline points="23 20 23 14 17 14"></polyline><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path></svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="d-flex align-items-center mb-2">
-                        <h5 class="me-auto mb-0">{{__('Password Changed')}}</h5>
-                        <span class="extra-small text-muted ms-2">${chat.created_at}</span>
-                    </div>
-
-                    <div class="d-flex">
-                        <div class="me-auto">{{__('Your password has been updated successfully.')}}</div>
-
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
-    <!-- Card -->
- </div>`)
-    }
-
-
-
-    }
-const addMessagesToGroup = function(msg ,c = '' ,isAnimate = true ,inGroup=false,audio=false){
-    const $container = $('.form-ccontainer');
-    if (isAnimate) 
-    {
-        $container.animate({
-          scrollTop: $container.prop('scrollHeight')
-        });
-    }
-    // else 
-    // {
-    //     $container.scrollTop($container.prop('scrollHeight'))
-    //     // $container.scrollTop = 9c9;
-    // }
-    // -------------
-
-
-    var something=msg.body;
-
-        var dir;
-        if(c=='')
-        {
-             something=something.replace('visibility:','visibility:hidden')
-          
-        dir=`
-        <img class="avatar" src="${msg.user.img}" alt="" style="">
-        <div  style=" display: flex;flex-direction: column; ">
-                <p style=" font-size:;   position: relative;top: 5px; background-color:  ;margin-bottom:0px "> ${msg.user.name}</p>
-                ${something}
-        </div>   
-        `;
-        
-        }
-      
-        else
-        dir= something;
-            
-        $("#soso").append(`
-        <div class="name-to-group message ${c} ">
-            <div class="message-inner" >
-                   <div class="message-body">
-                         <div class="message-content">
-                               ${dir}
-                        </div> 
-                    </div>
-                    <div class="message-footer">
-                        <span class="extra-small text-muted">${moment(msg.created_at).fromNow()}</span>
-                    </div>
-            </div>
-        </div>
-          `); 
-    
-    }
-const addMessage = function(msg ,c = '' ,isAnimate = true ,inGroup=false,audio=false){
-    const $container = $('.form-ccontainer');
-    if (isAnimate) 
-    {
-        $container.animate({
-          scrollTop: $container.prop('scrollHeight')
-        });
-    }
-    // else 
-    // {
-    //     $container.scrollTop($container.prop('scrollHeight'))
-    //     // $container.scrollTop = 9c9;
-    // }
-    // -------------
-
-
-    var something=msg.body;
-  
-
-    if(inGroup==true)
-    {
-
-        var dir;
-        if(c=='')
-        {
-             something=something.replace('visibility:','visibility:hidden')
-          
-        dir=`
-        <img class="avatar" src="${msg.user.img}" alt="" style="">
-        <div  style=" display: flex;flex-direction: column; ">
-                <p style=" font-size:;   position: relative;top: 5px; background-color:  ;margin-bottom:0px "> ${msg.user.name}</p>
-                ${something}
-        </div>   
-        `;
-        
-        }
-      
-        else
-        dir= something;
-            
-        $("#soso").append(`
-        <div class="name-to-group message ${c} ">
-            <div class="message-inner" >
-                   <div class="message-body">
-                         <div class="message-content">
-                               ${dir}
-                        </div> 
-                    </div>
-                    <div class="message-footer">
-                        <span class="extra-small text-muted">${moment(msg.created_at).fromNow()}</span>
-                    </div>
-            </div>
-        </div>
-          `); 
-    
-    }
-     else
-     {
-        if(c=='')
-        {
-             something=something.replace('visibility:','visibility:hidden')
-
-        }
-             $("#soso").append(`
-  
-             <div class="name-to-group message ${c} ">
-        
-                 <div class="message-inner" >
-                     <div class="message-body">
-                         <div class="message-content">
-                            ${something}
-                         </div> 
-                     </div>
-  
-                     <div class="message-footer">
-                         <span class="extra-small text-muted">${moment(msg.created_at).fromNow()}</span>
-                     </div>
-                 </div>
-             </div>
-  
-             `); 
-     }
-    
- 
-}
-</script>
-
-<style>
-    .error{
-        /* background-color: rgb(239, 118, 118); */
-      /* z-index: 111; */
-    }
-</style>
 
     </body>
-    <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
-        <script src="https://markjivko.com/dist/recorder.js"></script>
 
-        <script>
-            jQuery(document).ready(function () {
-                var $ = jQuery;
-                var myRecorder = {
-                    objects: {
-                        context: null,
-                        stream: null,
-                        recorder: null
-                    },
-                    init: function () {
-                        if (null === myRecorder.objects.context) {
-                            myRecorder.objects.context = new (
-                                    window.AudioContext || window.webkitAudioContext
-                                    );
-                        }
-                    },
-                    start: function () {
-                        var options = {audio: true, video: false};
-                        navigator.mediaDevices.getUserMedia(options).then(function (stream) {
-                            myRecorder.objects.stream = stream;
-                            myRecorder.objects.recorder = new Recorder(
-                                    myRecorder.objects.context.createMediaStreamSource(stream),
-                                    {numChannels: 1}
-                            );
-                            myRecorder.objects.recorder.record();
-                        }).catch(function (err) {});
-                    },
-                    stop: function (listObject) {
-                        if (null !== myRecorder.objects.stream) {
-                            myRecorder.objects.stream.getAudioTracks()[0].stop();
-                        }
-                        if (null !== myRecorder.objects.recorder) {
-                            myRecorder.objects.recorder.stop();
-
-                            // Validate object
-                            if (null !== listObject
-                                    && 'object' === typeof listObject
-                                    && listObject.length > 0) {
-                                // Export the WAV file
-                                myRecorder.objects.recorder.exportWAV(function (blob) {
-
-                                let data = new FormData
-                                data.append('sound',blob)
-                   
-                                fetch('api/sound', {
-                                method: 'POST',
-                                body:data,
-                                headers: {
-                                    'X-CSRF-TOKEN': +'${tokenn}'
-                                }})
-                                .then(res =>
-                                    {
-                                      if (res.status>=200 && res.status <300) 
-                                      return res.json()
-                                      else
-                                      throw new Error();
-                                    }
-                                        ).then(data=>
-                                        {
-                                            let request = new FormData ; 
-                                            request.append('conversation_id',response_conversation_id);
-                                            request.append('body',data);
-                                            request.append('messageType','audio');
-                                            request.append('type','peer');
-                                            request.append('user_id',{{Auth::id()}});
-
-                                            fetch('api/messages', {
-                                            method: 'POST',
-                                            body:request,
-                                            headers: {  'X-CSRF-TOKEN': +'${tokenn}'}
-                                            });
-
-                                            var record =` <audio style="   border: 5px solid #2787F5; border-radius: 50px;"controls><source src="${data}" type="audio/WAV"></audio>  `
-                                            var date =  moment();
-                                            var msg={'body':record  ,'created_at':date ,'id':100000};
-                                            // addMessage(msg,'message-out',true,true,true,record,date);//false
-                                            addMessage(msg,'message-out',true,true);
-                                        }
-                                );    
-              
-                                });
-
-                            }
-                        }
-                    }
-                };
-
-                // Prepare the recordings list
-                var listObject = $('[data-role="recordings"]');
-
-                // Prepare the record button
-                $('[data-role="controls"] > button').click(function () {
-                    // Initialize the recorder
-                    myRecorder.init();
-
-                    // Get the button state 
-                    var buttonState = !!$(this).attr('data-recording');
-
-                    // Toggle
-                    if (!buttonState) {
-                        $(this).attr('data-recording', 'true');
-                        myRecorder.start();
-                    } else {
-                        $(this).attr('data-recording', '');
-                        myRecorder.stop(listObject);
-                    }
-                });
-            });
-        </script>
+       
     </head>
     
-    <body>
         
 </html>

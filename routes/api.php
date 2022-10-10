@@ -71,6 +71,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('createGroup'    ,[MessageController::class,'createGroup']);
             
     Route::get('conversations/{id}/messages',[MessageController::class,'index']);
+    Route::get('conversations/{id}/allMessages',[MessageController::class,'allMessages']);
+    
     Route::get('messages/{id}',[MessageController::class,'destroy']);
     Route::post('search_chat'    ,[MessageController::class,'search_chat'])->name('search.chat');
     Route::post('search_users'    ,[MessageController::class,'search_users'])->name('search.users');

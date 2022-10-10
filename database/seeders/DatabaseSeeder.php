@@ -41,10 +41,10 @@ class DatabaseSeeder extends Seeder
         // User::create(['name'=>'Ali'   ,'email'=>'Ali@gmail.com'   ,'password'=>($pass)  ,'img'=>'/storage/img/ali.jpg'  ]);
         // User::create(['name'=>'hesham','email'=>'hisham@gmail.com','password'=>($pass)  ,'img'=>'/storage/img/hesham.jpg'  ]);
         // User::create(['name'=>'joli'  ,'email'=>'joli@gmail.com'  ,'password'=>($pass)  ,'img'=>'/storage/img/user_default.png'  ]);
-      for($i=0;$i<2000;$i++){
+      for($i=0;$i<3000;$i++){
 
    \App\Models\Message::create([
-            'conversation_id' => 8,
+            'conversation_id' => 12,
             'user_id' =>1,
             'body' => 1, // password
             'type' => 'text',

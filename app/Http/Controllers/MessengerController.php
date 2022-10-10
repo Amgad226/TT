@@ -85,14 +85,14 @@ class MessengerController extends Controller
         $notifications= Notification::all()->where('owner_id',Auth::id());
        
         return view('messenger',[
-            'friends'=>$friends,
-            'chats'=>$chats,
-            'activeChat'=>$activeChat ,
-            'messages'=>$messages,
-            'user_id_in_chat'=>$i,
-            'recieve_username'=>$recieve_username_d,
-            'recieve_img'=>$recieve_img,
-            'notifications'=>$notifications
+            // 'friends'=>$friends,
+            // 'chats'=>$chats,
+            // 'activeChat'=>$activeChat ,
+            // 'messages'=>$messages,
+            // 'user_id_in_chat'=>$i,
+            // 'recieve_username'=>$recieve_username_d,
+            // 'recieve_img'=>$recieve_img,
+            // 'notifications'=>$notifications
             // 'user_id_in_chat'=>$i->partiscipants[0]->id,
         ]);
 

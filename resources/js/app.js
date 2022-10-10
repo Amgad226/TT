@@ -1,43 +1,59 @@
 import './bootstrap';
-// window.Echo.channel(`Messenger.${userId}`)
-// .listen('new-message',(e)=>{
-//     alert(e)
-//     console.log(`${userId}`);
-//     })
+// alert(1);
 
-// window.Echo.private
-//     window.Echo.private(`private-Messenger.${userId}`)
-// .listen('new-message',(e)=>{
-//     alert(e)
-//     console.log(`${userId}`);
-//     })
+// window.Echo.private(`Messenger.${userId}`)
+// .listen('.new-message', (e) => {
+//      alert(e);
+//      console.log(12312312);
+// });
 
-
-//     Echo.private(`private-Messenger.${userId}`)
-//     .listen('new-message', (e) => {
-//         console.log(e);
-//     });
 
 //---------------------------------------------------------------
 // @vite(['resources/js/app.js'])
 
 
 
-     Pusher.logToConsole = true;
+$('.input-have-message').on('keydown', function(){
+    let channel = Echo.private('chat')
 
-     var pusher = new Pusher('802b2b4536e206d4fd81', {
-         cluster: 'eu',
-    //   authEndpoint: 'http://127.0.0.1:8000/broadcasting/auth',
-    //   auth: { headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}}
-    
+     setTimeout( () => {
+       channel.whisper('typing', {
+         user: userId,
+         conversation_id:response_conversation_id,
+         typing: true
+       })
+     }, 300)
+      if( $('.input-have-message').val().length == 0 ) 
+            stopTyping(); 
+        
 });
+     function stopTyping(){
+        let channel = Echo.private('chat')
 
-     var channel = pusher.subscribe(`Messenger.${userId}`);
-     channel.bind('new-message', function(data) {
-         alert(data);
-        });
-        channel.bind('pusher:subscription_error', function(data) {
-            console.log(data);
-            // alert('ddddd')
-        });
-        // pusher.signin()
+        setTimeout( () => {
+          channel.whisper('typing', {
+            user: userId,
+            conversation_id:response_conversation_id,
+            typing: false
+          })
+        }, 300)
+
+     }
+   
+                      setTimeout( () => {
+     
+                      Echo.private('chat')
+                    .listenForWhisper('typing', (e) => {
+                        // console.log(e.conversation_id);
+                        if(response_conversation_id==e.conversation_id)
+                        {
+                        if(e.typing)
+                        $('#is-typing').removeClass('d-none')
+                        else
+                        $('#is-typing').addClass('d-none')        
+                        }
+                        
+                    })
+                }, 300)
+
+ 

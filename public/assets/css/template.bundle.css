@@ -27,6 +27,8 @@ body{
     /* transition:  1s; */
 }
  :root{
+    --loder:#16191C;
+
     --arrow:#111;
     /* --arroww:rgb(168, 135, 135); */
 

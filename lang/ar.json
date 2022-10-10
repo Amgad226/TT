@@ -32,6 +32,11 @@
     "Add":"اضافة",
     "Password Changed":"تغيير كلمة المرور ",
     "Your password has been updated successfully.":"تم تغيير كلمة مرورك بنجاح",
-    "language":"اللغة"
+    "language":"اللغة",
+    "is typing":"يكتب الان",
+    "Hide": "رفض",
+    "Confirm":"قبول"
+
+
 
 }

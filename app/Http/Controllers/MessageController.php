@@ -38,21 +38,49 @@ class MessageController extends Controller
     public function index($id)
     {
         // dd($id);
+        
         $conversation = Conversation::with([
             'partiscipants'  => function ($query_two) {
                 $query_two->where('id', '<>', Auth::id());
             }
         ])->findOrFail($id);
+        $allMessagesInChat=Message::where('conversation_id', $id)->count();
+        $limit=50;
+        
+        $messages = Message::with('user')->where('conversation_id', $id)->limit($limit)->skip($allMessagesInChat-$limit)->get();
+        $read_more=( $allMessagesInChat > count($messages)) ?1 :0;
 
-
-        $message = Message::with('user')->where('conversation_id', $id)->get();
+        // $message = Message::with('user')->where('conversation_id', $id)->get();
         return [
             'conversation' => $conversation,
-            'messeges' => $message,
+            'messeges' => $messages,
+            'read_more'=>$read_more,
+
             // 'messeges'=>$conversation->messages()->with('user'),
         ];
     }
 
+
+    public function allMessages($id)
+    {
+        // dd($id);
+        
+        $conversation = Conversation::with([
+            'partiscipants'  => function ($query_two) {
+                $query_two->where('id', '<>', Auth::id());
+            }
+        ])->findOrFail($id);
+    
+        $messages = Message::with('user')->where('conversation_id', $id)->get();
+ 
+        // $message = Message::with('user')->where('conversation_id', $id)->get();
+        return [
+            'conversation' => $conversation,
+            'messeges' => $messages,
+
+            // 'messeges'=>$conversation->messages()->with('user'),
+        ];
+    }
     /**
      * Store a newly created resource in storage.
      *
