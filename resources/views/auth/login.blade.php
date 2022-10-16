@@ -28,13 +28,8 @@
 <h3 class="text-center mb-4">Sign In</h3>
 <form method="POST" action="{{ route('login') }}">  
     @csrf
-          <div class="form-group">
-
-
-
-
-
-
+    @csrf
+<div class="form-group">
 <input name="email" type="text" class="form-control rounded-left" placeholder="Username" required>
 </div>
 <div class="form-group d-flex">
@@ -56,7 +51,8 @@ dont have account ?
 </div>
 </section>
 <script src="js/jquery.min.js"></script>
-<script src="js/popper.js+bootstrap.min.js+main.js.pagespeed.jc.XLbJotJFQf.js"></script><script>eval(mod_pagespeed_WElkAsjnxY);</script>
+<script src="js/popper.js+bootstrap.min.js+main.js.pagespeed.jc.XLbJotJFQf.js"></script>
+<script>eval(mod_pagespeed_WElkAsjnxY);</script>
 <script>eval(mod_pagespeed_CLCu_pXgaN);</script>
 <script>eval(mod_pagespeed_h$EL5JhDnb);</script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v652eace1692a40cfa3763df669d7439c1639079717194" integrity="sha512-Gi7xpJR8tSkrpF7aordPZQlW2DLtzUlZcumS8dMQjwDHEnw9I7ZLyiOj/6tZStRBGtGgN6ceN6cMH8z7etPGlw==" data-cf-beacon='{"rayId":"743a7f961d9d4202","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2022.8.0","si":100}' crossorigin="anonymous"></script>

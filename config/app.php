@@ -197,6 +197,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
+        Ladumor\LaravelPwa\PWAServiceProvider::class,
 
     ],
 
@@ -213,6 +214,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'LaravelPwa' => \Ladumor\LaravelPwa\LaravelPwa::class,
+
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
 
     ])->toArray(),

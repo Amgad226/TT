@@ -79,4 +79,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Friend::class,'user1_id');
     }
+    public function friend2()
+    {
+        return $this->hasMany(Friend::class,'user2_id');
+    }
 }

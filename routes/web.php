@@ -4,7 +4,9 @@ use App\Events\MessageCreated;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MessengerController;
 use App\Http\Controllers\PusherController;
+use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,7 +22,13 @@ use Illuminate\Support\Facades\Route;
 
 // Auth::routes(['register' => false]);
 
-Route::get('as',function(){return response('you shoud login');})->name('loginn');
+Route::get('as',function(){
+    // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+    // Message::truncate();
+    // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+
+    return response('you shoud login');})->name('loginn');
 
 Route::get('/a/{id?}',[MessengerController::class,'index'])->middleware('auth:sanctum')->name('messenger');
 

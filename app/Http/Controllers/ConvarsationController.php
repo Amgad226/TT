@@ -48,6 +48,8 @@ class ConvarsationController extends Controller
        
         }
         foreach($chats as $chat ){
+            // if($chat->conversation->type=='group')
+            // $chat->load('user');
             $chat->conversation['unRead_message']=$this->countUnReadMessage($chat->conversation_id);
         }
         

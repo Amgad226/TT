@@ -3,14 +3,20 @@
 <html lang="en">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!-- Head -->
-   
-    <head>
+    {{-- <div class="message-text"> --}}
+        {{-- {{Auth::user()->img}} --}}
+        
+        <head>
+        <meta name="theme-color" content="#6777ef"/>
+        <link rel="apple-touch-icon" href="{{ asset('img/logo.png') }}">
+        <link rel="manifest" href="{{ asset('/manifest.json') }}">
+
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1, shrink-to-fit=no, viewport-fit=cover">
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>TT</title>
         <link rel="shortcut icon" href="{{asset('img/logo.png')}}" type="image/x-icon">
-        
+        {{-- {{asset('img/logo.png')}} --}}
         <!-- Favicon -->
         <link rel="shortcut icon" href="./assets/img/favicon/favicon.ico" type="image/x-icon">
 
@@ -22,54 +28,22 @@
         <!-- Template CSS -->
         {{-- <link rel="stylesheet" href="{{asset('assets/css/template.bundle.css')}}"> --}}
         <link rel="stylesheet" href="{{asset('assets/css/template.dark.bundle.css')}}" >
+        {{-- <link rel="stylesheet" href="{{asset('assets/css/a.css')}}" > --}}
+        {{-- <link rel="stylesheet" type="text/css" href="assets/css/template.bundle.css"> --}}
     </head>
 
-    
-    {{-- $(this).attr('chat-id') --}}
+
     
     <body>
-   
+        {{-- <input type="file" accept="image/*" />  --}}
 
-
-
-
-        <div class="" id="Loader" style="  top: 40%;  right: 35%;  z-index: 100000;  position: absolute;">
+        <div class="hide" id="Loader" style="  top: 40%;  right: 35%;  z-index: 100000;  position: absolute;">
             <div class="loader"></div>
         </div>
-<style>.loader {
-    /* border: 16px solid #5f5b5b;  */
-    border: 5px solid var(--loder); 
-     /* border-top: 20px solid #adadad; */
-    border-top: 40px solid #3498db; 
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin .5s linear infinite;
-  }
-  .loader {
-    border: 5px solid var(--loder); 
-    border-top: 60px solid #4965A6; 
-    border-bottom: 20px solid var(--loder); 
-    border-left: 10px solid transparent ; 
-    border-right: 30px solid transparent ; 
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin .5s linear infinite;
-  }
-  
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }</style>
-
-
-
-
-    
+        
         <!-- Notification -->
         <div class="toast" style="  top: 10%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: example;animation-duration: 3s;">
-            <div class="goToChat"  onclick="{open_chat($(this).attr('chat-id'));}"  chat-id=12  style=" max-height:85px;  max-width:240px;min-width:240px;min-height:85  ;overflow: hidden;  ">
+            <div class="goToChat"  onclick="{open_chat($(this).attr('chat-id'));   $('.toast').toast('hide');  }"  chat-id=1  style=" max-height:85px;  max-width:240px;min-width:240px;min-height:85  ;overflow: hidden;  ">
                 <div class="toast-body " style="  ;border: 3px rgb(32, 3, 138) solid;" >
                     <div  style="  font-size: 24px; "><i class="headarToast"><p>Toast</p></i></div>
                     <div class="bodyToast" style=" font-size: 12px;max-height:8px;  max-width:240px;">toast  dunread-message-countsd asda s asdasdas</div>
@@ -81,7 +55,6 @@
         
         <!-- Layout -->
         <div class="layout overflow-hidden">
-            {{-- <img src="http://127.0.0.1:8000/img/group/(633d9613f1610)first%20group.jpg" alt="#" class="avatar-img"> --}}
 
             <!-- Navigation -->
             <nav class=" navigation d-flex flex-column text-center navbar navbar-light hide-scrollbar">
@@ -90,7 +63,8 @@
                  <a href="#" title="TT" class="d-none d-xl-block mb-6  welcome-text to-return-home" onclick="{ 
                      $(`#soso`).empty();
                   
-                    $(`.toast`).toast({ delay: 6000 });$('.toast').toast('show'); 
+                    $(`.toast`).toast({ delay: 6000 });
+                    $('.toast').toast('show'); 
                      play();
                      }">
                     <svg version="1.1" width="46px" height="46px" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 46 46" enable-background="new 0 0 46 46" xml:space="preserve">
@@ -113,13 +87,14 @@
 
 
                     <!-- Invisible item to center nav vertically -->
-                    <li class="nav-item d-none d-xl-block invisible " >{{-- flex-xl-grow-1 --}}
+                    {{-- flex-xl-grow-1 --}}
+                    {{-- <li class="nav-item d-none d-xl-block invisible " >
                         <a class="nav-link " href="#" title="">
                             <div class="icon icon-xl">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"class="feather feather-x"> <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                             </div>
                         </a>
-                    </li>
+                    </li> --}}
 
                     <!-- New chat -->
                       <li class="nav-item " >
@@ -370,13 +345,13 @@
 
                                     <!-- Title -->
                                     <div class="mb-8">
-                                        <h2 class="fw-bold m-0">Users</h2>
+                                        <h2 class="fw-bold m-0">{{__('Users')}}</h2>
                                     </div>
 
                                     <!-- Search -->
                                     <div class="mb-6">
                                         <div class="mb-5">
-                                            <form  action="#" >
+                                            <form  id="form-search-users" action="{{route('search.users')}}" method="POST" >
                                                 <div class="input-group">
                                                     <div class="input-group-text">
                                                         <div class="icon icon-lg">
@@ -384,7 +359,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <input scrept name="name" type="text" class="form-control form-control-lg ps-0" placeholder="{{__('Search users')}}" aria-label="Search for messages or users...">
+                                                    <input id="input-search-users"scrept name="name" type="text" class="form-control form-control-lg ps-0" placeholder="{{__('Search users')}}" aria-label="Search for messages or users...">
                                                 </div>
 
                                             </form>
@@ -423,7 +398,7 @@
                                     {{-- search user --}}
                                     <div class="mb-6">
                                         {{-- {{route('search.users')}} --}}
-                                        <form id = "search_users" action="{{route('search.users')}}" method="POST">
+                                        <form id = "search_friends" action="{{route('search.friends')}}" method="POST">
                                             @csrf
                                             <div class="input-group">
                                                 <div class="input-group-text">
@@ -432,20 +407,20 @@
                                                     </div>
                                                 </div>
 
-                                                <input name="name" type="text" class="form-control form-control-lg ps-0" placeholder="{{__('Search friend')}}" aria-label="Search for messages or users...">
+                                                <input id= "input-search-friends"name="name" type="text" class="form-control form-control-lg ps-0" placeholder="{{__('Search friend')}}" aria-label="Search for messages or users...">
                                             </div>
                                         </form>
 
                                     </div>
 
                                     <!-- List -->
-                                    <div id="users_in_searsh" class="card-list">
-                                         <form class= "say_hi"  action="http://127.0.0.1:8000/api/messages" method="post">
+                                    <div id="friends_in_searsh" class="card-list">
+                                         {{-- <form class= "say_hi"  action="api/messages" method="post">
                                             @csrf
                                             <input type= "hidden"  name="message" value="Hi">
                                             <input type= "hidden"  name="user_id" value=1>
                                             <input type= "submit"  value="Hi">
-                                            </form> 
+                                            </form>  --}}
                                    
 
                                     </div>
@@ -467,8 +442,9 @@
 
                                     </div>
                                     
-                                    <!-- Search -->
-                                    <div class="mb-6">
+                                    <!-- Search chats -->
+                                    <!-- search conversation -->
+                                    {{-- <div class="mb-6">
                                         
                                         
                                         <form id="searchhh_chats" action="{{route('search.chat')}}" method="POST">
@@ -482,7 +458,8 @@
                                                 <input id="aso" name="name" type="text" class="form-control form-control-lg ps-0" placeholder="{{__('Search chat')}}" aria-label="Search for messages or users...">
                                             </div>
                                         </form>
-                                    </div>
+                                    </div> --}}
+
 
                                     <!-- Chats -->
                                     <div  class="card-list  security-chats" id="chat-list">
@@ -690,36 +667,10 @@
             <!-- Chat -->
             <main class="main is-visible" data-dropzone-area="">
         
-
-               {{--                 
-                 <div class="message">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal-user-profile" class="avatar avatar-responsive">
-                        <img class="avatar-img" src="{{Auth::user()->img}}" alt="">
-                    </a>
-
-                    <div class="message-inner">
-                        <div class="message-body">
-                            <div class="message-content">
-                                <div class="message-text">
-                                    <p>Hey, Marshall! How are you? Can you please change the color theme of the website to pink and purple?</p>
-                                </div>
-
-                        
-                            </div>
-
-                        </div>
-
-                        <div class="message-footer">
-                            <span class="extra-small text-muted">08:45 PM</span>
-                        </div>
-                    </div>
-                </div> --}}
-
-
-
                 <div class="container h-100" >
                     
                     <!-- Mobile: close -->
+
                         <div class="col-2 d-xl-none welcome-text" style=" left:5%; top:4%; z-index: 1; position: absolute;  z-index: 1; width:50%; width:50%;">
                             <a class="icon icon-lg text-muted" href="#" data-toggle-chat="">
                                 <svg fill="var(--arrow)" width="50px" height="50px" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">    <path d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z"/>    <path fill="var(--arrow)"  d="M25.3 34.7L15.6 25l9.7-9.7 1.4 1.4-8.3 8.3 8.3 8.3z"/>    <path fill="var(--arrow)"   d="M17 24h17v2H17z"/></svg>
@@ -768,10 +719,31 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        
+
+                                            <!-- Toolbar -->
+                                              <div class=" group-description col-xl-6 d-none d-xl-block">
+                                                <div class="row align-items-center justify-content-end gx-6">
+                                                    <div class="col-auto">
+                                                        <a href="#" class="icon icon-lg text-muted" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-more-group" aria-controls="offcanvas-more-group">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                                        </a>
+                                                    </div>
+    
+                                                </div>
+                                            </div>
+                                            <!-- Toolbar -->
+                                               
                                         </div>
+                                         <!-- Mobile: more -->
+                                    
+                                    <!-- Mobile: more -->
                                     </div>
-                                
+                                    <div class="group-description  col-2 d-xl-none text-end">
+                                        <a class="dropdown-item" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-more-group" aria-controls="offcanvas-more-group">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                        </a>
+                                  
+                                    </div>
 
                                 </div>
 
@@ -781,26 +753,27 @@
                         <!-- Chat: Header -->
 
                         <!-- Chat: Content -->
-                        {{--  --}}
-                        <div class="form-ccontainer chat-body hide-scrollbar flex-1 h-100" style="display:none;">
+
+                    <div class="form-ccontainer chat-body hide-scrollbar flex-1 h-100" style="display:none;">
 
                         <button class="show-all-messages" style="visibility:hidden; width:100%; text-align:center;color:#4C6AAF;background-color:transparent ;    border: .5px solid var(--loder);border-radius: 20px;"   onclick="{showAllMessages()}">show all messages</button>
                             <div class="chat-body-inner" style="padding-bottom:0px; margin:110px;">
                                 {{-- <div class='form-ccontainer'> --}}
                                     {{-- $("#soso").append(` <button class="" >get all messages</button> `);  --}}
                                     <div id="soso" class=" py-6 my-lg-12 " style="padding:0px " id="chat-body" >
-                                    <!-- Message -->
-                                    
+                                       <!-- Message -->
+                                  
+           
                             
 
-                                    <!-- Divider -->
-                                    <div class="message-divider">
-                                        {{-- <small class="text-muted">Monday, Sep 16</small> --}}
-                                    </div>
+                                        <!-- Divider -->
+                                        <div class="message-divider">
+                                            {{-- <small class="text-muted">Monday, Sep 16</small> --}}
+                                        </div>
 
-                                </div>
+                                    </div>
                             </div>
-                        </div>
+                    </div>
                         
                         <!-- Chat: Content -->
                         
@@ -816,44 +789,49 @@
                             <!-- Chat: Form -->
                             <form  style="top: 20px;" id="targetttt" class="chat-form rounded-pill bg-dark" data-emoji-form="" method= "post" action="{{route('api.message.store')}}">
                                @csrf
-                         {{-- {{  request()->get('id')}} --}}
-                         {{-- {{Request::id}} --}}
-                                   
                                <input id ="conversation-id-input-target" type="hidden" name= "conversation_id">
-                               {{--  value="{{$activeChat->id}}" --}}
-
+                               <input id ="" type="hidden" name= "type" value="text">
                                 <div class="row align-items-center gx-0">
-                                    <div class="col-auto">
-                                        
-                                        <a href="#" class="btn btn-icon btn-link text-body rounded-circle" id="dz-btn">
-                                            
+
+                                    <div class="col-auto d-none">
+                                        <a href="#"  class="btn btn-icon btn-link text-body rounded-circle" id="dz-btn">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-paperclip"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
                                         </a>
                                     </div>
-                                    
+
+                                    <div class="col-auto">
+                                        <a href="#"onclick="selectFile()"  class="btn btn-icon btn-link text-body "id="">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-paperclip"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                                        </a>
+                                       
+                                    </div>
+                                  
+                                    <div class="col-auto">
+                                       <a href="#"onclick="inputImageMessage()"   class="btn btn-icon btn-link text-body " id=""> 
+                                           <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="images" class="svg-inline--fa fa-images " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M528 32H144c-26.51 0-48 21.49-48 48v256c0 26.51 21.49 48 48 48H528c26.51 0 48-21.49 48-48v-256C576 53.49 554.5 32 528 32zM223.1 96c17.68 0 32 14.33 32 32S241.7 160 223.1 160c-17.67 0-32-14.33-32-32S206.3 96 223.1 96zM494.1 311.6C491.3 316.8 485.9 320 480 320H192c-6.023 0-11.53-3.379-14.26-8.75c-2.73-5.367-2.215-11.81 1.332-16.68l70-96C252.1 194.4 256.9 192 262 192c5.111 0 9.916 2.441 12.93 6.574l22.35 30.66l62.74-94.11C362.1 130.7 367.1 128 373.3 128c5.348 0 10.34 2.672 13.31 7.125l106.7 160C496.6 300 496.9 306.3 494.1 311.6zM456 432H120c-39.7 0-72-32.3-72-72v-240C48 106.8 37.25 96 24 96S0 106.8 0 120v240C0 426.2 53.83 480 120 480h336c13.25 0 24-10.75 24-24S469.3 432 456 432z"></path></svg>                                            </a>
+                                      
+                                    </div>
 
                                     <div class="col">
                                         <div class="input-group">
-                                            <input name ="message" class="input-have-message form-control px-0"  placeholder="{{__('Type your message...')}}" rows="1" data-emoji-input="" data-autosize="true">
-                                            {{-- <input  name= "message" value=> --}}
+                                            <input name ="body" class="input-have-message form-control px-0"onkeyup="countChar(this)"  placeholder="{{__('Type your message...')}}" rows="1" data-emoji-input="" data-autosize="true">
 
                                             <a href="#" class="input-group-text text-body pe-0" >
+                                                <div class="holder">
+                                                    <div data-role="controls" >
+                                                        <button class=" ss" type="button"  style=";padding: 0px px;background-color:transparent   ; border: 0px solid #900; border-radius:20px"   onclick="{return false; }">
+                                                            <span class="icon icon-lg">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                                                                        <path fill="var(--arrow)" d="M36 57V23c0-7.7 6.3-14 14-14s14 6.3 14 14v34c0 7.7-6.3 14-14 14s-14-6.3-14-14zm42 0c0-1.1-.9-2-2-2s-2 .9-2 2c0 13.2-10.8 24-24 24S26 70.2 26 57c0-1.1-.9-2-2-2s-2 .9-2 2c0 14.8 11.5 26.9 26 27.9V91h-7c-1.1 0-2 .9-2 2s.9 2 2 2h18c1.1 0 2-.9 2-2s-.9-2-2-2h-7v-6.1c14.5-1 26-13.1 26-27.9z"/>
+                                                                    </svg>
+                                                            </span>
+                                                        </button>
 
-                                            <div class="holder">
-                                                <div data-role="controls" >
-                                                    <button  type="button"  style=";padding: 0px px;background-color:inherit  ; border: 0px solid #900; border-radius:20px"   onclick="{return false; this.css('background-color','red');}">
-                                                        <span class="icon icon-lg">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                                                                    <path fill="var(--arrow)" d="M36 57V23c0-7.7 6.3-14 14-14s14 6.3 14 14v34c0 7.7-6.3 14-14 14s-14-6.3-14-14zm42 0c0-1.1-.9-2-2-2s-2 .9-2 2c0 13.2-10.8 24-24 24S26 70.2 26 57c0-1.1-.9-2-2-2s-2 .9-2 2c0 14.8 11.5 26.9 26 27.9V91h-7c-1.1 0-2 .9-2 2s.9 2 2 2h18c1.1 0 2-.9 2-2s-.9-2-2-2h-7v-6.1c14.5-1 26-13.1 26-27.9z"/>
-                                                                </svg>
-                                                        </span>
-                                                    </button>
-                                                    
+                                                    </div>
+                                                    <div data-role="recordings"></div>
                                                 </div>
-                                                <div data-role="recordings"></div>
-                                            </div>
-
-                                        </a>
+                                          
+                                            </a>
 
                                             <a href="#" class="input-group-text text-body pe-0" style="margin: 1; padding:5px" data-emoji-btn="">
                                                 <span class="icon icon-lg">
@@ -866,36 +844,27 @@
                                         </div>
                                     </div>
                                     
-
                                     <div class="col-auto">
                                         <button class="btn btn-icon btn-primary rounded-circle ms-5">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
                                         </button>
                                     </div>
+
                                 </div>
                             </form>
-                <style>
-            [data-role="controls"] > button[data-recording="true"] {
-                background-color: #ff2038;
-                background-image: -webkit-gradient(linear, left bottom, left top, from(#ff2038), to(#b30003));
-                background-image: -o-linear-gradient(bottom, #ff2038 0%, #b30003 100%);
-                background-image: linear-gradient(0deg, #ff2038 0%, #b30003 100%);
-            }
-           
-                </style>
-                   {{-- <div class="holder" style="z-index: 111; position: absolute;left:87%;bottom:25%">
-                    <div data-role="controls" >
-                        <button style="background-color:inherit  ; border: 0px solid #900; border-radius:20px"   onclick="{return false; this.css('background-color','red');}">
-                            <span class="icon icon-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                                        <path fill="var(--arrow)" d="M36 57V23c0-7.7 6.3-14 14-14s14 6.3 14 14v34c0 7.7-6.3 14-14 14s-14-6.3-14-14zm42 0c0-1.1-.9-2-2-2s-2 .9-2 2c0 13.2-10.8 24-24 24S26 70.2 26 57c0-1.1-.9-2-2-2s-2 .9-2 2c0 14.8 11.5 26.9 26 27.9V91h-7c-1.1 0-2 .9-2 2s.9 2 2 2h18c1.1 0 2-.9 2-2s-.9-2-2-2h-7v-6.1c14.5-1 26-13.1 26-27.9z"/>
-                                    </svg>
-                            </span>
-                        </button>
-                        
-                    </div>
-                    <div data-role="recordings"></div>
-                </div> --}}
+                
+                            <style>
+                                [data-role="controls"] > button[data-recording="true"] 
+                                {
+                                    background-color: #ff2038;
+                                    background-image: -webkit-gradient(linear, left bottom, left top, from(#ff2038), to(#b30003));
+                                    background-image: -o-linear-gradient(bottom, #ff2038 0%, #b30003 100%);
+                                    background-image: linear-gradient(0deg, #ff2038 0%, #b30003 100%);
+                                }
+                            
+                            </style>
+
+                
                             <!-- Chat: Form -->
                         </div>
                      </div>
@@ -907,6 +876,192 @@
              
             </main>
             <!-- Chat -->
+
+          <!-- Chat: Info -->
+        <div class="group-description  offcanvas offcanvas-end offcanvas-aside" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-more-group">
+            <div class="offcanvas-header py-4 py-lg-7 border-bottom">
+                <a class="icon icon-lg text-muted" href="#" data-bs-dismiss="offcanvas">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </a>
+            </div>
+            <!-- Offcanvas Header -->
+
+            <!-- Offcanvas Body -->
+            <div class="offcanvas-body hide-scrollbar">
+            <!-- Avatar -->
+            <div class="text-center py-10">
+                <div class="row gy-6">
+                    <div class="col-12">
+                        <div class="avatar avatar-xl mx-auto">
+                            <img class="group-description-img" src="{{Auth::user()->img}}" alt="#" class="avatar-img">
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <h4 class="group-description-name">Bootstrap Community</h4>
+                        <p class="group-description-description"> Bootstrap is an open source <br> toolkit for developing web with <br> HTML, CSS, and JS.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Avatar -->
+
+            <!-- Tabs -->
+            <ul class="nav nav-pills nav-justified" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="pill" href="#offcanvas-group-tab-members" role="tab" aria-controls="offcanvas-group-tab-members" aria-selected="true">
+                        People
+                    </a>
+                </li>
+{{--                 
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="pill" href="#offcanvas-group-tab-media" role="tab" aria-controls="offcanvas-group-tab-media" aria-selected="true">
+                        Media
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="pill" href="#offcanvas-group-tab-files" role="tab" aria-controls="offcanvas-group-tab-files" aria-selected="false">
+                        Files
+                    </a>
+                </li> --}}
+            </ul>
+            <!-- Tabs -->
+
+            <!-- Tabs: Content -->
+            <div class="tab-content py-2" role="tablist">
+                <!-- Members -->
+                <div class="tab-pane fade show active" id="offcanvas-group-tab-members" role="tabpanel">
+                    <ul class=" group-description-members list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div class="row align-items-center gx-5">
+                                <!-- Avatar -->
+                                <div class="col-auto">
+                                    <a href="#" class="avatar avatar-online">
+                                        <img class="avatar-img" src="{{Auth::user()->img}}" alt="">
+                                    </a>
+                                </div>
+                                <!-- Avatar -->
+
+                                <!-- Text -->
+                                <div class="col">
+                                    <h5><a href="#">Michael Fuller</a></h5>
+                                  
+                                </div>
+                                <!-- Text -->
+
+                                <!-- Owner -->
+                                {{-- <div class="col-auto">
+                                    <span class="extra-small text-primary">owner</span>
+                                </div> --}}
+                                <!-- Owner -->
+
+                           
+                            </div>
+                        </li>
+                                                
+                    </ul>
+                </div>
+                <!-- Members -->
+
+                <!-- Media -->
+                {{-- <div class="tab-pane fade" id="offcanvas-group-tab-media" role="tabpanel">
+                    <div class="row row-cols-3 g-3 py-6">
+                        <div class="col">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#modal-media-preview" data-theme-img-url="{{Auth::user()->img}}">
+                                <img class="img-fluid rounded" src="assets/img/chat/1.jpg" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div> --}}
+                <!-- Media -->
+
+                <!-- Files -->
+                {{-- <div class="tab-pane fade" id="offcanvas-group-tab-files" role="tabpanel">
+                    <ul class="list-group list-group-flush">
+
+                        <!-- Item -->
+                        <li class="list-group-item">
+                            <div class="row align-items-center gx-5">
+                                <!-- Icons -->
+                                <div class="col-auto">
+                                    <div class="avatar-group">
+                                        <a href="#" class="avatar avatar-sm">
+                                            <img src="assets/img/avatars/6.jpg" class="avatar-img" alt="#">
+                                        </a>
+
+                                        <a href="#" class="avatar avatar-sm">
+                                            <span class="avatar-text bg-primary">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                            </span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Icons -->
+
+                                <!-- Text -->
+                                <div class="col overflow-hidden">
+                                    <h5 class="text-truncate">
+                                        <a href="#">E5419783-047D-4B4C-B30E-F24DD8247731.JPG</a>
+                                    </h5>
+                                    <ul class="list-inline m-0">
+                                        <li class="list-inline-item">
+                                            <small class="text-uppercase text-muted">79.2 KB</small>
+                                        </li>
+
+                                        <li class="list-inline-item">
+                                            <small class="text-uppercase text-muted">txt</small>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- Text -->
+
+                                <!-- Dropdown -->
+                                <div class="col-auto">
+                                    <div class="dropdown">
+                                        <a class="icon text-muted" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                                        </a>
+
+                                        <ul class="dropdown-menu">
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                    Download
+                                                    <div class="icon ms-auto">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                                    Share
+                                                    <div class="icon ms-auto">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li>
+                                                <a class="dropdown-item d-flex align-items-center text-danger" href="#">
+                                                    <span class="me-auto">Delete</span>
+                                                    <div class="icon">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- Dropdown -->
+                            </div>
+                        </li>
+                    </ul>
+                </div> --}}
+                <!-- Files -->
+            </div>
+            <!-- Tabs: Content -->
+            </div>
+            <!-- Offcanvas Body -->
+            </div>
 
 
         </div>
@@ -1028,27 +1183,93 @@
                 var audio = new Audio('{{asset("sound/1.wav")}}');
                   audio.play();
             }
-    
+
         </script>
     
         <script src="{{ asset ('assets/js/template.js')}}" ></script>
         <script src="{{ asset ('assets/js/vendor.js')  }}" ></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
-        <script src="{{ asset ('js/messenger.js')}}" ></script>
+        {{-- <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script> --}}
         <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-        <script src="{{ asset ('assets/js/ss.js')  }}" crossorigin="anonymous"></script>
+        {{-- <script src="{{ asset ('assets/js/ss.js')  }}" crossorigin="anonymous"></script> --}}
         <script src="{{ asset ('assets/js/moment.js')  }}" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+        {{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
         <script src="{{ asset ('js/pusher.js')}}" ></script>
         <script src="{{ asset ('js/record.js')}}" ></script>
-        <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+        {{-- <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script> --}}
         <script src="https://markjivko.com/dist/recorder.js"></script>
         @vite('resources/js/app.js')    
+        <script src="{{ asset ('js/messenger.js')}}" ></script>
 
+        <script>
 
+        
 
+            function countChar(val) {
+                var length = val.value.length;
+                // console.log(length);
+                if( length > 0 ) 
+                Typing(true);
+            
+                 else
+                Typing(false); 
+            }
+            
+          const Typing = (boolean) => {
+            setTimeout( () => {
+                console.log('typing'+boolean);
+                let channel = Echo.private('chat')
+       
+                  channel.whisper('typing', {
+                    user_id: userId,
+                    conversation_id:response_conversation_id,
+                    typing: boolean
+                  })
+            }, 300)
+
+            }
+         
+         
+         
+         
+         
+            setTimeout( () => {
+            
+                Echo.private('chat')
+                .listenForWhisper('typing', (e) => {
+                    // console.log(e.conversation_id);
+                    
+                    // if(userId == e.user_id)
+                    // {
+                        if(response_conversation_id==e.conversation_id)
+                        {
+                         if(e.typing)
+                             $('#is-typing').removeClass('d-none')
+                            
+                         else
+                             $('#is-typing').addClass('d-none')        
+
+                         }
+                    // }
+                    // this.typing = e.typing;
+                  
+
+                })
+            }, 3000)
+        
+        
+        
+        </script>
+     
+{{-- <script src="{{ asset('/sw.js') }}"></script>
+<script>
+    if (!navigator.serviceWorker.controller) {
+        navigator.serviceWorker.register("/sw.js").then(function (reg) {
+            console.log("Service worker has been registered for scope: " + reg.scope);
+        });
+    }
+</script> --}}
     </body>
 
        

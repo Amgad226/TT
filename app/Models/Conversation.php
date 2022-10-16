@@ -35,6 +35,12 @@ public $timestamps=false;
        
  
     }
+
+     public function namee()
+    {
+       return $this->partiscipants->where('id','<>',Auth::id())->first()->name;
+    }
+
     protected function lable(): Attribute
     {
         if($this->type!='group')

@@ -26,11 +26,11 @@ setTimeout(() => {
     
                         if(data.message.conversation.type=='group'){
     
-                            addMessage(data.message,'',true,true)
+                            addMessagesToGroup(data.message,'',true)
                         }
                         else{
                           
-                            addMessage(data.message,'',true,false)
+                            addMessage(data.message,'',true)
                         }
                         
                         dataa.append('message_id',data.message.id)

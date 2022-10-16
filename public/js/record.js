@@ -59,8 +59,9 @@ jQuery(document).ready(function () {
                                 let request = new FormData ; 
                                 request.append('conversation_id',response_conversation_id);
                                 request.append('body',data);
-                                request.append('messageType','audio');
-                                request.append('type','peer');
+                                // request.append('messageType','audio');
+                                request.append('type','audio');
+                                // request.append('type','peer');
                                 request.append('user_id',userId);
 
                                 fetch('api/messages', {
@@ -73,7 +74,7 @@ jQuery(document).ready(function () {
                                 var date =  moment();
                                 var msg={'body':record  ,'created_at':date ,'id':100000};
                                 // addMessage(msg,'message-out',true,true,true,record,date);//false
-                                addMessage(msg,'message-out',true,true);
+                                addMessage(msg,'message-out',true,false);
                             }
                     );    
   
@@ -99,9 +100,18 @@ jQuery(document).ready(function () {
         if (!buttonState) {
             $(this).attr('data-recording', 'true');
             myRecorder.start();
+            $('.ss').addClass('rr')
+            // $(this).css('width','1200px')
+
         } else {
             $(this).attr('data-recording', '');
             myRecorder.stop(listObject);
+            // $(this).css('width','')
+            $('.ss').removeClass('rr')
+
+            
+
+
         }
     });
 });

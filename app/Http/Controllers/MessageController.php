@@ -27,6 +27,7 @@ use Throwable;
 // use Validator;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
+use Image;
 
 class MessageController extends Controller
 {
@@ -134,7 +135,10 @@ class MessageController extends Controller
     public function search_chat(Request $request)
     {
 
-        $search = DB::table('partiscipants')->select('partiscipants.conversation_id', 'messages.body', 'users.name', 'messages.created_at')->join(
+        $search = DB::table('partiscipants')->
+        // select('conversations.id as conversation_id' , 'conversations.img','messages.type as lastMessageType','messages.body', 'users.name', 'messages.created_at'
+        select('conversations.id as conversation_id'
+            )->join(
                 'partiscipants as par2',
                 'partiscipants.conversation_id',
                 '=',
@@ -154,8 +158,20 @@ class MessageController extends Controller
                 'messages.id',
                 '=',
                 'conversations.last_message_id'
-            )->where('partiscipants.user_id', '<>', 'par2.user_id')->where('partiscipants.user_id', '=', Auth::id())->where('par2.user_id', '<>', Auth::id())->where('users.name', 'like', "%" . $request->name . "%")->get();
-        return $search;
+            )->where(
+                'partiscipants.user_id', '<>', 'par2.user_id'
+            )->where('partiscipants.user_id', '=', Auth::id()
+            )->where('par2.user_id', '<>', Auth::id()
+            // )->where('users.name', 'like', "%" . $request->name . "%"
+            )->get() 
+            
+            ->map(function($e){
+                return $e=$e->conversation_id;
+            }) ;   
+        //  return   Conversation::lable();
+            $searchd = Conversation::where('lable', 'like', "%" . $request->name . "%")->get();
+          return  $searchd->namee();
+        return $searchd;
         // dd($search);
 
     }
@@ -181,7 +197,6 @@ class MessageController extends Controller
         if (request()->hasFile('img')){
             $extension='.'.$request->img->getclientoriginalextension();
             $path=public_path('/img/group');
-            // dd($path);
             if(!File::exists( $path))
             File::makeDirectory( $path,0777,true);
             $Name= $request->groupName;  
@@ -200,6 +215,7 @@ class MessageController extends Controller
             'lable'=>$groupName,
             'type'=>'group',
             'img'=>$imgToDB,
+            'description'=>$request->groupDescription,
         ]);
         $group->update(['user_id'=>Auth::id()]);
 
@@ -215,20 +231,25 @@ class MessageController extends Controller
     {
         
         // dd(1);
-//  return $audio;
+        //  return $audio;
         $validator = Validator::make($request->all(), [
 
-            'message' => ['string'],
-            'type'=>[],
+            // 'body' => ['string'],//attachment , audio
+            'type'=>['required'],
+            'attachment'=>'max:150|mimes:doc,docx,mp3,m4a,wav,pdf,html,jpeg,png,jpg,PNG,JPG,JPEG',
+            'img'=> 'mimes:jpeg,png,jpg,PNG,JPG,JPEG',
+
+       
             // 'conversation_id'=>[Rule::requiredIf(function() use ($request)  { return ! $request->input('user_id');}  ),'int', 'exists:conversations:id'],
             // 'user_id'=>[Rule::requiredIf(function() use ($request)  { return ! $request->input('conversation_id');}  ),'int', 'exists:users:id'],
 
         ]);
 
-        if ($validator->fails()) {$errors = [];foreach ($validator->errors()->messages() as $key => $value) {    $key = 'message';    $errors[$key] = is_array($value) ? implode(',', $value) : $value;}return response()->json([    'message' => $errors['message'],    'status' => 0], 200);}
+        if ($validator->fails()) {$errors = [];foreach ($validator->errors()->messages() as $key => $value) {    $key = 'message';    $errors[$key] = is_array($value) ? implode(',', $value) : $value;}
+        return response()->json([    'message' => $errors['message'],    'status' => 0], 400);}
        
-        $type=$request->type;
-        if($type==null)
+        // $type=$request->type;
+        // if($type==null)
         $type='peer';
 
         $user = Auth::user();
@@ -273,7 +294,7 @@ class MessageController extends Controller
                 }
             }
             if (!$conversation) {
-                $name=$type=='peer'?$reciver_user->name:'group';
+                // $name=$type=='peer'?$reciver_user->name:'group';
                
 
                 $conversation = Conversation::create([
@@ -281,7 +302,7 @@ class MessageController extends Controller
                     'type' => $type,
                     'img'=>$reciver_user->img
                 ]);
-                $conversation->lable=$name.'  '.Auth::user()->name;
+                $conversation->lable='peer';
                 $conversation->save;
                 
                 // $conversation->partiscipants()->attach([$user->id ,$user_id]);
@@ -289,45 +310,90 @@ class MessageController extends Controller
                 Participant::create(['user_id' => $user_id, 'conversation_id' => $conversation->id]);
             }
 
-            if($request->messageType!='audio'){
-                $msg=$request->message;
-                $text = <<<END
-                    <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;"><p>{$msg} <span class="sended  fas fa-check" style="position:relative ;bottom:-12px;right:-10px;z-index:12;visibility:"></span> </p></div> 
+            $request_body=($request->post('body'));   
+            $link_attachment='';
+            if($request->type=='text'){
+                $message = <<<END
+                    <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;"><p>{$request_body} <span class="sended  fas fa-check" style="position:relative ;bottom:-12px;right:-10px;z-index:12;visibility:"></span> </p></div> 
                 END;
-                  
-
-                   $message = $conversation->messages()->create([
-                //conversation_id  from relation 
-                'user_id' => Auth::id(),
-                'body' => $text,
-            ]);
             }
-            else{
-                $request_body=($request->post('body'));
-                $record_location = <<<END
-                {{asset('{$request_body}')}}
-                END;
-        
-                $audio = <<<END
+
+            else if($request->type=='audio')  {
+                $message = <<<END
                 <audio style='border: 5px solid #2787F5; border-radius: 50px;'  controls ><source src="{$request_body }" type="audio/WAV"></audio>
                 END;
-                $message = $conversation->messages()->create([
-                    //conversation_id  from relation 
-                    'user_id' => Auth::id(),
-                    'body' =>$audio,
-                    'type' => $request->post('messageType'),
-                ]);
             }
+
+            else if($request->type=='attachment')   {
+                $body=$request->file('attachment');
+                $size=(int) (($body->getSize())/1000);
+                $stringSize=$size.'KB';
+                if($size>1000){
+                    $size/=1000;
+                    $stringSize=$size.'MB';
+                }
+                
+
+                $uniqid=uniqid();
+                
+                $name=$body->getClientOriginalName();
+                $link_attachment = $body->move('attachments',$name.$uniqid.'.'.$body->getclientoriginalextension());
+                $message = <<<END
+                <div class="message-text">
+                  <div class="row align-items-center gx-4">
+                      <div class="col-auto">
+                          <a href="{$link_attachment}" class="avatar avatar-sm" target="_blank">
+                              <div class="avatar-text bg-white text-primary">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                              </div>
+                          </a>
+                      </div>
+                      <div class="col overflow-hidden">
+                          <h6 class="text-truncate text-reset">
+                              <a href="#" class="text-reset">{$name}</a>
+                          </h6>
+                          <ul class="list-inline text-uppercase extra-small opacity-75 mb-0">
+                              <li class="list-inline-item">{$stringSize}</li>
+                          </ul>
+                      </div>
+                  </div>
+                </div>
+                END;
+            }
+            else if($request->type=='img'){
+                $body=$request->file('img');
+                $name=$body->getClientOriginalName();
+
+                $image_resize = Image::make($body->getRealPath())->encode($body->getclientoriginalextension());;              
+                $image_resize->resize(1280, 720, function ($constraint) {$constraint->aspectRatio(); });
+                
+                $uniqid=uniqid();
+                $name=$body->getClientOriginalName();
+                // $link_attachment = $image_resize->move('image',$uniqid.'.'.$body->getclientoriginalextension());
+                $image_resize->save(public_path('image/'.$name.$uniqid.'.'.$body->getclientoriginalextension()));
+                $link_attachment='image/'.$name.$uniqid.'.'.$body->getclientoriginalextension();
+
+                $message = <<<END
+                <img class="img-fluid rounded" src="${link_attachment}" data-action="zoom" alt="">
+                END;
+            }
+            // return 1;
+            $message = $conversation->messages()->create([
+                //conversation_id  from relation 
+                'user_id' => Auth::id(),
+                'body' => $message,
+                'type' => $request->post('type'),
+
+                ]);
          
             // return $message->conversation ;   
-            DB::statement('
-            INSERT INTO resipients (user_id,message_id)
-            SELECT user_id ,? FROM partiscipants
-            WHERE conversation_id=?
-            ', [$message->id, $conversation->id]);
-            // return($to->user_id);
+            // DB::statement('
+            // INSERT INTO resipients (user_id,message_id)
+            // SELECT user_id ,? FROM partiscipants
+            // WHERE conversation_id=?
+            // ', [$message->id, $conversation->id]);
 
-            Resipient::where('message_id',$message->id)->where('user_id',Auth::id())->where('read_at',null)->update(['read_at'=>now()]);
+            // Resipient::where('message_id',$message->id)->where('user_id',Auth::id())->where('read_at',null)->update(['read_at'=>now()]);
 
 
             $conversation->update(['last_message_id' => $message->id]);
@@ -353,7 +419,7 @@ class MessageController extends Controller
             }
 
             $message['html'] = '<spam class="sended fas fa-check" style=" position:relative ; bottom:-12px; right:-10px; z-index:12; " ></spam> ';
-            return response(['obj_msg' => $message, 'status' => 1]);
+            return response(['obj_msg' => $message, 'link_attachment'=>$link_attachment,'status' => 1]);
         } 
         catch (Throwable $e) {
             DB::rollback();
@@ -370,9 +436,21 @@ class MessageController extends Controller
 
     public function destroy($id)
     {
-
-        Resipient::where(['user_id' => Auth::id(), 'message_id' => $id])->delete();
-        return ['message' => 'done '];
+        $message=Message::find($id);
+    //     $message->update([
+    //         'body'=>'<div class="message-content">
+ 
+    //         <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
+    //             <p>deleted message  
+    //                 <span class="sended  fas fa-check" style="position:relative ;bottom:-12px;right:-10px;z-index:12;visibility:"></span> 
+    //             </p>
+    //         </div> 
+    //    </div>  '
+    //   ]);
+        $message->delete();
+        return ' message deleted . . .';
+        // Resipient::where(['user_id' => Auth::id(), 'message_id' => $id])->delete();
+        // return ['message' => 'done '];
     }
 
     public function login(Request $request)

@@ -7,6 +7,47 @@
     100%  { top: 10%; right: 0%; }
     
   }
+  @keyframes mick {
+    0% {        background: rgb(255, 0, 0);}
+    100% {      background: inherit    }
+    } 
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      .group-description {
+        display:none;
+        visibility:hidden; 
+      }
+    .loader {
+        /* border: 16px solid #5f5b5b;  */
+        border: 5px solid var(--loder); 
+         /* border-top: 20px solid #adadad; */
+        border-top: 40px solid #3498db; 
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin .5s linear infinite;
+      }
+      .loader {
+        border: 5px solid var(--loder); 
+        border-top: 60px solid #4965A6; 
+        border-bottom: 20px solid var(--loder); 
+        border-left: 10px solid transparent ; 
+        border-right: 30px solid transparent ; 
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin .5s linear infinite;
+      }
+      
+  
+    .rr
+    {
+    animation: mick 1s linear infinite;
+    
+    }
+  /* .ignore-css{all:unset;} */
 
 body{  
     transition: 1s;

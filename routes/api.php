@@ -36,8 +36,8 @@ Route::post('login',[MessageController::class,'login']);
 
 
 Route::post('/sound',function(Request $request){
-
-
+// return 1; 
+// <a href="#" class="btn btn-icon btn-link text-body rounded-circle" id="dz-btn">
 $url=$request->sound;
 
 $img=file_get_contents($url);
@@ -51,6 +51,16 @@ return response()->json(('voice_records/'.$name));
 // Storage::disk('local')->put(public_path('/a.wav') ,$img);
 
 })->middleware('auth:sanctum');
+Route::post('/asa',function(Request $request){
+    if($request->type=='attachment')   {
+        $message=$request->file('body');
+        $uniqid=uniqid();
+
+        return    $message->move('attachments',$uniqid.'.'.$message->getclientoriginalextension());
+        // ->store('attachments',['disk'=>'public']);
+    }
+    // return 'attachments/'.$uniqid.'.'.$message->getclientoriginalextension();
+});
 
 Route::middleware('auth:sanctum')->group(function(){
     
@@ -73,7 +83,8 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('conversations/{id}/messages',[MessageController::class,'index']);
     Route::get('conversations/{id}/allMessages',[MessageController::class,'allMessages']);
     
-    Route::get('messages/{id}',[MessageController::class,'destroy']);
+    Route::post('messages/{id}',[MessageController::class,'destroy']);
+
     Route::post('search_chat'    ,[MessageController::class,'search_chat'])->name('search.chat');
     Route::post('search_users'    ,[MessageController::class,'search_users'])->name('search.users');
     Route::get('logout'    ,[MessageController::class,'logout'])->name('logoudt');
@@ -84,12 +95,20 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::get('getNotification'    ,[NotificationController::class,'getNotification']);
     
 
-    // Route::apiResource('friend',  FriendController::class);
+    Route::apiResource('friend',  FriendController::class);
+    Route::post('search_friends'    ,[FriendController::class,'search_friends'])->name('search.friends');
 
-    Route::get('getFriend'    ,[FriendController::class,'index']);
-    Route::post('addFriend'    ,[FriendController::class,'store']);
-    Route::post('acceptFriend/{frindship_id}'    ,[FriendController::class,'update']);
-    Route::post('refusFriend/{frindship_id}'    ,[FriendController::class,'destroy']);
+    // Route::get('getFriend'    ,[FriendController::class,'index']);
+    // Route::post('addFriend'    ,[FriendController::class,'store']);
+    // Route::post('acceptFriend/{frindship_id}'    ,[FriendController::class,'update']);
+    // Route::post('refusFriend/{frindship_id}'    ,[FriendController::class,'destroy']);
     
     
 });
+    Route::get('as',function(){
+        // DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        // Message::truncate();
+        // DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        
+        
+        return response('you shoud login');});

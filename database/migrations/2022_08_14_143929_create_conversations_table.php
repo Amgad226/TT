@@ -20,7 +20,9 @@ return new class extends Migration
             $table->string('lable')->nullable();
             $table->string('img')->default(URL::to('/img/group.jpg'));
             $table->enum('type',['peer','group'])->default('peer');
+            $table->string('description')->nullable();
 
+            
             // $table->timestamps();
         });
     }

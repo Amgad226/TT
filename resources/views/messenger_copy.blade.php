@@ -19,6 +19,7 @@
     </head>
 
     <body>
+        
         <!-- Layout -->
         <div class="layout overflow-hidden">
             <!-- Navigation -->
@@ -2353,6 +2354,7 @@
 
             <!-- Chat -->
             <main class="main is-visible" data-dropzone-area="">
+                
                 <div class="container h-100">
 
                     <div class="d-flex flex-column h-100 position-relative">
@@ -2369,7 +2371,7 @@
                                 <!-- Mobile: close -->
 
                                 <!-- Content -->
-                                {{-- <div class="col-8 col-xl-12">
+                                <div class="col-8 col-xl-12">
                                     <div class="row align-items-center text-center text-xl-start">
                                         <!-- Title -->
                                         <div class="col-12 col-xl-6">
@@ -2422,7 +2424,7 @@
                                         </div>
                                         <!-- Toolbar -->
                                     </div>
-                                </div> --}}
+                                </div>
                                 <!-- Content -->
 
                                 <!-- Mobile: more -->
@@ -4884,25 +4886,3 @@
     </body>
 </html>
 
-{{-- scroll down stack over flow
- const sendMessage = (selector, isAnimate = true) => {
-     const text = $(selector).val();
-     const $container = $('.form-container');
-     $container.append(`<p>${text}</p>`);
-     if (isAnimate) {
-       $container.animate({
-         scrollTop: $container.prop('scrollHeight')
-       }, 1000);
-     } else {
-       $container.scrollTop($container.prop('scrollHeight'));
-     }
-     $(selector).val('');
- };
- $('button:eq(0)').on('click', function() {
-   sendMessage('input[type=text]');
- });
- $('button:eq(1)').on('click', function() {
-   sendMessage('input[type=text]', false);
- }); --}}
-
-  
