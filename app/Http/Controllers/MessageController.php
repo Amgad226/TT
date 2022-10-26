@@ -10,6 +10,7 @@ use App\Models\Notification;
 use App\Models\Participant;
 use App\Models\Resipient;
 use App\Models\User;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 // use Illuminate\Database\Eloquent\Builder;
@@ -39,16 +40,21 @@ class MessageController extends Controller
     public function index($id)
     {
         // dd($id);
-        
         $conversation = Conversation::with([
             'partiscipants'  => function ($query_two) {
                 $query_two->where('id', '<>', Auth::id());
             }
         ])->findOrFail($id);
-        $allMessagesInChat=Message::where('conversation_id', $id)->count();
+        // $allMessagesInChat=Message::where('conversation_id', $id)->count();
+        $allMessagesInChat=DB::table('messages')->where('deleted_at',null)->where('conversation_id', $id)->count();
         $limit=50;
         
         $messages = Message::with('user')->where('conversation_id', $id)->limit($limit)->skip($allMessagesInChat-$limit)->get();
+        // $messages =DB::table('messages')
+        // ->select('messages.id','messages.user_id','body','type','messages.created_at','users.img','users.name')
+        // ->join('users','users.id','=','messages.user_id')
+        // ->where('conversation_id', $id)->limit($limit)->skip($allMessagesInChat-$limit)->get();
+
         $read_more=( $allMessagesInChat > count($messages)) ?1 :0;
 
         // $message = Message::with('user')->where('conversation_id', $id)->get();
@@ -65,15 +71,40 @@ class MessageController extends Controller
     public function allMessages($id)
     {
         // dd($id);
-        
+        //  date('Y-m-d H:i:s')->diffForhumans() ;
+        //  return Carbon::parse(now())->diffForHumans();
+
+        // return now()->diffForHumans();
+        // return Message::all();
         $conversation = Conversation::with([
             'partiscipants'  => function ($query_two) {
                 $query_two->where('id', '<>', Auth::id());
             }
         ])->findOrFail($id);
     
-        $messages = Message::with('user')->where('conversation_id', $id)->get();
- 
+        // $allMessagesInChat=DB::table('messages')->where('conversation_id', $id)->count();
+        $allMessagesInChat=Message::where('conversation_id', $id)->count();
+        $limit=8000;
+        
+        // $messages =DB::table('messages')
+        // ->select('messages.id','messages.user_id','body','type','messages.created_at','users.img','users.name')
+        
+        // ->join('users','users.id','=','messages.user_id')
+        // ->where('conversation_id', $id)
+        // ->limit($limit)->skip($allMessagesInChat-$limit)
+        // ->get();
+        $messages = Message::with('user')->where('conversation_id', $id)->limit($limit)->skip($allMessagesInChat-$limit)->get();
+
+        // $messages =DB::table('messages')
+        // ->select('messages.id','messages.user_id','body','type','messages.created_at','users.img','users.name')
+        // ->join('users','users.id','=','messages.user_id')
+        // ->where('conversation_id', $id)
+        // ->limit($limit)
+        // // ->skip($allMessagesInChat-$limit)
+        // ->get();
+            // $messages->makeHidden([
+            //     'email','email_verified_at',''
+            // ]);
         // $message = Message::with('user')->where('conversation_id', $id)->get();
         return [
             'conversation' => $conversation,
@@ -82,12 +113,6 @@ class MessageController extends Controller
             // 'messeges'=>$conversation->messages()->with('user'),
         ];
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
 
 
     public function change_pass(Request $request)
@@ -179,12 +204,17 @@ class MessageController extends Controller
 
 
     public function createGroup(Request $request){
+        // return ;
+        // return response()->json([    'message' =>$request->img,    'status' => 0], 200);
+
         $validator = Validator::make($request->all(), [
             // 'message' => ['required', 'string'],
 
             'users_id*' => [],
-            'groupName'=>[],
-            'img'=>'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'groupName'=>['required'],
+            'groupDescription'=>['required'],
+            'img'=>'mimes:jpg,png,jpeg,gif,svg|max:2048',
+            // 'img'=>'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
 
         ]);
 
@@ -206,7 +236,7 @@ class MessageController extends Controller
             $imgToDB='img/group/'.$uniqid_img.$Name.$extension;
         }
         // dd( $imgToDB);
-         array_push($users_id,(string)Auth::id());
+        //  array_push($users_id,(string)Auth::id());
          // dd($users_id);
 
         $groupName=($request->groupName!=null)?$request->groupName:'group';
@@ -222,8 +252,9 @@ class MessageController extends Controller
         foreach($users_id as $user_id){
             Participant::create(['user_id' => $user_id, 'conversation_id' => $group->id]);
         }
-        return 'ok';
+        Participant::create(['user_id' => Auth::id(), 'conversation_id' => $group->id ,'role'=>'admin' ]);
 
+        return response()->json([    'message' => 'group created successfuly',    'status' => 1], 200);
     }
 
 
@@ -236,7 +267,7 @@ class MessageController extends Controller
 
             // 'body' => ['string'],//attachment , audio
             'type'=>['required'],
-            'attachment'=>'max:150|mimes:doc,docx,mp3,m4a,wav,pdf,html,jpeg,png,jpg,PNG,JPG,JPEG',
+            'attachment'=>'max:15000|mimes:doc,docx,mp3,m4a,wav,pdf,html,jpeg,png,jpg,PNG,JPG,JPEG',
             'img'=> 'mimes:jpeg,png,jpg,PNG,JPG,JPEG',
 
        
@@ -267,7 +298,8 @@ class MessageController extends Controller
                 $conversation = Conversation::findOrFail($conversation_id);
                 // return($conversation->partiscipants->where('id','<>',Auth::id())->first()->img);
                 $type=$conversation->type;
-            } else {
+            } 
+            else {
 
                 /* 
                 اذا  ما باعتلي 
@@ -312,15 +344,27 @@ class MessageController extends Controller
 
             $request_body=($request->post('body'));   
             $link_attachment='';
+
             if($request->type=='text'){
                 $message = <<<END
-                    <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;"><p>{$request_body} <span class="sended  fas fa-check" style="position:relative ;bottom:-12px;right:-10px;z-index:12;visibility:"></span> </p></div> 
+                    <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;"><p>{$request_body} <span class="sended  " style="position:relative ;bottom:-12px;right:-10px;z-index:12;visibility:">
+                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    width="15px" height="15px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;"
+                    xml:space="preserve"><g>
+                   <path fill="var( --bs-white)" d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704
+                       c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704
+                       C78.477,17.894,78.477,18.586,78.049,19.015z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+                       </svg>
+                
+                  </span>
+                    </span> </p></div> 
                 END;
             }
 
             else if($request->type=='audio')  {
                 $message = <<<END
                 <audio style='border: 5px solid #2787F5; border-radius: 50px;'  controls ><source src="{$request_body }" type="audio/WAV"></audio>
+               
                 END;
             }
 
@@ -387,17 +431,18 @@ class MessageController extends Controller
                 ]);
          
             // return $message->conversation ;   
-            // DB::statement('
-            // INSERT INTO resipients (user_id,message_id)
-            // SELECT user_id ,? FROM partiscipants
-            // WHERE conversation_id=?
-            // ', [$message->id, $conversation->id]);
+            DB::statement('
+            INSERT INTO resipients (user_id,message_id)
+            SELECT user_id ,? FROM partiscipants
+            WHERE conversation_id=?
+            ', [$message->id, $conversation->id]);
 
-            // Resipient::where('message_id',$message->id)->where('user_id',Auth::id())->where('read_at',null)->update(['read_at'=>now()]);
+            Resipient::where('message_id',$message->id)->where('user_id',Auth::id())->where('read_at',null)->update(['read_at'=>now()]);
 
 
             $conversation->update(['last_message_id' => $message->id]);
             DB::commit();
+            // $noti= $this->sendNotification( User::where('id',19)->pluck('deviceToken')->all() , Auth::user()->name,$message);
             $message->load('user');
      
             // return($type);
@@ -419,7 +464,9 @@ class MessageController extends Controller
             }
 
             $message['html'] = '<spam class="sended fas fa-check" style=" position:relative ; bottom:-12px; right:-10px; z-index:12; " ></spam> ';
-            return response(['obj_msg' => $message, 'link_attachment'=>$link_attachment,'status' => 1]);
+            return response(['obj_msg' => $message, 'link_attachment'=>$link_attachment,'status' => 1 
+            // ,'noti'=>$noti
+        ]);
         } 
         catch (Throwable $e) {
             DB::rollback();
@@ -437,16 +484,16 @@ class MessageController extends Controller
     public function destroy($id)
     {
         $message=Message::find($id);
-    //     $message->update([
-    //         'body'=>'<div class="message-content">
- 
-    //         <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
-    //             <p>deleted message  
-    //                 <span class="sended  fas fa-check" style="position:relative ;bottom:-12px;right:-10px;z-index:12;visibility:"></span> 
-    //             </p>
-    //         </div> 
-    //    </div>  '
-    //   ]);
+     //     $message->update([
+     //         'body'=>'<div class="message-content">
+        
+     //         <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
+     //             <p>deleted message  
+     //                 <span class="sended  fas fa-check" style="position:relative ;bottom:-12px;right:-10px;z-index:12;visibility:"></span> 
+     //             </p>
+     //         </div> 
+     //    </div>  '
+     //   ]);
         $message->delete();
         return ' message deleted . . .';
         // Resipient::where(['user_id' => Auth::id(), 'message_id' => $id])->delete();
@@ -472,5 +519,41 @@ class MessageController extends Controller
         ];
         return $user->createToken('MyToken')->plainTextToken;
         return ['status' => 1, 'message' => 'Login Successful!', 'data' => $data];
+    }
+
+    protected function sendNotification($firebaseToken,$title,$body){
+             
+        // $firebaseToken = User::where('id',1)->pluck('deviceToken')->all();
+   
+        $SERVER_API_KEY = 'AAAAUaVANXk:APA91bFncgrq3FnMeF_Cnu1W484TFzGBXyYGHV52UANZEufh4kLVwvv-JxlnuBWK8XatvIFnqmsvvf9mx-I2rGeZswH8SajA7C4N1KBBrWYAcV6fr-8npfwfdAWS5Lpx-q_dOrgvJ_-p';
+
+        $data = [
+            "registration_ids" => $firebaseToken,
+            "notification" => [
+                "title" => $title,
+                "body" => $body,
+                "content_available" => true,
+                "priority" => "high",
+            ]
+        ];
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        $response = curl_exec($ch);
+        dd($response);
+        return($response);
     }
 }

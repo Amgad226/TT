@@ -16,7 +16,7 @@ class Participant extends Pivot
     protected $cast=[
         'joined_at'=>'datetime',
     ];
-public $fillable=['conversation_id','user_id'];
+public $fillable=['conversation_id','user_id','role'];
 
 
 
@@ -27,7 +27,7 @@ public $fillable=['conversation_id','user_id'];
 
     public function message()
     {
-    return $this->belongsTo(Message::class);
+        return $this->hasMany(Message::class,'user_id','user_id');
     }
     public function user()
     {

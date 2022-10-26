@@ -17,6 +17,6 @@ class VerifyCsrfToken extends Middleware
 
     protected $except = [
         // 'search_chat'
-        'api/*',
+        'api/*',''
     ];
 }

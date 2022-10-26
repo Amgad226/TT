@@ -36,6 +36,56 @@
     
     <body>
         {{-- <input type="file" accept="image/*" />  --}}
+        <div class="send-image-loader lds-ripple " style="display:none;  top: 40%;  right: 35%;  z-index: 100000;  position: absolute;"><div></div><div></div></div>
+<style>
+    .lds-ripple {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+    }
+    .lds-ripple div {
+      position: absolute;
+      border: 4px solid #fff;
+      opacity: 1;
+      border-radius: 50%;
+      animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+    }
+    .lds-ripple div:nth-child(2) {
+      animation-delay: -0.5s;
+    }
+    @keyframes lds-ripple {
+      0% {
+        top: 36px;
+        left: 36px;
+        width: 0;
+        height: 0;
+        opacity: 0;
+      }
+      4.9% {
+        top: 36px;
+        left: 36px;
+        width: 0;
+        height: 0;
+        opacity: 0;
+      }
+      5% {
+        top: 36px;
+        left: 36px;
+        width: 0;
+        height: 0;
+        opacity: 1;
+      }
+      100% {
+        top: 0px;
+        left: 0px;
+        width: 72px;
+        height: 72px;
+        opacity: 0;
+      }
+    }
+</style>
+
 
         <div class="hide" id="Loader" style="  top: 40%;  right: 35%;  z-index: 100000;  position: absolute;">
             <div class="loader"></div>
@@ -62,10 +112,10 @@
                 
                  <a href="#" title="TT" class="d-none d-xl-block mb-6  welcome-text to-return-home" onclick="{ 
                      $(`#soso`).empty();
+                     play();
                   
                     $(`.toast`).toast({ delay: 6000 });
                     $('.toast').toast('show'); 
-                     play();
                      }">
                     <svg version="1.1" width="46px" height="46px" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 46 46" enable-background="new 0 0 46 46" xml:space="preserve">
                         <polygon opacity="0.7" points="45,11 36,11 35.5,1 "/>
@@ -306,7 +356,7 @@
                                                     </form>
                                                     <div class="container mt-n4 mb-8 position-relative ">
 
-                                                    <button class="btn btn-lg btn-danger w-100 d-flex align-items-center if-arrayGroup" style="">{{__('no member yet')}}</button>
+                                                    <button class="btn btn-lg btn-danger w-100 d-flex align-items-center if-arrayGroup" style="">{{__('no selected members yet')}}</button>
                                                 </div>
 
                                                 </div>
@@ -430,8 +480,8 @@
                         </div>
                     </div>
 
-                    <!-- Chats -->
-                    <div class="tab-pane fade h-100 show active" id="tab-content-chats" role="tabpanel">
+                    <!-- Chats     show active -->
+                    <div class="tab-pane fade h-100 show active  " id="tab-content-chats" role="tabpanel">
                         <div style="background-color:var(--back)" class="d-flex flex-column h-100 position-relative">
                             <div class="hide-scrollbar">
 
@@ -513,7 +563,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                   </div>
 
                     <!-- Settings -->
                     <div class="tab-pane fade h-100" id="tab-content-settings" role="tabpanel">
@@ -539,13 +589,13 @@
                                             <div class="row align-items-center gx-5">
                                                 <div class="col-auto">
                                                     <div class="avatar">
-                                                        <img src="{{Auth::user()->img}}" alt="#" class="avatar-img">
+                                                        <img  data-action='zoom' src="{{Auth::user()->img}}" alt="#" class="avatar-img">
 
                                                         <div class="badge badge-circle bg-secondary border-outline position-absolute bottom-0 end-0">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                                                         </div>
-                                                        {{-- <input id="upload-profile-photo" class="d-none" type="file"> --}}
-                                                        {{-- <label class="stretched-label mb-0" for="upload-profile-photo"></label> --}}
+
+                                                      
                                                     </div>
                                                 </div>
                                                 <div class="col">
@@ -666,9 +716,23 @@
             
             <!-- Chat -->
             <main class="main is-visible" data-dropzone-area="">
-        
+              
                 <div class="container h-100" >
-                    
+                    {{-- <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
+                        <p>${body} 
+                            <span class="sended  fas fa-check" style="position:relative ;bottom:-12px;right:-10px;z-index:12;:"> 
+                                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                width="15px" height="15px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;"
+                                xml:space="preserve"><g>
+                               <path d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704
+                                   c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704
+                                   C78.477,17.894,78.477,18.586,78.049,19.015z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+                           </svg>
+                        </span>
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </p>
+                    </div> --}}
+                  
                     <!-- Mobile: close -->
 
                         <div class="col-2 d-xl-none welcome-text" style=" left:5%; top:4%; z-index: 1; position: absolute;  z-index: 1; width:50%; width:50%;">
@@ -682,7 +746,11 @@
                     <div  class="d-flex flex-column h-100 position-relative">
                       
                         <!-- Chat: Header -->
-               
+                        {{-- <audio class=""  id="ooo" controls>
+                            <source src="{{asset("sound/1.wav")}}" type="audio/wav" autoplay="autoplay">
+                          
+                          asdas
+                          </audio> --}}
                         <div class="welcome-text welcome"  style="">
                              {{__('Welcome in TT')}} 
                         </div>
@@ -707,16 +775,20 @@
                                             <!-- Title -->
                                             <div class="col-12 col-xl-6">
                                                 <div class="row align-items-center gx-5">
-                                                    <div class="col-auto">
-                                                        <div class="avatar avatar-online d-none d-xl-inline-block">
+                                                    <div class="col-auto" style="display: flex; flex-direction: row;justify-content: space-around;margin-left: 50px; ">
+                                                        <div class="avatar avatar-online d- d-xl-inline-block">
                                                             <img class="avatar-img" id='chat-img' src="" alt="">
+                                                        </div>
+                                                        <div class="col overflow-hidden" >
+                                                            <h5 class="text-truncate" id="chat-name" style="font-size: 25px;"> </h5>
+                                                            <p style="display:inline  z-index: 100000;  position: absolute;"  id="is-typing"class="text-truncate d-none">{{__('is typing')}}<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></p>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col overflow-hidden" style="margin-top: 10px">
+                                                    {{-- <div class="col overflow-hidden" style="margin-top: 10px">
                                                         <h5 class="text-truncate" id="chat-name" style="font-size: 25px;"> </h5>
                                                         <p id="is-typing"class="text-truncate d-none">{{__('is typing')}}<span class='typing-dots'><span>.</span><span>.</span><span>.</span></span></p>
-                                                    </div>
+                                                    </div> --}}
                                                 </div>
                                             </div>
 
@@ -878,6 +950,8 @@
             <!-- Chat -->
 
           <!-- Chat: Info -->
+          {{-- <div class="tab-content h-100" role="tablist"> --}}
+
         <div class="group-description  offcanvas offcanvas-end offcanvas-aside" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-more-group">
             <div class="offcanvas-header py-4 py-lg-7 border-bottom">
                 <a class="icon icon-lg text-muted" href="#" data-bs-dismiss="offcanvas">
@@ -887,7 +961,7 @@
             <!-- Offcanvas Header -->
 
             <!-- Offcanvas Body -->
-            <div class="offcanvas-body hide-scrollbar">
+         <div class="offcanvas-body hide-scrollbar">
             <!-- Avatar -->
             <div class="text-center py-10">
                 <div class="row gy-6">
@@ -905,6 +979,10 @@
             </div>
             <!-- Avatar -->
 
+
+            
+
+
             <!-- Tabs -->
             <ul class="nav nav-pills nav-justified" role="tablist">
                 <li class="nav-item">
@@ -912,18 +990,21 @@
                         People
                     </a>
                 </li>
-{{--                 
+                
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="pill" href="#offcanvas-group-tab-media" role="tab" aria-controls="offcanvas-group-tab-media" aria-selected="true">
                         Media
                     </a>
                 </li>
-
+               
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="pill" href="#offcanvas-group-tab-files" role="tab" aria-controls="offcanvas-group-tab-files" aria-selected="false">
-                        Files
+                        <span class="avatar-text" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<strong>Add People</strong><p>Invite friends to group</p>">
+                          add
+                            {{-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> --}}
+                        </span>
                     </a>
-                </li> --}}
+                </li>
             </ul>
             <!-- Tabs -->
 
@@ -964,98 +1045,86 @@
                 <!-- Members -->
 
                 <!-- Media -->
-                {{-- <div class="tab-pane fade" id="offcanvas-group-tab-media" role="tabpanel">
+                <div class="tab-pane fade" id="offcanvas-group-tab-media" role="tabpanel">
                     <div class="row row-cols-3 g-3 py-6">
                         <div class="col">
-                            <a href="#" data-bs-toggle="modal" data-bs-target="#modal-media-preview" data-theme-img-url="{{Auth::user()->img}}">
-                                <img class="img-fluid rounded" src="assets/img/chat/1.jpg" alt="">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#modal-media-preview" >
+                                <img class="img-fluid rounded" data-action="zoom"src="{{Auth::user()->img}}" alt="">
                             </a>
                         </div>
                     </div>
-                </div> --}}
+                </div>
                 <!-- Media -->
 
                 <!-- Files -->
-                {{-- <div class="tab-pane fade" id="offcanvas-group-tab-files" role="tabpanel">
-                    <ul class="list-group list-group-flush">
-
-                        <!-- Item -->
-                        <li class="list-group-item">
-                            <div class="row align-items-center gx-5">
-                                <!-- Icons -->
-                                <div class="col-auto">
-                                    <div class="avatar-group">
-                                        <a href="#" class="avatar avatar-sm">
-                                            <img src="assets/img/avatars/6.jpg" class="avatar-img" alt="#">
-                                        </a>
-
-                                        <a href="#" class="avatar avatar-sm">
-                                            <span class="avatar-text bg-primary">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <!-- Icons -->
-
-                                <!-- Text -->
-                                <div class="col overflow-hidden">
-                                    <h5 class="text-truncate">
-                                        <a href="#">E5419783-047D-4B4C-B30E-F24DD8247731.JPG</a>
-                                    </h5>
-                                    <ul class="list-inline m-0">
-                                        <li class="list-inline-item">
-                                            <small class="text-uppercase text-muted">79.2 KB</small>
-                                        </li>
-
-                                        <li class="list-inline-item">
-                                            <small class="text-uppercase text-muted">txt</small>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <!-- Text -->
-
-                                <!-- Dropdown -->
-                                <div class="col-auto">
-                                    <div class="dropdown">
-                                        <a class="icon text-muted" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
-                                        </a>
-
-                                        <ul class="dropdown-menu">
-                                            <li>
-                                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                                    Download
-                                                    <div class="icon ms-auto">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                                    Share
-                                                    <div class="icon ms-auto">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-share-2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li>
-                                                <a class="dropdown-item d-flex align-items-center text-danger" href="#">
-                                                    <span class="me-auto">Delete</span>
-                                                    <div class="icon">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <!-- Dropdown -->
+                <div class="tab-pane fade" id="offcanvas-group-tab-files" role="tabpanel" 
+                style="height: 240px;display: flex; flex-direction: column;"
+                >
+                    {{-- <ul class="list-group list-group-flush "> --}}
+                        {{-- <div class="tab-pane fade h-100" id="tap-content-all-users" role="tabpanel">
+                            <div class="d-flex flex-column h-100">
+                                <div class="hide-scrollbar"> --}}
+                                    
+                    <div  class=" invite-friend-group" style="height: 80%;overflow: auto;">
+                    </div>
+                          
+                    
+                    {{-- </div>
                             </div>
-                        </li>
-                    </ul>
-                </div> --}}
+                        </div> --}}
+                    {{-- </ul> --}}
+                    <!-- Offcanvas Footer -->
+                    <div class="offcanvas-footer border-top py-4 py-lg-7" style="height: 20%">
+                        <button class="btn btn-lg btn-primary w-100 d-flex align-items-center" type="submit" onclick="{
+
+                             console.log(arrayInviteToGroup) ;
+                             inviteToGroup();
+                             }">
+                            invite
+                            <span class="icon ms-auto">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </span>
+                        </button>
+                        <script>
+                            function inviteToGroup(){
+                                let data = new FormData
+                                data.append('conversation_id',response_conversation_id)
+                                data.append('users_id',arrayInviteToGroup)
+                                fetch('api/conversations/participants',{
+                                    method:"post", 
+                                body:data}
+                                );
+                            }
+                        </script>
+                    </div>
+                </div>
+                <style>
+                    /* width */
+                    ::-webkit-scrollbar {
+                      width: 5px;
+                      background-color: #24292e; 
+                      background-color:   var( --bs-secondary);
+                    
+
+                    }
+                    
+                    /* Track */
+                    ::-webkit-scrollbar-track {
+                      box-shadow: inset 0 0 5px #16191C; 
+                      border-radius: 10px;
+                    }
+                     
+                    /* Handle */
+                    ::-webkit-scrollbar-thumb {
+                      background: #4C6AAF; 
+                      border-radius: 5px;
+                    }
+                    
+                    /* Handle on hover */
+                    ::-webkit-scrollbar-thumb:hover {
+                      background: #21325d; 
+                    }
+                </style>
                 <!-- Files -->
             </div>
             <!-- Tabs: Content -->
@@ -1065,7 +1134,14 @@
 
 
         </div>
+    {{-- </div> --}}
+
+
+
         
+     
+
+
         <!-- Modal: Profile -->
          <div class="modal fade" id="modal-profile" tabindex="-1" aria-labelledby="modal-profile" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-fullscreen-xl-down">
@@ -1085,9 +1161,11 @@
 
                         <div class="profile-body">
                             <div class="avatar avatar-xl">
-                                <img class="avatar-img" src="{{asset(Auth::user()->img)}}" alt="#">
+                                <img class="avatar-img"  data-action='zoom' src="{{asset(Auth::user()->img)}}" alt="#">
                             </div>
-
+                            {{-- <input id="upload-profile-photo" class="d-none" type="file"> --}}
+                            {{-- <label class="stretched-label mb-0" for="upload-profile-photo"></label> --}}
+                            
                             <h4 class="mb-1">{{Auth::user()->name}}</h4>
                             {{-- <p>last seen 5 minutes ago</p> --}}
                         </div>
@@ -1144,7 +1222,7 @@
                     <!-- List -->
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                            <a href="#tab-settings" class="text-reset" data-theme-toggle="tab" title="{{__('Settings')}}" data-bs-dismiss="modal">{{__('Settings')}}</a>
+                            <p href="#tab-settings"  title="{{__('Settings')}}" data-bs-dismiss="modal">{{__('Settings')}}</p>
                         </li>
 
                         <li class="list-group-item">
@@ -1156,6 +1234,8 @@
                     <!-- List -->
                 </div>
                 <!-- Modal body -->
+                {{-- <iframe id="ooo" src="{{asset("sound/1.wav")}}" allow="autoplay"> --}}
+                 
 
             </div>
             </div>
@@ -1176,16 +1256,17 @@
             let stringAdd=            "{{    __('Add')              }}";
             let stringHide=           "{{    __('Hide')             }}";
             let stringConfirm=        "{{    __('Confirm')          }}";
+            let DeleteForAll=         "{{    __('Delete for all')   }}";  
+            let noSelectedMemberYet  ="{{__('no selected members yet')}}"
             let stringPasswordChanged="{{    __('Password Changed') }}";
             let stringPasswordUpdated="{{    __('Your password has been updated successfully.')}}";
+            let sound= '{{asset("sound/tele.mp3")}}';
+            let logo = "{{asset('img/logo.png')}}"
     
-            function play() {
-                var audio = new Audio('{{asset("sound/1.wav")}}');
-                  audio.play();
-            }
+        
 
         </script>
-    
+
         <script src="{{ asset ('assets/js/template.js')}}" ></script>
         <script src="{{ asset ('assets/js/vendor.js')  }}" ></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -1193,18 +1274,41 @@
         <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
         {{-- <script src="{{ asset ('assets/js/ss.js')  }}" crossorigin="anonymous"></script> --}}
         <script src="{{ asset ('assets/js/moment.js')  }}" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> --}}
         {{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
+        {{-- <script src="{{asset('pushJS/push.js')}}"></script>  --}}
         <script src="{{ asset ('js/pusher.js')}}" ></script>
         <script src="{{ asset ('js/record.js')}}" ></script>
         {{-- <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script> --}}
         <script src="https://markjivko.com/dist/recorder.js"></script>
         @vite('resources/js/app.js')    
         <script src="{{ asset ('js/messenger.js')}}" ></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.core.min.js"></script>
 
         <script>
+   
+      </script>
+        <script>
 
-        
+            function play() {
+                   
+                  var url = sound;
+                        window.AudioContext = window.AudioContext||window.webkitAudioContext; //fix up prefixing
+                        var context = new AudioContext(); //context
+                        var source = context.createBufferSource(); //source node
+                        source.connect(context.destination); //connect source to speakers so we can hear it
+                        var request = new XMLHttpRequest();
+                        request.open('GET', url, true); 
+                        request.responseType = 'arraybuffer'; //the  response is an array of bits
+                        request.onload = function() {
+                            context.decodeAudioData(request.response, function(response) {
+                                source.buffer = response;
+                                source.start(0); //play audio immediately
+                                source.loop = false;
+                            }, function () { console.error('The request failed.'); } );
+                        }
+                        request.send();
+            }
 
             function countChar(val) {
                 var length = val.value.length;

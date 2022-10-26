@@ -14,18 +14,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
+use function PHPSTORM_META\map;
+
 class ConvarsationController extends Controller
 {
 
  
     public function index(){
-       
+           //    return 1;
         $chats =Participant::with(['conversation'
             =>function($query_one){
                 $query_one->orderBy('last_message_id','asc');
                 $query_one->with(['lastMassege','partiscipants' 
                     =>function($query_two) {
-                     $query_two->where('id','<>',Auth::id());}
+                        // return($query_two);
+                     $query_two->where('id','<>',Auth::id());
+                    }
                         ]);
                 }])
              ->where('user_id',Auth::id())->get();
@@ -88,7 +92,6 @@ class ConvarsationController extends Controller
 
 
     public function readAllMessages(Request $request ){
-   
         $validator = Validator::make($request-> all(),[
                 
             'conversation_id'=>['required','exists:conversations,id'],
@@ -116,9 +119,6 @@ class ConvarsationController extends Controller
 
     }
 
-
-
-
     public function readMessage(Request $request ){
    
         $validator = Validator::make($request-> all(),[
@@ -141,9 +141,6 @@ class ConvarsationController extends Controller
 
     }
 
-
-
-
     public function getUsers(){
         
         $f= DB::table('friends')->
@@ -157,35 +154,112 @@ class ConvarsationController extends Controller
           });
         $users = DB::table('users')->where('id','<>',Auth::id())->whereNotIn('id', $f)->get();
         return $users;
-    }    
+    }  
+    
+    public function countMessageInConversation($user_id,$conversation_id){
 
-    // public function show( $id){
+     return Message::where([['conversation_id',$conversation_id],['user_id',$user_id]])->count();
+    }
+    //create function in laravel
+// function laravel ?
+ //how to create function in laravel?
+ // create m
+    public function users_not_in_group($id){
 
-    //     $chats=Conversation::with([
-    //     'lastMassege',
-    //     'partiscipants'=>function( $query)  {
-    //         $query->where('id','<>',Auth::id());
-    //     }
-    //  ])
-    //   ->where('user_id',Auth::id())->get();
-    //  return  $chats;
-    //  $chats =Participant::with('conversation')->where('user_id',Auth::id())->get();
-    //  // $chats->makeHidden(['conversation_id','user_id','role','joined_at',]);
-    //     return  $chats[0]->conversation;
-    // }
+        // Conversation::find($id);
+        $friend_users= DB::table('friends')->where([['user1_id',Auth::id()],['acceptable',1]])->orWhere([['user2_id',Auth::id()],['acceptable',1]])->get(['id','user1_id','user2_id']);
 
-    public function addParticipant(Request $request ,Conversation $conversation){
+        $idd=[];
+            foreach($friend_users as $u )
+            { 
+                if($u->user1_id != Auth::id())
+                array_push($idd,$u->user1_id );
+                else
+                 array_push($idd,$u->user2_id );
+            }
+
+        $users_id_in_chat=DB::select('SELECT users.id FROM `users` 
+        JOIN partiscipants on partiscipants.user_id = users.id 
+        WHERE partiscipants.conversation_id=?',[$id]);
+
+         $ids_in_chat=[];
+        foreach($users_id_in_chat as $user_id_in_chat)
+        {
+         array_push($ids_in_chat,$user_id_in_chat->id);
+        }
+        // return $ids_in_chat;
+
+
+
+     return    DB::table('users')
+            ->select('name','id','img')
+            ->whereIn('id',$idd)
+            ->whereNotIn('id',$ids_in_chat)
+            ->get();
+
+
+        //     return   DB::select('
+        // SELECT name , id,img from users
+        // where id in (2,3) and
+        //  id not IN (SELECT users.id FROM `users` 
+        // JOIN partiscipants on partiscipants.user_id = users.id 
+        // WHERE partiscipants.conversation_id=?)
+        // ',[$id]);
+        // ',[$o,$id]);
+    }
+
+
+
+    public function getParticipants( $id){
+
+        //with query 
+        $participant=Participant::with(['user'=>function($query1){
+            $query1->groupBy('id');
+            $query1->select('id','name','img');
+        }] )
+         ->withCount(['message'=>function($query2) use($id){
+            $query2->where('conversation_id',$id);
+         }])
+
+         ->where('conversation_id',$id)
+        //  ->select('conversation_id','user_id',)
+         ->get();
+
+         $participant->makeHidden(['conversation_id','user_id']);
+         return $participant;
+
+     //with php
+     // $conversation= Conversation::with(['partiscipants'])->find($id);
+     //     foreach( $conversation->partiscipants as $q)
+     //     {
+     //         // return $q->id;
+     //         $q['countMessages']=$this->countMessageInConversation($q->id,$id);
+     //     }
+     //     $conversation->makeHidden(['user_id','lable','img','last_message_id','description','type']);
+     //     $conversation->partiscipants->makeHidden(['email','email_verified_at','created_at','updated_at','pivot']);
+ 
+     //     return $conversation; 
+
+    }
+
+    public function addParticipants(Request $request ){
         
         $validator = Validator::make($request-> all(),[
-                
-            'user_id'=>['required','string','exists:users,id'],
+            'conversation_id'=>['required','exists:conversations,id'],
+            'users_id'=>['required','exists:users,id'],
           ]);
-    
+        $users_id = explode(",", $request->users_id);
+
+ 
              if ($validator->fails())
              { 
                  $errors = []; foreach ($validator->errors()->messages() as $key => $value) {     $key = 'message';     $errors[$key] = is_array($value) ? implode(',', $value) : $value; }       return response()->json( ['message'=>$errors['message'],'status'=>0],400);
              }
-             $conversation->partiscipants()->attach($request->user_id,['joined_at'=>Carbon::now(),]);
+             foreach($users_id as $user_id){
+
+                 Participant::create(['conversation_id'=>$request->conversation_id,'user_id'=>$user_id,'joined_at'=>Carbon::now()]);
+                //  Participant::attach($user_id,['joined_at'=>Carbon::now(),]);
+             }
         return 'done';
     }
 

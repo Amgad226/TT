@@ -9,31 +9,53 @@ const tokenn =  $('meta[name="csrf-token"]').attr('content')
 // send records                      {done}
 // only 50 messages will be received {done}
 // button to show all message        {done}
-// Loader                            {done}   
-// is typing ...                     {done}   
-// send image                        {done} 
+// Loader                            {done}
+// is typing ...                     {done}
+// send image                        {done}
 // send attachment                   {done}
 // pwa app                           {done}
 // delete message                    {done}
 // fix searchad                      {done}
 // group info :members,description   {done}
-
-// edit group name and img ,count msg for all member
+// group info edit group name and img{done}
+// count msg for all member          {done} 
+// delete message                    {done}  
+// loader to send img/attachment     {done}  
+// date messages                     {done} 
+// count message un readed           {done} 
+// check to send message             {done} 
+// firebase notification             {done} 
+// delete chat
 // voice chat  
 // ----------------------------------------
 function inputImageMessage(){
-   let fileElm= document.createElement('input');
-//    fileElm.type = "text";
-//    fileElm.accept('jpg');
-   fileElm.setAttribute('type','file');
-
-   fileElm.addEventListener('change',()=>{
+    let fileElm= document.createElement('input');
+    //    fileElm.type = "text";
+    //    fileElm.accept('jpg');
+    fileElm.setAttribute('type','file');
     
+    fileElm.addEventListener('change',()=>{
+
+        var filePath = fileElm.value;
+         
+        // Allowing file type
+        var allowedExtensions =
+                /(\.jpg|\.jpeg|\.png|\.JPG|\.JPEG|\.PNG|\.gif)$/;
+         
+        if (!allowedExtensions.exec(filePath)) {
+            alert('Invalid file type');
+            fileElm.value = '';
+            return false;
+        }
+
+
+
+
+       $('.send-image-loader').css('display','block')
     if(fileElm.files==0){
         return;
     }
     let attachment=fileElm.files[0];
-    // console.log(attachment);
     const formData = new FormData();
 
     formData.append('type', 'img');
@@ -50,8 +72,7 @@ function inputImageMessage(){
                 alert(result.message);
                 return;
             }
-          console.log('Success:', result);
-            console.log(result)
+       
         var attachment =result.obj_msg.body
     
 
@@ -62,12 +83,14 @@ function inputImageMessage(){
         var msg={'body':attachment  ,'created_at':date ,'id':result.obj_msg.id};
         // addMessage(msg,'message-out',true,true,true,record,date);//false
         addMessage(msg,'message-out',true);
+        $('.send-image-loader').css('display','none')
                 
 
         })
         .catch((error) => {
           console.error('Error:', error);
           alert('Error:', error);
+          $('.send-image-loader').css('display','none')
 
         });
  
@@ -85,12 +108,25 @@ function selectFile(){
     fileElm.setAttribute('type','file');
  
     fileElm.addEventListener('change',()=>{
+        $('.send-image-loader').css('display','block')
+
+        const fsize = fileElm.files[0].size;
+        const file = Math.round((fsize / (1024*1024)));
+        if (file >= 15) {
+            alert(
+              "File too Big, please select a file less than 15mb");
+            $('.send-image-loader').css('display','none')
+
+              return ;
+        } 
+
+ 
+
      
      if(fileElm.files==0){
          return;
      }
      let attachment=fileElm.files[0];
-     // console.log(attachment);
      const formData = new FormData();
  
      formData.append('type', 'attachment');
@@ -107,16 +143,19 @@ function selectFile(){
                  alert(result.message);
                  return;
              }
-           console.log('Success:', result);
          var attachment =result.obj_msg.body
          var date = result.obj_msg.created_at
          var msg={'body':attachment  ,'created_at':date ,'id':result.obj_msg.id};
          // addMessage(msg,'message-out',true,true,true,record,date);//false
          addMessage(msg,'message-out',true);
+        $('.send-image-loader').css('display','none')
+
          })
          .catch((error) => {
            console.error('Error:', error);
            alert('Error:', error);
+        $('.send-image-loader').css('display','none')
+
          });
   
     });
@@ -180,7 +219,6 @@ $(`.toggel`).on('click',function(e){
 //----------dropdown----------
 var drop_down=false
 function deleteMessge (element){
-    console.log(element.parentElement.parentElement.parentElement.parentElement);
     let id =   $(element).attr('message-id')   ;
     console.log(id)
 var a =$(element.parentElement.parentElement.parentElement.parentElement);
@@ -189,16 +227,16 @@ var a =$(element.parentElement.parentElement.parentElement.parentElement);
  
          fetch(`/api/messages/${id}`, {
          method: 'POST',
-         headers: {
-             'X-CSRF-TOKEN': '${tokenn}'
-         }
+        //  headers: {
+        //      'X-CSRF-TOKEN': '${tokenn}'
+        //  }
          })
                 a.replaceWith (`
      <div class="message-content">
  
          <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
              <p>deleted message  
-                 <span class="sended  fas fa-check" style="position:relative ;bottom:-12px;right:-10px;z-index:12;visibility:"></span> 
+
              </p>
          </div> 
     </div>    
@@ -209,17 +247,14 @@ var a =$(element.parentElement.parentElement.parentElement.parentElement);
 function dropdown(thiss){
     
     {
-        // console.log(thiss.parentElement.parentElement)
         if(drop_down==false)
         {
-        // console.log(22)
 
         $(thiss.childNodes[3]).removeClass('dropdown-menu');
         drop_down=true
         }
         else
         {
-        // console.log(33)
 
         $(thiss.childNodes[3]).addClass('dropdown-menu')
         drop_down=false
@@ -249,32 +284,44 @@ $("#targetttt").on('submit',function(e){
     if(body==''){
         return;
     }
+    var data=new FormData
+    data.append('conversation_id',response_conversation_id)
+    data.append('body',body)
+    data.append('title',username+' send message')
+    fetch(`api/send`,
+    {
+         method: 'POST',
+         body:data,
+        })
+
     // alert(body)
     $.post($(this).attr('action') ,$(this).serialize() , function(response){
-     console.log(response);
         $('.sended').css("visibility", "");
-        
         // addMessage(response.obj_msg ,'message-out')
-
     }
     
     );
 
     var user={'img':`${userimg}`,"name":`${username}`}
      
-    // 'body':body,
     var msgg = {
-        'body':`<div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;"><p>${body} <span class="sended  fas fa-check" style="position:relative ;bottom:-12px;right:-10px;z-index:12;visibility:hidden"></span></p></div>`,
+        'body':`<div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
+        <p>${body} <span class="sended" style="position:relative ;bottom:-12px;right:-10px;z-index:12;visibility:hidden"> 
+           <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+        width="15px" height="15px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;"
+        xml:space="preserve"><g>
+       <path fill="var( --bs-white)" d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704
+           c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704
+           C78.477,17.894,78.477,18.586,78.049,19.015z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+        </svg></span>
+        </p></div>`,
+        
         'user':user
     }
-    
     addMessage(msgg,'message-out',true,false)
 
-
     $(this).find('.input-have-message').val('');
-    // stopTyping()
     Typing(false)
-    //   }, 300)
 
 
 });
@@ -328,7 +375,7 @@ const addMessagesToGroup = function(msg ,c = '' ,isAnimate = true ,deleteAction=
 
                         <li message-id=${msg.id} onclick ="{deleteMessge(this)}">
                             <a class="dropdown-item d-flex align-items-center text-danger" href="#">
-                                <span class="me-auto" >Delete</span>
+                                <span class="me-auto" >${DeleteForAll}</span>
                                 <div class="icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                                 </div>
@@ -359,7 +406,7 @@ const addMessagesToGroup = function(msg ,c = '' ,isAnimate = true ,deleteAction=
     
 }
 const addMessage = function(msg ,c = '' ,isAnimate = true ,deleteAction=true ,){
-    // console.log(response_conversation_id)
+
     const $container = $('.form-ccontainer');
     if (isAnimate) 
     {
@@ -367,12 +414,12 @@ const addMessage = function(msg ,c = '' ,isAnimate = true ,deleteAction=true ,){
           scrollTop: $container.prop('scrollHeight')
         });
     }
-    // else 
-    // {
-    //     $container.scrollTop($container.prop('scrollHeight'))
-    //     // $container.scrollTop = 9c9;
-    // }
-    // -------------
+    // // else 
+    // // {
+    // //     $container.scrollTop($container.prop('scrollHeight'))
+    // //     // $container.scrollTop = 9c9;
+    // // }
+    // // -------------
 
 
     var something=msg.body;
@@ -392,11 +439,11 @@ const addMessage = function(msg ,c = '' ,isAnimate = true ,deleteAction=true ,){
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
                     </a>
 
-                    <ul id="dropdown-menu" class="dropdown-menu style ='list-style-type: none' ">
+                    <ul id="dropdown-menu" class="dropdown-menu" style ='list-style-type: none' >
 
-                        <li message-id=${msg.id} onclick ="{deleteMessge(this)}" style = 'background-color:#ff0 '>
+                        <li message-id=${msg.id} onclick ="{deleteMessge(this)}" style = 'background-color:var("--delete-message") '>
                             <a class="dropdown-item d-flex align-items-center text-danger" href="#">
-                                <span class="me-auto" >Delete</span>
+                                <span class="me-auto" >${DeleteForAll}</span>
                                 <div class="icon">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                                 </div>
@@ -462,7 +509,7 @@ const showAllMessages=function(){
     $(".show-all-messages").css('visibility','hidden'); 
     addLoader()
     $(`#soso`).empty();
-    $.get(a+`/api/conversations/${response_conversation_id}/allMessages` , function(response)
+    $.get(`/api/conversations/${response_conversation_id}/allMessages` , function(response)
     {
 
    
@@ -496,7 +543,7 @@ const showAllMessages=function(){
         
     })
 }
-
+var arrayInviteToGroup=[];
 const open_chat=function(thiss, toLoader=''){
     $('.group-description').css('visibility','hidden'); 
     $('.group-description').css('display','none'); 
@@ -527,8 +574,7 @@ const open_chat=function(thiss, toLoader=''){
         
     }
     })
-    // alert()
-    $.get(a+`/api/conversations/${id}/messages` , function(response)
+    $.get(`/api/conversations/${id}/messages` , function(response)
     {
         console.log(response)
         // return;
@@ -537,10 +583,10 @@ const open_chat=function(thiss, toLoader=''){
          $('#conversation-id-input-target').text(response_conversation_id)
         //  response_conversation_id=response.conversation.partiscipants[0].pivot.user_id;
       
-//    alert(response_conversation_id);
         
         $('#chat-name').text(response.conversation.lable);
         $('#chat-img').attr('src',response.conversation.img);
+        $('#chat-img').attr('data-action','zoom');
         // $('#chat-img').attr('src',response.conversation.partiscipants[0].img);
         
         if(response.read_more)
@@ -558,7 +604,6 @@ const open_chat=function(thiss, toLoader=''){
             { 
                 // let message_id= response.messages
                 let msg = response.messeges[i];
-                // console.log( response.messeges[i])
                 // break;
                 let c  = msg.user_id ==userId ? 'message-out' :'';
                 addMessage(msg , c ,false)
@@ -579,27 +624,109 @@ const open_chat=function(thiss, toLoader=''){
             $('.group-description-description').append(response.conversation.description);
             $('.group-description-img').attr('src',response.conversation.img)
             $('.group-description-members').empty();
-            for(let i in response.conversation.partiscipants)
-            $('.group-description-members').append(`<li class="list-group-item">
-            <div class="row align-items-center gx-5">
-                <div class="col-auto">
-                    <a href="#" class="avatar avatar-online">
-                        <img class="avatar-img" src="${response.conversation.partiscipants[i].img}" alt="">
-                    </a>
-                </div>
+            // $('.invite-friend-group').empty()
 
-                <div class="col">    <h5><a href="#">  ${response.conversation.partiscipants[i].name} </a></h5>    </div>
-            </div>
-        </li>`)
+            fetch(`api/conversations/${response.conversation.id}/getParticipants`, 
+            {
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': +tokenn
+                }})
+                .then(res =>
+                    {
 
-        
+                      return res.json()
+                    }
+                        ).then(data=>
+                        {
+                            // return;
+                            for(let i in data)
+                            $('.group-description-members').append(`<li class="list-group-item">
+                            <div class="row align-items-center gx-5">
+                                <div class="col-auto">
+                                    <a href="#" class="avatar avatar-online">
+                                        <img class="avatar-img" src="${data[i].user.img}" alt="">
+                                    </a>
+                                </div>
+                
+                                <div class="col">    <h5><a href="#">  ${data[i].user.name} </a></h5>   
+                                <span class="extra-small text-primary"> ${data[i].message_count}</span>
+                                </div>
+                                
+                                <div class="col-auto">
+                                            <span class="extra-small text-primary"> ${data[i].role}</span>
+                                        </div>
+                            </div>
+                        </li>`)
+                         });
+         
+            fetch(`api/users_not_in_group/${response.conversation.id}`, 
+            {
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': +tokenn
+                }})
+                .then(res =>
+                    {
+
+                      return res.json()
+                    }
+                        ).then(data=>
+                        {
+                            // alert(data)
+                            // return;
+                            for(let i in data)
+                            // <li class="list-group-item">
+                            $('.invite-friend-group').append(`
+                            <div class="card-body" style="background-color:var(--bs-body-bg)">
+
+                                <div class="row align-items-center gx-5">
+                                    <div class="col-auto">
+                                        <div class="avatar avatar-online">
+               
+                                                <img class="avatar-img" src="${data[i].img}" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <h5>${data[i].name}</h5>
+                                    </div>
+                                    <div class="col-auto">
+                                        <div class="form-check">
+                                  
+                                        
+                                     <input class="form-check-input cheack-invite-to-group" type="checkbox" value="${data[i].id}" id="" onclick="{
+                                         if (this.checked == true)
+                                         {
+                                             if(!arrayInviteToGroup.includes($(this).attr('value')))
+                                             {
+                                                 arrayInviteToGroup.push($(this).attr('value'));
+                                             }
+                                         }
+                                        else
+                                        {
+                                         const index = arrayInviteToGroup.indexOf($(this).attr('value'));
+                                         arrayInviteToGroup.splice(index, 1);
+                                        }
+                                     console.log(arrayInviteToGroup)
+
+                                      }" >
+                     
+                                        <label class="form-check-label" for="id-member-9"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                           <div>
+                           `)
+                        //    </li>
+            });
+            
             
            
             for(i in response.messeges)
             {
-            let msg = response.messeges[i];
-            let c  = msg.user_id ==userId ? 'message-out' :'';
-            addMessagesToGroup(msg , c ,false,true)
+                let msg = response.messeges[i];
+                let c  = msg.user_id ==userId ? 'message-out' :'';
+                addMessagesToGroup(msg , c ,false,true)
             }   
             hideLoader(toLoader)
             const $container = $('.form-ccontainer');
@@ -609,6 +736,8 @@ const open_chat=function(thiss, toLoader=''){
         
     })
 }
+// $('.')
+// arrayInviteToGroup
 //----------change_pass---------------
 
 $("#change_pass").on('submit',function(e){
@@ -618,6 +747,7 @@ $("#change_pass").on('submit',function(e){
     });
 
 });
+
 function showHidePassword() {
     var x = document.getElementById("profile-current-password");
     if (x.type === "password") {
@@ -717,8 +847,8 @@ $(`#tab-chats`).on('click',function(e){
 
 });
 
-const getConversations=function(){
-    
+const getConversations=function(pauseLoder=true){
+    if(pauseLoder==true)
     addLoader($(`#tab-chats`))
     $.get('/api/conversations',function(response){
   
@@ -727,65 +857,56 @@ const getConversations=function(){
             // console.log(response[i].conversation.lable);
         conversation(response[i])
         }
-          
+        if(pauseLoder==true)
         hideLoader($(`#tab-chats`))
     })
 }
 
-
 const conversation=function(chat){
-
-    
+  
 var countUnReadMsg=chat.conversation.unRead_message
-
+// alert(countUnReadMsg)
 if(countUnReadMsg!=0){
     counter=`
-    <div class="div-count-msg badge badge-circle bg-primary ms-5 unread-message-count"  style="visibility:visible" onclick={$(this).css("visibility","hidden");}>
-        <span data-messages=${chat.conversation.id}  class="unread-message-count">${countUnReadMsg}</span>
+    <div class="div-count-msg badge badge-circle bg-primary ms-5 unread-message-count"  style="visibility:visible" onclick={
+
+    }>
+        <span class="unread-message-count" data-messages=${chat.conversation.id} >${countUnReadMsg}</span>
     </div>`;
 }
 else{
     counter=`
-    <div class="div-count-msg badge badge-circle bg-primary ms-5  unread-message-count" data-messages=${chat.conversation.id} style="visibility:hidden">
-        <span data-messages=${chat.conversation.id} style= class="unread-message-count">new message</span>
+    <div class="div-count-msg badge badge-circle bg-primary ms-5  unread-message-count  d-none" data-messages=${chat.conversation.id} onclick={
+    }>
+        <span class="unread-message-count" data-messages=${chat.conversation.id} style= >new message</span>
     </div>`;
     
 }
-//  $('.div-count-msg[data-messages=${chat.conversation.id}]').css('display','none');
 
-
-if(chat.conversation.last_massege.type=='audio')
-{
-message_body_with_slice='record';
-}
-else if(chat.conversation.last_massege.body!=null){
-
-    var message_body_with_slice=chat.conversation.last_massege.body.slice(140, -129);
-    message_body_with_slice=message_body_with_slice.slice(0,10);
-    // alert(message_body_with_slice)
-}
-else
-message_body_with_slice='';
-  
-
+    var message_body_with_slice;
+    if(chat.conversation.last_massege.type=='text'){
+        aa=chat.conversation.last_massege.body.slice(143,-842);
+        message_body_with_slice=aa.slice(0,10);
+    }
+    else
+    message_body_with_slice=chat.conversation.last_massege.type;
 
     $('#chat-list').append(`
     
     
     <a  onclick="{
         
-        // $(this).css('visibility','hidden');
-        // setTimeout(() => {
-        //     $(this).css('visibility','');
-        // }, 1000);
        
+
     $('main').addClass('is-visible');
-
-    $('.unread-message-count[data-messages=${chat.conversation.id}]').css('visibility','hidden');
-    $('.unread-message-count[data-messages=${chat.conversation.id}]').css('display','none');
-
+    
+    $('.unread-message-count[data-messages=${chat.conversation.id}]').html(0);
+    $('.unread-message-count[data-messages=${chat.conversation.id}]').addClass('d-none');
+    
+   
     }" href="" id="roro" data-messages=${chat.conversation.id} class="card border-0 text-reset zz wait-click ">
-    <div  class="card-body zz"      >
+
+    <div  class="card-body zz" >
         <div class="row gx-5">
             <div class="col-auto">
                 <div class="avatar avatar-online">
@@ -806,8 +927,8 @@ message_body_with_slice='';
                     <div class="line-clamp me-auto last-message" data-messages=${chat.conversation.id}>
                     ${message_body_with_slice} 
                     </div>
-
                    ${counter}
+
                 </div>
             </div>
         </div>
@@ -819,9 +940,6 @@ message_body_with_slice='';
 
     `)
 }
-
-
-
 
 //-----------return home page-------------
 $(`.welcome-text`).on('click',function(e){
@@ -846,11 +964,10 @@ $(`#tab-notifications`).on('click',function(e){
 const getNotification=function(toLoader){
     addLoader(toLoader)
 
-    $.get(a+'/api/getNotification',function(response){
+    $.get('/api/getNotification',function(response){
   
         for(i in response)
         {
-            // alert(response[i].type);
         notification(response[i])
         }
     hideLoader(toLoader)
@@ -1004,14 +1121,13 @@ $(`#tab-friends`).on('click',function(e){
 
 });
 const getFriends=function(toLoader){
-    // $.get(a+'/api/getUsers',function(response){
+    // $.get('/api/getUsers',function(response){
     addLoader(toLoader)
 
         $.get('/api/friend',function(response){
             // console.log(response)
         for(i in response) 
         {
-    // alert(response[i].id)
 
          $('#friends_in_searsh').append(`
 
@@ -1132,7 +1248,7 @@ for(let i = 0; i<
                                 data.append('user_id',1);
                                 data.append('type','text');
 
-                        fetch(a+"/api/messages", {
+                        fetch("/api/messages", {
                             method: "POST",
                             body:data,
                             headers: {
@@ -1176,7 +1292,6 @@ const getUsers=function(toLoader){
 
         for(i in response) 
         {
-             // alert(response[i].id)
 
             $('#all_users_in_app').append(`
 
@@ -1330,8 +1445,8 @@ for(let i = 0; i<
 //---------------------create group---------------------//
 var arrayGroup= [];
 var imgGroup;
-var groupName;
-var groupDescription;
+var groupName='';
+var groupDescription='';
 var groupForm=$('#groupForm');
 
 $(`.tap-friend-group`).on('click',function(e){
@@ -1340,7 +1455,7 @@ $(`.tap-friend-group`).on('click',function(e){
 });
 
  const getFriendsToCreateGroup =function(){
-    $.get(a+'/api/friend',function(response){
+    $.get('/api/friend',function(response){
 
         for(i in response) 
         {
@@ -1427,7 +1542,6 @@ $('.groupDescription').on('keyup',function() {
 });
 
 $("#groupForm").on('submit',function(e){
-    // console.log(imgGroup);
     e.preventDefault();
 
     let data = new FormData
@@ -1435,13 +1549,38 @@ $("#groupForm").on('submit',function(e){
      data.append('users_id',arrayGroup);
      data.append('groupName',groupName);
      data.append('groupDescription',groupDescription);
-     fetch(a+'/api/createGroup', {
+     fetch('/api/createGroup', {
      method: 'POST',
      body:data,
      headers: {
      'X-CSRF-TOKEN': tokenn
      }
-     });
+     }).then(response=>{
+
+        return response.json()
+     
+         }).then(data=>{
+            console.log(data)
+            if(data.status==0)
+            alert(data.message)
+            else{
+                arrayGroup=[];
+                imgGroup=''
+                groupDescription=''
+                imgGroup=null
+                $('.groupName').val('')
+                $('.groupDescription').val('')
+                $('.imgGroup').val('')
+                $(".imgGroup").val(null);
+                $('#blah').attr('src','');
+                $('.cheack-group').prop('checked', false);
+                $('.button-create-group').css("display", "none");
+                $('.if-arrayGroup').empty();
+                $('.if-arrayGroup').append(noSelectedMemberYet);
+                $(".if-arrayGroup").css("background-color", "#D32535"); 
+                alert(data.message)
+            }
+         })
 
 
 });
@@ -1470,10 +1609,13 @@ $(".say_hi").on('submit',function(e){
 
 
 // getConversations();
-
+// window.addEventListener('popstate', function (event) {
+// 	// Log the state data to the console
+// 	// alert(event.state);
+// });
 $(document).ready(function () {
     
-    getConversations();
+    getConversations(false);
 
 
     // $('#groupForm').validate({ // initialize the plugin

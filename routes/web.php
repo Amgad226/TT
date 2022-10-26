@@ -30,10 +30,11 @@ Route::get('as',function(){
 
     return response('you shoud login');})->name('loginn');
 
-Route::get('/a/{id?}',[MessengerController::class,'index'])->middleware('auth:sanctum')->name('messenger');
+Route::get('/a/{id?}',[MessengerController::class,'index'])->middleware('auth')->name('messenger');
 
-Route::view('','messenger')->middleware('auth');
-Route::view('aa','messenger_copy');
+Route::view('/','messenger')->middleware('auth');
+// Route::view('aa','messenger_copy');
+// Route::view('we','welcome');
 
 Auth::routes();
 

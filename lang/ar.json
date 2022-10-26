@@ -27,7 +27,7 @@
     "create":"انشاء",
     "Enter a chat name":"ادخل اسم المجموعة",
     "Description":"وصف المجموعة",
-    "no member yet":"لم يتم تحديد اعضاء بعد",
+    "no selected members yet":"لم يتم تحديد اعضاء بعد",
     "Enter chat name and add an optional photo.":"ادخل اسم ووصف وصورة اختيارة ",
     "Add":"اضافة",
     "Password Changed":"تغيير كلمة المرور ",
@@ -36,7 +36,9 @@
     "is typing":"يكتب الان",
     "Hide": "رفض",
     "Confirm":"قبول",
-    "Users":"المستخدمين"
+    "Users":"المستخدمين",
+    "Delete for all":"الحذف لدى الجميع"
+    
 
 
 }

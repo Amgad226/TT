@@ -53,6 +53,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'deviceToken' => ['required'],
+
         ]);
     }
 
@@ -68,7 +70,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-  
+            'deviceToken'=>$data['deviceToken'],
             'img' =>'https://ui-avatars.com/api/?background=0d8abc&color=fff&name='.$data['name']
         ]);
     }
