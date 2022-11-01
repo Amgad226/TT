@@ -2,10 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <!-- Head -->
-    {{-- <div class="message-text"> --}}
-        {{-- {{Auth::user()->img}} --}}
-        
+    <!-- Head -->        
         <head>
         <meta name="theme-color" content="#6777ef"/>
         <link rel="apple-touch-icon" href="{{ asset('img/logo.png') }}">
@@ -16,106 +13,160 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>TT</title>
         <link rel="shortcut icon" href="{{asset('img/logo.png')}}" type="image/x-icon">
-        {{-- {{asset('img/logo.png')}} --}}
         <!-- Favicon -->
-        <link rel="shortcut icon" href="./assets/img/favicon/favicon.ico" type="image/x-icon">
 
         <!-- Font -->
-        <link rel="preconnect" href="https://fonts.gstatic.com">
-    	<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700" rel="stylesheet">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
+        {{-- <link rel="preconnect" href="https://fonts.gstatic.com"> --}}
+        {{-- <link rel="stylesheet" href="{{asset('assets/css/font.Roboto.css')}}"> --}}
+        <link rel="stylesheet" href="{{asset('assets/css/Material.Icons.css')}}">
+        
+        
         <!-- Template CSS -->
-        {{-- <link rel="stylesheet" href="{{asset('assets/css/template.bundle.css')}}"> --}}
         <link rel="stylesheet" href="{{asset('assets/css/template.dark.bundle.css')}}" >
-        {{-- <link rel="stylesheet" href="{{asset('assets/css/a.css')}}" > --}}
-        {{-- <link rel="stylesheet" type="text/css" href="assets/css/template.bundle.css"> --}}
+
+        <style>
+            .shadow{
+                box-shadow: 0px -0px 3px 1px #4C6AAF!important;
+              }
+        </style>
     </head>
 
 
     
     <body>
-        {{-- <input type="file" accept="image/*" />  --}}
+        <!-- secondery loader -->
         <div class="send-image-loader lds-ripple " style="display:none;  top: 40%;  right: 35%;  z-index: 100000;  position: absolute;"><div></div><div></div></div>
-<style>
-    .lds-ripple {
-  display: inline-block;
-  position: relative;
-  width: 80px;
-  height: 80px;
-    }
-    .lds-ripple div {
-      position: absolute;
-      border: 4px solid #fff;
-      opacity: 1;
-      border-radius: 50%;
-      animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-    }
-    .lds-ripple div:nth-child(2) {
-      animation-delay: -0.5s;
-    }
-    @keyframes lds-ripple {
-      0% {
-        top: 36px;
-        left: 36px;
-        width: 0;
-        height: 0;
-        opacity: 0;
-      }
-      4.9% {
-        top: 36px;
-        left: 36px;
-        width: 0;
-        height: 0;
-        opacity: 0;
-      }
-      5% {
-        top: 36px;
-        left: 36px;
-        width: 0;
-        height: 0;
-        opacity: 1;
-      }
-      100% {
-        top: 0px;
-        left: 0px;
-        width: 72px;
-        height: 72px;
-        opacity: 0;
-      }
-    }
-</style>
+        <style>
+            .lds-ripple {
+          display: inline-block;
+          position: relative;
+          width: 80px;
+          height: 80px;
+            }
+            .lds-ripple div {
+              position: absolute;
+              border: 4px solid #fff;
+              opacity: 1;
+              border-radius: 50%;
+              animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+            }
+            .lds-ripple div:nth-child(2) {
+              animation-delay: -0.5s;
+            }
+            @keyframes lds-ripple {
+              0% {
+                top: 36px;
+                left: 36px;
+                width: 0;
+                height: 0;
+                opacity: 0;
+              }
+              4.9% {
+                top: 36px;
+                left: 36px;
+                width: 0;
+                height: 0;
+                opacity: 0;
+              }
+              5% {
+                top: 36px;
+                left: 36px;
+                width: 0;
+                height: 0;
+                opacity: 1;
+              }
+              100% {
+                top: 0px;
+                left: 0px;
+                width: 72px;
+                height: 72px;
+                opacity: 0;
+              }
+            }
+        </style>
 
+        <div class="popup d-none "
+         style="margin: 0;margin-right: -50%;transform: translate(-50%, -50%);z-index:10000;/* Fallback color */background-color: rgba(0,0,0, 0.8);/* Black w/opacity/see-through */color: white;font-weight: bold;border: 3px solid #f1f1f1;position: absolute;top: 45%;left: 50%;transform: translate(-50%, -50%);animation: profile-in .3s ;padding: px;text-align: center;">
 
+               <div style="display: flex; flex-direction: row ;justify-content: space-between">
+
+                   <p style="font-size:28px;height:30px;width: calc(100% /2);margin-left:90px;margin-top:20px; background-color:" >edit profile </p>
+                   <div  style="height:22px;width: calc(100% /15);background-color:#a70604; position:;left:90%;top:2%" onclick="{popupFun()}" class=" icon icon-xl   exit">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"class="feather feather-x"> <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                   </div>
+               </div>
+               <hr>
+                   <div style="display: flex; flex-direction: column ;justify-content: space-between;margin-bottom:40px " >
+                       <div style="height:100/2%; margin: 10px;  width:320px;">
+                          <span>new name</span>
+                          <input style="color:var(--arrow);height:100/2%; text-align:center;width:330px;" class=" input-group-text new_name username" name="new_name" type="text" value="{{Auth::user()->name}}">
+                       </div>  
+                       <div style="height:100/2%; margin: 10px;  width:320px;">
+                           <span>new phone</span>
+                           <input style="color:var(--arrow);height:100/2%; text-align:center;width:330px;" class=" input-group-text new_name username" name="new_name" type="text" value="09154891589  {{Auth::user()->phone}}">
+                        </div>  
+                   {{-- <br> --}}
+                       <div style="height:100/2% ;margin: 10px;width:320px">
+                           <span style="padding-right:10px; ">new img</span>
+                           <input   id="upload-profile-photo"  style="height:100/2%; color:var(--arrow);text-align:center;margin-left:0%" class=" input-group-text new_img " name="new_img" type="file" value=".">
+                       </div>
+                   
+                   </div>
+                   <div style="color:var(--arrow);width:330px;margin-bottom:5px" onclick="{fetchUpdateName();}" class="icon icon-xl  btn  btn btn-secondary">
+                       send
+                   </div>
+               
+               
+                   {{-- <button onclick="{popupFun();fetchUpdateName();}">send</button> --}}
+        </div>
+
+        <!-- primary loader -->
         <div class="hide" id="Loader" style="  top: 40%;  right: 35%;  z-index: 100000;  position: absolute;">
             <div class="loader"></div>
         </div>
-        
+
         <!-- Notification -->
-        <div class="toast" style="  top: 10%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: example;animation-duration: 3s;">
+        <!-- toast new message -->
+        <div class="toast toast-recive" style="  top: 10%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: example;animation-duration: 3s;">
             <div class="goToChat"  onclick="{open_chat($(this).attr('chat-id'));   $('.toast').toast('hide');  }"  chat-id=1  style=" max-height:85px;  max-width:240px;min-width:240px;min-height:85  ;overflow: hidden;  ">
                 <div class="toast-body " style="  ;border: 3px rgb(32, 3, 138) solid;" >
                     <div  style="  font-size: 24px; "><i class="headarToast"><p>Toast</p></i></div>
-                    <div class="bodyToast" style=" font-size: 12px;max-height:8px;  max-width:240px;">toast  dunread-message-countsd asda s asdasdas</div>
+                    <div class="bodyToast" style=" font-size: 12px;max-height:8px;  max-width:240px;">hi amgad you need help ?</div>
                 </div>
             </div>
         </div>
-        <!-- Notification -->
+        <!--toast change password and create grope validation-->
+        <div class="toast toastPassword "  style="top: 22%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: toastPassword;animation-duration: 3s;">
+                <div class="toast-body "onclick="{console.log(213); $('.toastPassword').toast('hide') }" style="  ;border: 3px rgb(32, 3, 138) solid;" >
+                    {{-- <div  style="  font-size: 24px; "><i class="headarToast"><p>password</p></i></div> --}}
+                    <div class="bodyToastPassword" style=" font-size: 18px;  max-width:240px;"> passwoed is wrong bro need </div>
+                </div>
+        </div>
+           <!--toast say hi -->
+        <div class="toast toast-send-hi "  style="top: 22%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: toastPassword;animation-duration: 3s;">
+                <div class="hi-goToChat"  onclick="{open_chat($(this).attr('chat-id'));   $('.toast-send-hi').toast('hide');  }"  chat-id=1>
+                    <div  class="hi-toast-body " style="border: 3px rgb(32, 3, 138) solid;height:80px; width:250px;" >
+                        <div style=" margin: 10px 15px" >
+                        <div style="  font-size: 20px; " ><i class="hi-headarToast"><p>you send hi,to amgad</p></i> </div>
+                        <div class="hi-bodyToast" style=" font-size: 12px;  max-width:240px;"> click here to go complete chat</div>
+                    </div>
+                    </div>
+                </div>
+        </div>
 
-        
         <!-- Layout -->
-        <div class="layout overflow-hidden">
-
+        <div class="layout overflow-hidden " >
+       
             <!-- Navigation -->
             <nav class=" navigation d-flex flex-column text-center navbar navbar-light hide-scrollbar">
                 <!-- logo -->
                 
                  <a href="#" title="TT" class="d-none d-xl-block mb-6  welcome-text to-return-home" onclick="{ 
                      $(`#soso`).empty();
-                     play();
-                  
-                    $(`.toast`).toast({ delay: 6000 });
-                    $('.toast').toast('show'); 
+                     response_conversation_id=0
+                    //  play();
+                    // $(`.toast`).toast({ delay: 6000 });
+                    // $('.toast').toast('show'); 
                      }">
                     <svg version="1.1" width="46px" height="46px" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 46 46" enable-background="new 0 0 46 46" xml:space="preserve">
                         <polygon opacity="0.7" points="45,11 36,11 35.5,1 "/>
@@ -235,7 +286,7 @@
                         <a href="#" class="nav-link p-0 mt-lg-2" data-bs-toggle="modal" data-bs-target="#modal-profile">
                             <div class="avatar avatar-online mx-auto d- d-xl-block">
                                 <div class="avatar ">
-                                    <img class="avatar-img" src="{{asset(Auth::user()->img)}}" alt="">
+                                    <img class="avatar-img update-profile-img" src="{{asset(Auth::user()->img)}}" alt="">
                                 </div>
                             </div>
                         </a>
@@ -312,7 +363,7 @@
                                                                     <span class="avatar-text bg-primary add-group-img span-icon-group">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                                                                     </span>
-                                                                    <img style="display: none" class="avatar-img" src="{{Auth::user()->img}}" alt="" id="blah">
+                                                                    <img style="display: none" class="avatar-img" src="" alt="" id="blah">
         
                                                                     <div class="badge badge-lg badge-circle bg-primary border-outline position-absolute bottom-0 end-0">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
@@ -589,8 +640,8 @@
                                             <div class="row align-items-center gx-5">
                                                 <div class="col-auto">
                                                     <div class="avatar">
-                                                        <img  data-action='zoom' src="{{Auth::user()->img}}" alt="#" class="avatar-img">
-
+                                                        <img  data-action='zoom' src="{{Auth::user()->img}}" alt="#" class="avatar-img update-profile-img">
+                                                      
                                                         <div class="badge badge-circle bg-secondary border-outline position-absolute bottom-0 end-0">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                                                         </div>
@@ -599,7 +650,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <h5>{{Auth::user()->name}}</h5>
+                                                    <h5 class="username">{{Auth::user()->name}}</h5>
                                                     <p>{{Auth::user()->email}}</p>
                                                 </div>
                                            
@@ -649,17 +700,17 @@
                                                                 <form id = 'change_pass' action="{{route('change_password')}}" method="POST" autocomplete="on">
                                                                     @csrf
                                                                     <div class="form-floating mb-6">
-                                                                        <input  name='old_pass' type="password" class="form-control  " id="profile-current-password" placeholder="{{__('Current password')}}" autocomplete="">
+                                                                        <input  name='current_password' type="password" class="form-control  " id="profile-current-password" placeholder="{{__('Current password')}}" autocomplete="">
                                                                         <label for="profile-current-password">{{__('Current password')}}</label>
                                                                     </div>
 
                                                                     <div class="form-floating mb-6">
-                                                                        <input name='new_pass'type="password" class="form-control " id="profile-new-password" placeholder="{{__('New password')}}" autocomplete="">
+                                                                        <input name='new_password'type="password" class="form-control " id="profile-new-password" placeholder="{{__('New password')}}" autocomplete="">
                                                                         <label for="profile-new-password">{{__('New password')}}</label>
                                                                     </div>
 
                                                                     <div class="form-floating mb-6">
-                                                                        <input name='c_pass'type="password" class="form-control" id="profile-verify-password" placeholder="{{__('Verify password')}}" autocomplete="">
+                                                                        <input name='verify_password'type="password" class="form-control" id="profile-verify-password" placeholder="{{__('Verify password')}}" autocomplete="">
                                                                         <label for="profile-verify-password">{{__('Verify password')}}</label>
                                                                         <input  class="" type="checkbox" onclick="showHidePassword()">{{__('Show password')}}
                                                                         
@@ -746,14 +797,50 @@
                     <div  class="d-flex flex-column h-100 position-relative">
                       
                         <!-- Chat: Header -->
-                        {{-- <audio class=""  id="ooo" controls>
-                            <source src="{{asset("sound/1.wav")}}" type="audio/wav" autoplay="autoplay">
-                          
-                          asdas
-                          </audio> --}}
+                     
                         <div class="welcome-text welcome"  style="">
                              {{__('Welcome in TT')}} 
+                            
+                             
+                             {{-- <button onclick="cheakTokennnn()">checkToken</button> --}}
+
                         </div>
+                        <script>
+            
+                            Bearer ='6|CBthXqMu51f1klz593yAt06m4wHIGpu5FeMSz5Ot';
+                            function cheakTokennnn() {
+                                      
+                                      let Token='{{Cookie::get('apiToken')}}';
+                                      var FormDataa = new FormData;
+                                      FormDataa.append('token',Token);
+                                      fetch('api/cheakToken',{
+                                        method:'post',
+                                        body:FormDataa ,
+                                        headers: {'Authorization':`Bearer ${Token}`,'Content-Type':'application/json'}
+                                                  
+                                         }).then(res=>{
+                                             return res.json()
+                                           }).then(data=>{
+                                             console.log(data)
+                                           });
+                                    }
+                   
+                            // function ff(){
+                            //     fetch('/api/test', {
+                            //     method: 'get',
+                                
+                            //     headers: {
+                            //     'Authorization':`Bearer ${tt}`
+                            //     }
+                            //     }).then(response=>{
+                                 
+                            //        return response.json()
+                                 
+                            //         }).then(data=>{
+                            //             alert(JSON.stringify(data))
+                            //     });
+                            // }
+                        </script>
                            
                       <div class="app-bar-name-and-img" style="display: none;">  
                             <div class="chat-header border-bottom py-4 py-lg-7">
@@ -859,7 +946,7 @@
                             <!-- Chat: Files -->
 
                             <!-- Chat: Form -->
-                            <form  style="top: 20px;" id="targetttt" class="chat-form rounded-pill bg-dark" data-emoji-form="" method= "post" action="{{route('api.message.store')}}">
+                            <form  style="top: 20px; z-index: 200000;  ; " id="targetttt" class=" chat-form rounded-pill bg-dark" data-emoji-form="" method= "post" action="{{route('api.message.store')}}">
                                @csrf
                                <input id ="conversation-id-input-target" type="hidden" name= "conversation_id">
                                <input id ="" type="hidden" name= "type" value="text">
@@ -886,7 +973,7 @@
 
                                     <div class="col">
                                         <div class="input-group">
-                                            <input name ="body" class="input-have-message form-control px-0"onkeyup="countChar(this)"  placeholder="{{__('Type your message...')}}" rows="1" data-emoji-input="" data-autosize="true">
+                                            <input name ="body" class="input-have-message form-control px-0"onkeyup="countChar(this)"  placeholder="{{__('Type your message...')}}" rows="1" data-emoji-input="" data-autosize="true" autocomplete="off">
 
                                             <a href="#" class="input-group-text text-body pe-0" >
                                                 <div class="holder">
@@ -894,7 +981,7 @@
                                                         <button class=" ss" type="button"  style=";padding: 0px px;background-color:transparent   ; border: 0px solid #900; border-radius:20px"   onclick="{return false; }">
                                                             <span class="icon icon-lg">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-                                                                        <path fill="var(--arrow)" d="M36 57V23c0-7.7 6.3-14 14-14s14 6.3 14 14v34c0 7.7-6.3 14-14 14s-14-6.3-14-14zm42 0c0-1.1-.9-2-2-2s-2 .9-2 2c0 13.2-10.8 24-24 24S26 70.2 26 57c0-1.1-.9-2-2-2s-2 .9-2 2c0 14.8 11.5 26.9 26 27.9V91h-7c-1.1 0-2 .9-2 2s.9 2 2 2h18c1.1 0 2-.9 2-2s-.9-2-2-2h-7v-6.1c14.5-1 26-13.1 26-27.9z"/>
+                                                                        <path fill="var(--bs-body-color)" d="M36 57V23c0-7.7 6.3-14 14-14s14 6.3 14 14v34c0 7.7-6.3 14-14 14s-14-6.3-14-14zm42 0c0-1.1-.9-2-2-2s-2 .9-2 2c0 13.2-10.8 24-24 24S26 70.2 26 57c0-1.1-.9-2-2-2s-2 .9-2 2c0 14.8 11.5 26.9 26 27.9V91h-7c-1.1 0-2 .9-2 2s.9 2 2 2h18c1.1 0 2-.9 2-2s-.9-2-2-2h-7v-6.1c14.5-1 26-13.1 26-27.9z"/>
                                                                     </svg>
                                                             </span>
                                                         </button>
@@ -952,7 +1039,7 @@
           <!-- Chat: Info -->
           {{-- <div class="tab-content h-100" role="tablist"> --}}
 
-        <div class="group-description  offcanvas offcanvas-end offcanvas-aside" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-more-group">
+         <div class="group-description  offcanvas offcanvas-end offcanvas-aside" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvas-more-group">
             <div class="offcanvas-header py-4 py-lg-7 border-bottom">
                 <a class="icon icon-lg text-muted" href="#" data-bs-dismiss="offcanvas">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -961,17 +1048,17 @@
             <!-- Offcanvas Header -->
 
             <!-- Offcanvas Body -->
-         <div class="offcanvas-body hide-scrollbar">
+            <div class="offcanvas-body hide-scrollbar">
             <!-- Avatar -->
             <div class="text-center py-10">
                 <div class="row gy-6">
-                    <div class="col-12">
+                    <div class="col-11">
                         <div class="avatar avatar-xl mx-auto">
-                            <img class="group-description-img" src="{{Auth::user()->img}}" alt="#" class="avatar-img">
+                            <img class="group-description-img" src="" alt="#" class="avatar-img">
                         </div>
                     </div>
 
-                    <div class="col-12">
+                    <div class="col-11">
                         <h4 class="group-description-name">Bootstrap Community</h4>
                         <p class="group-description-description"> Bootstrap is an open source <br> toolkit for developing web with <br> HTML, CSS, and JS.</p>
                     </div>
@@ -979,13 +1066,9 @@
             </div>
             <!-- Avatar -->
 
-
-            
-
-
             <!-- Tabs -->
-            <ul class="nav nav-pills nav-justified" role="tablist">
-                <li class="nav-item">
+            <ul class="nav nav-pills nav-justified " role="tablist">
+                <li class="nav-item shadow">
                     <a class="nav-link active" data-bs-toggle="pill" href="#offcanvas-group-tab-members" role="tab" aria-controls="offcanvas-group-tab-members" aria-selected="true">
                         People
                     </a>
@@ -1013,32 +1096,7 @@
                 <!-- Members -->
                 <div class="tab-pane fade show active" id="offcanvas-group-tab-members" role="tabpanel">
                     <ul class=" group-description-members list-group list-group-flush">
-                        <li class="list-group-item">
-                            <div class="row align-items-center gx-5">
-                                <!-- Avatar -->
-                                <div class="col-auto">
-                                    <a href="#" class="avatar avatar-online">
-                                        <img class="avatar-img" src="{{Auth::user()->img}}" alt="">
-                                    </a>
-                                </div>
-                                <!-- Avatar -->
-
-                                <!-- Text -->
-                                <div class="col">
-                                    <h5><a href="#">Michael Fuller</a></h5>
-                                  
-                                </div>
-                                <!-- Text -->
-
-                                <!-- Owner -->
-                                {{-- <div class="col-auto">
-                                    <span class="extra-small text-primary">owner</span>
-                                </div> --}}
-                                <!-- Owner -->
-
-                           
-                            </div>
-                        </li>
+                   
                                                 
                     </ul>
                 </div>
@@ -1049,7 +1107,7 @@
                     <div class="row row-cols-3 g-3 py-6">
                         <div class="col">
                             <a href="#" data-bs-toggle="modal" data-bs-target="#modal-media-preview" >
-                                <img class="img-fluid rounded" data-action="zoom"src="{{Auth::user()->img}}" alt="">
+                                <img class="img-fluid rounded update-profile-img " data-action="zoom"src="{{Auth::user()->img}}" alt="">
                             </a>
                         </div>
                     </div>
@@ -1130,25 +1188,18 @@
             <!-- Tabs: Content -->
             </div>
             <!-- Offcanvas Body -->
-            </div>
+         </div>
 
 
         </div>
-    {{-- </div> --}}
-
-
-
-        
-     
-
 
         <!-- Modal: Profile -->
-         <div class="modal fade" id="modal-profile" tabindex="-1" aria-labelledby="modal-profile" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-fullscreen-xl-down">
-            <div class="modal-content">
+         <div class="modal fade" id="modal-profile" tabindex="-1" aria-labelledby="modal-profile" aria-hidden="true" >
+            <div class="modal-dialog modal-dialog-centered modal-fullscreen-xl-down" >
+            <div class="modal-content"  >
 
                 <!-- Modal body -->
-                <div class="modal-body py-0">
+                <div class="modal-body py-0"  >
                     <!-- Header -->
                     <div class="profile modal-gx-n">
                         <div class="profile-img text-primary rounded-top-xl">
@@ -1161,13 +1212,37 @@
 
                         <div class="profile-body">
                             <div class="avatar avatar-xl">
-                                <img class="avatar-img"  data-action='zoom' src="{{asset(Auth::user()->img)}}" alt="#">
+                                <img class="avatar-img update-profile-img"   src="{{asset(Auth::user()->img)}}" alt="#">
+                                <div class="badge badge-lg badge-circle bg-primary border-outline position-absolute bottom-0 end-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                </div>
+                                <label class="stretched-label mb-0" for="upload-profile-photo"></label>
                             </div>
-                            {{-- <input id="upload-profile-photo" class="d-none" type="file"> --}}
-                            {{-- <label class="stretched-label mb-0" for="upload-profile-photo"></label> --}}
                             
-                            <h4 class="mb-1">{{Auth::user()->name}}</h4>
+                            {{-- <input id="upload-profile-photo"  class="d-none" type="file"> --}}
+                       
+                            <div style="">
+                                <div class="mb-1 username">{{Auth::user()->name}}</div>
+                                <div class="btn btn-sm btn-icon btn-dark"   onclick="{
+                                  console.log(123)
+                                  pop=true;
+                                    $('.popup').removeClass('d-none');
+                                    $('.layout').addClass('to-edit-name');
+                                    // $('.modal').addClass('to-edit-name');
+                                    $('.modal').addClass('d-none');
+                                 
+                            }">
+                            {{-- edit --}}
+                                    <svg   fill="white"  height="50" viewBox="0 0 20 20" width="50" id="cds-4">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.47 2.888L4.544 13.732l-1.51 3.233 3.214-1.501L17.175 4.608a1.34 1.34 0 00.012-1.732 1.34 1.34 0 00-1.718.012zm2.397-.746a2.34 2.34 0 00-3.065 0l-.012.011L3.715 13.148l-2.75 5.887 5.866-2.739L17.904 5.293l.011-.013a2.34 2.34 0 000-3.09l-.048-.048z" fill="white"
+                                         ></path>
+                                         <path fill-rule="evenodd" clip-rule="evenodd" d="M16.257 6.194l-2.44-2.43.706-.708 2.44 2.43-.706.708zM6.216 16.233l-2.44-2.44.708-.707 2.44 2.44-.708.707z" fill="white"  ></path>
+                                    </svg>
+                                </div>
+                            </div>
+                           
                             {{-- <p>last seen 5 minutes ago</p> --}}
+
                         </div>
                     </div>
                     <!-- Header -->
@@ -1234,13 +1309,11 @@
                     <!-- List -->
                 </div>
                 <!-- Modal body -->
-                {{-- <iframe id="ooo" src="{{asset("sound/1.wav")}}" allow="autoplay"> --}}
                  
 
             </div>
             </div>
          </div>
-
 
         <!-- Layout -->
         
@@ -1248,7 +1321,7 @@
     
         <!-- Scripts -->
         <script>
-         
+            let tokenn = "{{csrf_token()}}"
             let userId=                {{    Auth::id();            }} ;
             let userimg=              "{{    Auth::user()->img;     }}";
             let username=             "{{    Auth::user()->name     }}";
@@ -1260,111 +1333,59 @@
             let noSelectedMemberYet  ="{{__('no selected members yet')}}"
             let stringPasswordChanged="{{    __('Password Changed') }}";
             let stringPasswordUpdated="{{    __('Your password has been updated successfully.')}}";
-            let sound= '{{asset("sound/tele.mp3")}}';
+            let tele=      '{{asset("sound/tele.mp3")}}';
+            let soundErorr= '{{asset("sound/error.mp3")}}';
+            let soundDone=  '{{asset("sound/done.mp3")}}';
             let logo = "{{asset('img/logo.png')}}"
-    
-        
-
+            let gif= "{{asset('/img/loading.gif')}}"
+            var envTyping=" {{ config('app.envTyping') }}"
+            console.log(envTyping)
         </script>
 
         <script src="{{ asset ('assets/js/template.js')}}" ></script>
         <script src="{{ asset ('assets/js/vendor.js')  }}" ></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        {{-- <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script> --}}
-        <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-        {{-- <script src="{{ asset ('assets/js/ss.js')  }}" crossorigin="anonymous"></script> --}}
         <script src="{{ asset ('assets/js/moment.js')  }}" crossorigin="anonymous"></script>
-        {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> --}}
-        {{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
-        {{-- <script src="{{asset('pushJS/push.js')}}"></script>  --}}
+        <script src="{{ asset ('js/jquery.js')}}" ></script>
+        <script src="{{ asset ('js/7.2.pusher.min.js')}}" ></script>
         <script src="{{ asset ('js/pusher.js')}}" ></script>
         <script src="{{ asset ('js/record.js')}}" ></script>
-        {{-- <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script> --}}
-        <script src="https://markjivko.com/dist/recorder.js"></script>
-        @vite('resources/js/app.js')    
-        <script src="{{ asset ('js/messenger.js')}}" ></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.core.min.js"></script>
-
-        <script>
-   
-      </script>
-        <script>
-
-            function play() {
-                   
-                  var url = sound;
-                        window.AudioContext = window.AudioContext||window.webkitAudioContext; //fix up prefixing
-                        var context = new AudioContext(); //context
-                        var source = context.createBufferSource(); //source node
-                        source.connect(context.destination); //connect source to speakers so we can hear it
-                        var request = new XMLHttpRequest();
-                        request.open('GET', url, true); 
-                        request.responseType = 'arraybuffer'; //the  response is an array of bits
-                        request.onload = function() {
-                            context.decodeAudioData(request.response, function(response) {
-                                source.buffer = response;
-                                source.start(0); //play audio immediately
-                                source.loop = false;
-                            }, function () { console.error('The request failed.'); } );
-                        }
-                        request.send();
-            }
-
-            function countChar(val) {
-                var length = val.value.length;
-                // console.log(length);
-                if( length > 0 ) 
-                Typing(true);
-            
-                 else
-                Typing(false); 
-            }
-            
-          const Typing = (boolean) => {
-            setTimeout( () => {
-                console.log('typing'+boolean);
-                let channel = Echo.private('chat')
+        <script src="{{ asset ('js/markjivo.recorder.js')}}" ></script>
+        
+        @if ( config('app.envTyping')  ==true)
        
-                  channel.whisper('typing', {
-                    user_id: userId,
-                    conversation_id:response_conversation_id,
-                    typing: boolean
-                  })
-            }, 300)
-
-            }
-         
-         
-         
-         
-         
-            setTimeout( () => {
+         @vite('resources/js/app.js')    
+         <script>
+             console.log('Typing working')
             
-                Echo.private('chat')
-                .listenForWhisper('typing', (e) => {
-                    // console.log(e.conversation_id);
-                    
-                    // if(userId == e.user_id)
-                    // {
-                        if(response_conversation_id==e.conversation_id)
-                        {
-                         if(e.typing)
-                             $('#is-typing').removeClass('d-none')
-                            
-                         else
-                             $('#is-typing').addClass('d-none')        
+             setTimeout( () => {
+                
+             Echo.private('chat')
+             .listenForWhisper('typing', (e) => {
+                 // console.log(e.conversation_id);
+                 
+                 // if(userId == e.user_id)
+                 // {
+                     if(response_conversation_id==e.conversation_id)
+                     {
+                      if(e.typing)
+                          $('#is-typing').removeClass('d-none')
+                         
+                      else
+                          $('#is-typing').addClass('d-none')        
+                        
+                      }
+                 // }
+                 // this.typing = e.typing;
+                     
+                     
+             })
+             }, 3000)
+            
+         </script>
+        @endif
+        
+        <script src="{{ asset ('js/messenger.js')}}" ></script>
 
-                         }
-                    // }
-                    // this.typing = e.typing;
-                  
-
-                })
-            }, 3000)
-        
-        
-        
-        </script>
      
 {{-- <script src="{{ asset('/sw.js') }}"></script>
 <script>

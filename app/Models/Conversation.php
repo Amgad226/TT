@@ -13,7 +13,7 @@ class Conversation extends Model
     protected $table = 'conversations';
 public $timestamps=false;
     protected $fillable=[
-        'user_id','lable' ,'type','img', 'last_message_id'
+        'user_id','lable' ,'type','img', 'last_message_id','description'
     ];
     
     protected function img(): Attribute

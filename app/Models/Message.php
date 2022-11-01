@@ -13,7 +13,10 @@ class Message extends Model
     use SoftDeletes;
     protected $fillable=
     [
-        'conversation_id','user_id','body','type','to',
+        'conversation_id','user_id','body','type','to','attachment',
+    ];
+    protected $casts = [
+        'attachment' => 'array',
     ];
     protected function createdAt(): Attribute
     {

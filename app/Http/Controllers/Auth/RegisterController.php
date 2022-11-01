@@ -66,12 +66,17 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // dd( $data['img']);
+        // $uniqid=uniqid();
+        //  $link_attachment = $data['img']->move('img',$uniqid.'.'.$data['img']->getclientoriginalextension());
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'deviceToken'=>$data['deviceToken'],
             'img' =>'https://ui-avatars.com/api/?background=0d8abc&color=fff&name='.$data['name']
+            // 'img' =>$link_attachment,
         ]);
     }
 }

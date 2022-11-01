@@ -25,7 +25,21 @@
 <div class="icon d-flex align-items-center justify-content-center">
 <span class="fa fa-user-o"></span>
 </div>
-
+<div class="welcome-text welcome"  style="">
+  {{__('Welcome in TT')}} 
+  <button onclick="f()">send test</button>
+</div>
+<script>
+ function f(){
+     fetch('api/test',{
+         method:'get',
+     }).then(response=>{
+         return response.json()
+     }).then(data=>{
+         alert(JSON.stringify(data))
+     });
+ }
+</script>
 <h3 class="text-center mb-4">Sign In</h3>
 <form method="POST" action="{{ route('login') }}">  
     @csrf    

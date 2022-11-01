@@ -17,6 +17,8 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
+    'storeGoogleDrive'=>env('STORE_IN_GOOGLE_DRIVE',false),
+    'envTyping'=>env('envTyping',false)   , 
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -182,6 +184,8 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
+        App\Providers\GoogleDriveServiceProvider::class,
+
         /*
         
         * Package Service Providers...

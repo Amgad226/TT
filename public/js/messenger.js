@@ -1,6 +1,3 @@
-
-const a ='http://127.0.0.1:8000';
-const tokenn =  $('meta[name="csrf-token"]').attr('content')
 // count of message un-read          {done}
 // onclick toust go to chat          {done}
 // store theme and lang in cookie    {done}
@@ -25,43 +22,70 @@ const tokenn =  $('meta[name="csrf-token"]').attr('content')
 // count message un readed           {done} 
 // check to send message             {done} 
 // firebase notification             {done} 
+// toast validation                  {done} 
+// edit profile                      {done} 
 // delete chat
 // voice chat  
+
+
 // ----------------------------------------
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
 function inputImageMessage(){
     let fileElm= document.createElement('input');
     //    fileElm.type = "text";
     //    fileElm.accept('jpg');
     fileElm.setAttribute('type','file');
     
-    fileElm.addEventListener('change',()=>{
-
+    fileElm.addEventListener('change',(e)=>{
+        var random=makeid(5)
+        // alert(random);
+        // return
         var filePath = fileElm.value;
-         
-        // Allowing file type
-        var allowedExtensions =
-                /(\.jpg|\.jpeg|\.png|\.JPG|\.JPEG|\.PNG|\.gif)$/;
-         
-        if (!allowedExtensions.exec(filePath)) {
+        extension= fileElm.value.split('.').pop();
+      console.log(extension);
+
+        // var allowedExtensions_ =/(\.jpg|\.jpeg|\.png|\.JPG|\.JPEG|\.PNG|\.gif)$/;
+        
+        const allowedExtensions = ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG","webp"];
+        if (allowedExtensions.includes(extension)==false) {
             alert('Invalid file type');
             fileElm.value = '';
-            return false;
+            return ;
+        }
+        // return;
+        // var x= URL.createObjectURL(e.target.files[0]);
+        var user={'img':`${userimg}`,"name":`${username}`}
+        var msgg = {
+            'body':`
+            <img id="${random}" width="200" class="img-fluid rounded" src="${gif}" data-action="zoom" alt="">
+            `,
+            'user':user
         }
 
+        addMessage(msgg,'message-out',true,false)
 
 
-
-       $('.send-image-loader').css('display','block')
+    // $('.send-image-loader').css('display','block')
     if(fileElm.files==0){
         return;
     }
+    
     let attachment=fileElm.files[0];
     const formData = new FormData();
 
     formData.append('type', 'img');
     formData.append('img',attachment);
     formData.append('conversation_id',response_conversation_id);
-    fetch('api/messages', {
+        fetch('api/messages', {
         method: 'Post',
         body: formData
       })
@@ -73,17 +97,20 @@ function inputImageMessage(){
                 return;
             }
        
-        var attachment =result.obj_msg.body
-    
-
-
-
-
-        var date = result.obj_msg.created_at
-        var msg={'body':attachment  ,'created_at':date ,'id':result.obj_msg.id};
-        // addMessage(msg,'message-out',true,true,true,record,date);//false
-        addMessage(msg,'message-out',true);
-        $('.send-image-loader').css('display','none')
+            
+            
+            
+            
+            
+            $('#'+random).attr('src', result.link_attachment);
+            
+            
+            
+        // var attachment =result.obj_msg.body
+        // var date = result.obj_msg.created_at
+        // var msg={'body':attachment  ,'created_at':date ,'id':result.obj_msg.id};
+        // addMessage(msg,'message-out',true);
+        // $('.send-image-loader').css('display','none')
                 
 
         })
@@ -103,8 +130,8 @@ function inputImageMessage(){
 
 function selectFile(){
     let fileElm= document.createElement('input');
- //    fileElm.type = "text";
- //    fileElm.accept('jpg');
+    //    fileElm.type = "text";
+    //    fileElm.accept('jpg');
     fileElm.setAttribute('type','file');
  
     fileElm.addEventListener('change',()=>{
@@ -143,9 +170,10 @@ function selectFile(){
                  alert(result.message);
                  return;
              }
+
          var attachment =result.obj_msg.body
          var date = result.obj_msg.created_at
-         var msg={'body':attachment  ,'created_at':date ,'id':result.obj_msg.id};
+         var msg={'body':attachment  ,'created_at':date ,'id':result.obj_msg.id ,'attachment':result.attachment,'type':result.obj_msg.type};
          // addMessage(msg,'message-out',true,true,true,record,date);//false
          addMessage(msg,'message-out',true);
         $('.send-image-loader').css('display','none')
@@ -170,7 +198,7 @@ function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
-  }
+}
 
 if(getCookie('theme')==`<link rel="stylesheet" type="text/css" href="assets/css/template.bundle.css">`){
     $('head').append(getCookie('theme'));
@@ -288,40 +316,48 @@ $("#targetttt").on('submit',function(e){
     data.append('conversation_id',response_conversation_id)
     data.append('body',body)
     data.append('title',username+' send message')
-    fetch(`api/send`,
-    {
-         method: 'POST',
-         body:data,
-        })
+    // fetch(`api/send`,{ method: 'POST', body:data, })
 
+     var random_class_to_add_message_id=makeid(5);
+     var deleteAction =makeid(5);
     // alert(body)
+    // console.log($(this).serialize())
+    // return;
+    // alert(1)
     $.post($(this).attr('action') ,$(this).serialize() , function(response){
-        $('.sended').css("visibility", "");
+        // $('.sended').css("visibility", "");
+        $(`.${deleteAction}`).removeClass("visibilty-hidden");
+        $(`.${random_class_to_add_message_id}`).attr('message-id',response.obj_msg.id);
+        
         // addMessage(response.obj_msg ,'message-out')
     }
     
     );
-
     var user={'img':`${userimg}`,"name":`${username}`}
-     
+    
     var msgg = {
-        'body':`<div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
-        <p>${body} <span class="sended" style="position:relative ;bottom:-12px;right:-10px;z-index:12;visibility:hidden"> 
-           <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-        width="15px" height="15px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;"
-        xml:space="preserve"><g>
-       <path fill="var( --bs-white)" d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704
-           c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704
-           C78.477,17.894,78.477,18.586,78.049,19.015z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
-        </svg></span>
-        </p></div>`,
-        
-        'user':user
+        'random_class_to_add_message_id':random_class_to_add_message_id,
+        'deleteAction':deleteAction,
+        'body': body,
+    //     'body':`<div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
+    //     <p>${body} <span class="sended" style="position:relative ;bottom:-12px;right:-10px;z-index:0;visibility:hidden"> 
+    //        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+    //     width="15px" height="15px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;"
+    //     xml:space="preserve"><g>
+    //    <path fill="var( --bs-white)" d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704
+    //        c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704
+    //        C78.477,17.894,78.477,18.586,78.049,19.015z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+    //     </svg></span>
+    //     </p></div>`,
+        'id':102,
+        'user':user,
+        'type':'text'
     }
-    addMessage(msgg,'message-out',true,false)
+    addMessage(msgg,'message-out',true,true ,'visibilty-hidden')
+    // addMessage(msgg,'message-out',true,false)
 
     $(this).find('.input-have-message').val('');
-    Typing(false)
+    // Typing(false)
 
 
 });
@@ -348,12 +384,25 @@ const addMessagesToGroup = function(msg ,c = '' ,isAnimate = true ,deleteAction=
         if(c=='')
         {
              something=something.replace('visibility:','visibility:hidden')
-          
+            //  ${something}
+        
         dir=`
         <img class="avatar" src="${msg.user.img}" alt="" style="">
         <div  style=" display: flex;flex-direction: column; ">
                 <p style=" font-size:;   position: relative;top: 5px; background-color:  ;margin-bottom:0px "> ${msg.user.name}</p>
-                ${something}
+                
+
+
+                <div class="message-text" >
+                        <p>${something} 
+                            <span class="sended  " style="position:relative ;bottom:-12px;right:-10px;z-index:0;visibility:">
+                                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"width="15px" height="15px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;"xml:space="preserve"><g><path fill="var( --bs-white)" d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704C78.477,17.894,78.477,18.586,78.049,19.015z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+                                </svg>
+                            </span>
+                        </p>
+                </div> 
+                
+                
         </div>   
         `;
         
@@ -362,7 +411,17 @@ const addMessagesToGroup = function(msg ,c = '' ,isAnimate = true ,deleteAction=
         else
         // else
         {
-            dir= something;
+            // dir= something;
+            dir=` 
+            <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
+                <p>${something} 
+                    <span class="sended  " style="position:relative ;bottom:-12px;right:-10px;z-index:0;visibility:">
+                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"width="15px" height="15px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;"xml:space="preserve"><g><path fill="var( --bs-white)" d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704C78.477,17.894,78.477,18.586,78.049,19.015z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+                        </svg>
+                    </span>
+                </p>
+            </div> `;
+
             if(deleteAction==true)
             {
             dropdown=`<div class="message-action">
@@ -405,8 +464,7 @@ const addMessagesToGroup = function(msg ,c = '' ,isAnimate = true ,deleteAction=
           `); 
     
 }
-const addMessage = function(msg ,c = '' ,isAnimate = true ,deleteAction=true ,){
-
+const addMessage = function(msg ,c = '' ,isAnimate = true ,deleteAction=true ,classDeletMessage=''){
     const $container = $('.form-ccontainer');
     if (isAnimate) 
     {
@@ -423,6 +481,65 @@ const addMessage = function(msg ,c = '' ,isAnimate = true ,deleteAction=true ,){
 
 
     var something=msg.body;
+    var link_attachment=msg.body;
+    // console.log(msg)
+    if(msg.type=='text')
+    {
+            something= `<div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
+                            <p>${msg.body} 
+                                <span class="sended ${msg.deleteAction} ${classDeletMessage}  " style="position:relative ;bottom:-12px;right:-10px;z-index:0;visibility:">
+                                    <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"width="15px" height="15px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;"xml:space="preserve"><g><path fill="var( --bs-white)" d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704C78.477,17.894,78.477,18.586,78.049,19.015z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+                                    </svg>
+                                </span>
+                            </p>
+                        </div> `
+    }
+
+    else if(msg.type=='img'){
+        something= `<img  width="200"  class="img-fluid rounded" src="${link_attachment}" data-action="zoom" alt="">`;
+
+    }
+
+    else if(msg.type=='audio')
+    {
+        // alert()
+        something=`
+        <audio style='border: 5px solid #2787F5; border-radius: 50px;'  controls ><source src="${link_attachment}" type="audio/WAV"></audio>
+        
+        <span class="sended ${msg.deleteAction} ${classDeletMessage}  "   style="position:absolute;right:23px; z-index:120;visibility:visiable"> 
+            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="12px" height="12px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;" xml:space="preserve"><g>
+               <path fill="#2787F5" d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704 c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704 C78.477,17.894,78.477,18.586,78.049,19.015z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+            </svg>
+        </span>`;
+    }
+   
+    else if(msg.type=='attachment')
+    {
+//     console.log(msg.attachment.link_attachment )
+// return;
+        // console.log(attachment)
+        something=`<div class="message-text">
+        <div class="row align-items-center gx-4">
+            <div class="col-auto">
+                <a href="${msg.attachment.link_attachment}" class="avatar avatar-sm" target="_blank">
+                    <div class="avatar-text bg-white text-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-down"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                    </div>
+                </a>
+            </div>
+            <div class="col overflow-hidden">
+                <h6 class="text-truncate text-reset">
+                    <a href="#" class="text-reset">${msg.attachment.name}</a>
+                </h6>
+                <ul class="list-inline text-uppercase extra-small opacity-75 mb-0">
+                    <li class="list-inline-item">${msg.attachment.stringSize}</li>
+                </ul>
+            </div>
+        </div>
+      </div>`;
+    }
+     
+
     var dropdown  = '' ;
 
         if(c=='')
@@ -433,28 +550,30 @@ const addMessage = function(msg ,c = '' ,isAnimate = true ,deleteAction=true ,){
         {
             if(deleteAction==true)
             {
-            dropdown=`<div class="message-action">
-            <div class="dropdown"  onclick="dropdown(this)">
-                    <a class="icon text-muted" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
-                    </a>
+               
+                dropdown=`<div class="message-action  ${msg.deleteAction} ${classDeletMessage} " >
+                <div class="dropdown"  onclick="dropdown(this)">
+                        <a class="icon text-muted" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                        </a>
 
-                    <ul id="dropdown-menu" class="dropdown-menu" style ='list-style-type: none' >
+                        <ul id="dropdown-menu" class="dropdown-menu" style ='list-style-type: none' >
 
-                        <li message-id=${msg.id} onclick ="{deleteMessge(this)}" style = 'background-color:var("--delete-message") '>
-                            <a class="dropdown-item d-flex align-items-center text-danger" href="#">
-                                <span class="me-auto" >${DeleteForAll}</span>
-                                <div class="icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                </div>
-                            </a>
-                        </li>
+                            <li  class=${msg.random_class_to_add_message_id} message-id=${msg.id} onclick ="{deleteMessge(this)}" style = 'background-color:var("--delete-message") '>
+                                <a class="dropdown-item d-flex align-items-center text-danger" href="#">
+                                    <span class="me-auto" >${DeleteForAll}</span>
+                                    <div class="icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                    </div>
+                                </a>
+                            </li>
 
-                    </ul>
-            </div>
-        </div>`;
-            }
+                        </ul>
+                    </div>
+                </div>`;
+             }
         }
+        // ${something}
              $("#soso").append(`
   
              <div class="name-to-group message ${c} ">
@@ -462,9 +581,9 @@ const addMessage = function(msg ,c = '' ,isAnimate = true ,deleteAction=true ,){
              <div class="message-inner" >
                  <div class="message-body">
                      <div class="message-content">
-                        ${something}
-
-                        ${dropdown}
+                    ${something}       
+        
+                    ${dropdown }
                      </div> 
                  </div>
 
@@ -488,7 +607,6 @@ Object.defineProperty(this, 'response_conversation_id', {
     get: function () { return u; },
     set: function (set) {
         // response_conversation_id = v;
-        // alert(boolTyping)
         u=set 
        
         $('#is-typing').addClass('d-none')  
@@ -500,6 +618,13 @@ Object.defineProperty(this, 'response_conversation_id', {
 
 $(`#chat-list`).on('click','[data-messages]',function(e){
     e.preventDefault();
+    // $(`#chat-list`)
+    // $(`.text-reset`).css('background-color','var(--bs-gray-dark)')
+    $(`.add-shadow`).removeClass('shadowww')
+    // $(this).css('background-color','green')
+    $(this).addClass('shadowww')
+
+    
                                          //to hide (Loader)
     open_chat($(this).attr('data-messages')  ,$(this));
     // $(this).css('background-color','red')
@@ -545,6 +670,7 @@ const showAllMessages=function(){
 }
 var arrayInviteToGroup=[];
 const open_chat=function(thiss, toLoader=''){
+    
     $('.group-description').css('visibility','hidden'); 
     $('.group-description').css('display','none'); 
     addLoader(toLoader)
@@ -616,6 +742,7 @@ const open_chat=function(thiss, toLoader=''){
         }
         else
         {
+            console.log(response)
             $('.group-description').css('visibility','visible'); 
             $('.group-description').css('display','block'); 
             $('.group-description-name').empty();
@@ -742,8 +869,30 @@ const open_chat=function(thiss, toLoader=''){
 
 $("#change_pass").on('submit',function(e){
     e.preventDefault();
+    $('.send-image-loader').css('display','block')
+
     $.post($(this).attr('action') ,$(this).serialize() , function(response){
-        alert(response.message)
+        // console.log(response.status)
+        if(response.status==0){
+            document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
+            $('#profile-current-password').val('')
+            play(soundErorr)
+
+        }
+        else{
+            document.documentElement.style.setProperty('--password', 'rgb(15, 161, 44)');
+            $('#profile-current-password').val('')
+            $('#profile-new-password').val('')
+            $('#profile-verify-password').val('')
+            play(soundDone)
+
+        }
+        $('.bodyToastPassword').empty()
+        $('.bodyToastPassword').append(response.message)
+        $(`.toastPassword`).toast({ delay: 3000 });
+        $('.toastPassword').toast('show'); 
+        // alert(response.message)
+        $('.send-image-loader').css('display','none')
     });
 
 });
@@ -904,9 +1053,9 @@ else{
     $('.unread-message-count[data-messages=${chat.conversation.id}]').addClass('d-none');
     
    
-    }" href="" id="roro" data-messages=${chat.conversation.id} class="card border-0 text-reset zz wait-click ">
+    }" href="" id="roro" data-messages=${chat.conversation.id} class="card border-0 text-reset add-shadow zz  ">
 
-    <div  class="card-body zz" >
+    <div style="" class="card-body zz" >
         <div class="row gx-5">
             <div class="col-auto">
                 <div class="avatar avatar-online">
@@ -952,8 +1101,6 @@ $(`.welcome-text`).on('click',function(e){
 });
 
 
-
-
 //--------------------------notifications--------------------------
 $(`#tab-notifications`).on('click',function(e){
     $(`#cards-notification`).empty();
@@ -974,7 +1121,6 @@ const getNotification=function(toLoader){
 
     })
 }
-
 
 const notification=function(chat){
     if(chat.type=='request')
@@ -1106,12 +1252,7 @@ const notification=function(chat){
     <!-- Card -->
  </div>`)
     }
-
-
-
 }
-
-
 
 //--------------------------getFriends------------------------
 styleHi=" text-decoration: none;border-radius: 9px;border:solid 1px #3e444f;cursor : pointer;padding:0px 15px ;text-align: center;color:#fff;background-color: #16191c ; display:block"
@@ -1156,7 +1297,9 @@ const getFriends=function(toLoader){
                         <input type="submit" value="${stringHi}" user-id=${response[i].id}  style="${styleHi}" 
                         onclick="
                         {
-                            alert('message sended')
+                         $('.send-image-loader').css('display','block')
+
+                            // alert('message sended')
                             let data = new FormData
                             data.append('_token','${tokenn}')
                             data.append(  'body', '${stringHi}' )
@@ -1168,6 +1311,28 @@ const getFriends=function(toLoader){
                                 headers: {
                                     'X-CSRF-TOKEN': +'${tokenn}'
                                 }
+                                }).then(res =>
+                                    {
+                                        if (res.status>=200 && res.status <300) 
+                                        return res.json()
+                                        else
+                                        throw new Error();
+                                    }
+                                ).then(data=>{
+                                    console.log(data);
+                            $('.hi-headarToast').empty();
+                            $('.hi-bodyToast').empty();
+
+                            $('.hi-goToChat').attr('chat-id',data.obj_msg.conversation_id)
+                            $('.hi-headarToast').append('you send hi to '+data.obj_msg.conversation.lable);
+                            $('.hi-bodyToast').append('click here to complete chat ');
+                            $('.toast-send-hi').toast({ delay: 3000 });
+                            $('.toast-send-hi').toast({animation: true});
+                            $('.toast-send-hi').toast('show');
+                            play(soundDone)
+                            $('.send-image-loader').css('display','none')
+
+                                    
                                 })
                          }" >
                       
@@ -1214,8 +1379,8 @@ const search_friends = function(res){
 for(let i = 0; i<
     res.length ;i++)
 {
+  console.log(res)  
     $("#friends_in_searsh").append(`
-  
     <div id="friends_in_searsh" class="card-list">
   
     <div class="card border-0">
@@ -1242,10 +1407,12 @@ for(let i = 0; i<
                     <input class="onlL" onclick=myFunction()  type="submit" value="${stringHi}"  style="text-decoration: none;border-radius: 9px;border:solid 1px #3e444f ;cursor : pointer;padding:0px 15px ;text-align: center;color:#fff;background-color: #16191c ;" >
                     <script>
                     function myFunction() {
-                        alert('message [hi] sended , go to chat to complete conversation');
+                        // alert('message [hi] sended , go to chat to complete conversation');
+        $('.send-image-loader').css('display','block')
+
                         let data = new FormData
-                                data.append('message','Hi');
-                                data.append('user_id',1);
+                                data.append(  'body', '${stringHi}' )
+                                data.append('user_id',${res[i].id});
                                 data.append('type','text');
 
                         fetch("/api/messages", {
@@ -1254,7 +1421,29 @@ for(let i = 0; i<
                             headers: {
                                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                             }
-                        });
+                        }).then(res =>
+                            {
+                                if (res.status>=200 && res.status <300) 
+                                return res.json()
+                                else
+                                throw new Error();
+                            }
+                        ).then(data=>{
+                            console.log(data);
+                    $('.hi-headarToast').empty();
+                    $('.hi-bodyToast').empty();
+
+                    $('.hi-goToChat').attr('chat-id',data.obj_msg.conversation_id)
+                    $('.hi-headarToast').append('you send hi to '+data.obj_msg.conversation.lable);
+                    $('.hi-bodyToast').append('click here to complete chat ');
+                    $('.toast-send-hi').toast({ delay: 3000 });
+                    $('.toast-send-hi').toast({animation: true});
+                    $('.toast-send-hi').toast('show');
+                    play(soundDone)
+                    $('.send-image-loader').css('display','none')
+
+                            
+                        })
                     }
                     </script>
                     
@@ -1273,10 +1462,6 @@ for(let i = 0; i<
 `)
 }
 }
-
-
-
-
 
 //---------------------get users----------------------
 $(`#tab-all-users`).on('click',function(e){
@@ -1327,7 +1512,7 @@ const getUsers=function(toLoader){
                             let data = new FormData
                             data.append('_token','${tokenn}')
                             data.append('user_id',$(this).attr('user-id'));
-                            fetch('${a}'+'/api/friend', {
+                            fetch('/api/friend', {
                                 method: 'POST',
                                 body:data,
                                 headers: {
@@ -1439,9 +1624,6 @@ for(let i = 0; i<
 }
 }
 
-
-
-
 //---------------------create group---------------------//
 var arrayGroup= [];
 var imgGroup;
@@ -1519,6 +1701,46 @@ const ifArrayGroup=function(){
     }
 }
 
+$('#upload-profile-photo').on('change',function(e){
+
+    var x= URL.createObjectURL(e.target.files[0]);
+    var profileImage=e.target.files[0];
+    $('.profile-image').attr('src',x);
+
+    let data = new FormData
+     data.append('img',profileImage);
+ fetch('/api/updateImg', {
+     method: 'POST',
+     body:data,
+     headers: {
+     'X-CSRF-TOKEN': tokenn
+     }
+     }).then(response=>{
+
+        return response.json()
+     
+         }).then(data=>{
+            console.log(data)
+            if(data.status==0){
+            document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
+            play(soundErorr)
+         
+             }
+            else{
+                document.documentElement.style.setProperty('--password', 'rgb(15, 161, 44)');
+                 $('.update-profile-img').attr('src',x);
+            play(soundDone)
+             
+
+            }
+            $('.bodyToastPassword').empty()
+            $('.bodyToastPassword').append(data.message)
+            $(`.toastPassword`).toast({ delay: 3000 });
+            $('.toastPassword').toast('show'); 
+         })
+});
+
+
 $('.imgGroup').on('change',function(e){
     
     var x= URL.createObjectURL(e.target.files[0]);
@@ -1534,8 +1756,6 @@ $('.imgGroup').on('change',function(e){
 $('.groupName').on('keyup',function() {
     groupName=$('.groupName').val()
 });
-
-
 
 $('.groupDescription').on('keyup',function() {
     groupDescription=$('.groupDescription').val()
@@ -1561,8 +1781,12 @@ $("#groupForm").on('submit',function(e){
      
          }).then(data=>{
             console.log(data)
-            if(data.status==0)
-            alert(data.message)
+            if(data.status==0){
+            document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
+            play(soundErorr)
+
+         
+             }
             else{
                 arrayGroup=[];
                 imgGroup=''
@@ -1578,23 +1802,27 @@ $("#groupForm").on('submit',function(e){
                 $('.if-arrayGroup').empty();
                 $('.if-arrayGroup').append(noSelectedMemberYet);
                 $(".if-arrayGroup").css("background-color", "#D32535"); 
-                alert(data.message)
+                document.documentElement.style.setProperty('--password', 'rgb(15, 161, 44)');
+
+            play(soundDone)
+
             }
+            $('.bodyToastPassword').empty()
+            $('.bodyToastPassword').append(data.message)
+            $(`.toastPassword`).toast({ delay: 3000 });
+            $('.toastPassword').toast('show'); 
          })
 
 
 });
 
 
-
 // --------------responsive-----------
 //to show message page in mobile
-$(`.zz`).on('click',function(e){
-    $("main").addClass("is-visible");
+// $(`.zz`).on('click',function(e){
+//     $("main").addClass("is-visible");
+// });
     
-});
-
-
 
 //------say_hi-----
 $(".say_hi").on('submit',function(e){
@@ -1607,37 +1835,144 @@ $(".say_hi").on('submit',function(e){
 });
 
 
+var pop =false
+$(document).mouseup(function(e)
+{
+    if(pop==true){
+   
+var container = $(".popup");
 
-// getConversations();
-// window.addEventListener('popstate', function (event) {
-// 	// Log the state data to the console
-// 	// alert(event.state);
-// });
+    // if the target of the click isn't the container nor a descendant of the container
+    if (!container.is(e.target) && container.has(e.target).length === 0) 
+    {
+        console.log('in edit')
+        // container.hide();
+        // $('.exit').click()
+        $('.layout').removeClass('to-edit-name');
+        // $('.modal').removeClass('to-edit-name');
+        $('.popup').addClass('d-none');
+        $('.modal').removeClass('d-none');
+        pop =false
+    }
+else
+console.log('out')
+
+}
+});
+
+
+function popupFun(){
+   
+    $('.layout').removeClass('to-edit-name');
+    $('.modal').removeClass('to-edit-name');
+    $('.modal').removeClass('d-none');
+    // $('.popup').addClass('d-none');
+    
+    $(".popup").animate({'top':'-1000px'}, "fast");
+    setTimeout(() => {
+    $(".popup").animate({'top':'45%'}, "fast");
+    $('.popup').addClass('d-none');
+    }, 100);
+
+
+}
+function fetchUpdateName(){
+    $('.send-image-loader').css('display','block')
+    
+    $('.layout').removeClass('to-edit-name');
+    $('.modal').removeClass('to-edit-name');
+    $('.modal').removeClass('d-none');
+    // $('.popup').addClass('d-none');
+    
+    $(".popup").animate({'left':'15px'}, "fast");
+    setTimeout(() => {
+    $(".popup").animate({'left':'50%'}, "fast");
+    $('.popup').addClass('d-none');
+    }, 100);
+
+    $('.bodyToastPassword').empty()
+    var data = new FormData;
+    data.append('new_name',$('.new_name').val())
+    data.append('new_img',$('.new_img').val())
+    fetch('api/updateName',{method:'post',body:data})
+    .then(res =>{
+                  if (res.status>=200 && res.status <300) 
+                  return res.json()
+                  else
+                  throw new Error();
+                })
+                .then(data=>
+                        {
+                         $('.bodyToastPassword').append(data.message)
+                         $(`.toastPassword`).toast({ delay: 3000 });
+                         $('.toastPassword').toast('show'); 
+                         play(soundDone)
+                          $('.send-image-loader').css('display','none')
+                        })
+    $('.username').empty();
+    $('.username').append($('.new_name').val());
+    $('.modal').removeClass('d-none');
+
+    
+
+
+}
+
+function play(sound=tele) {
+                   
+    var url = sound;
+          window.AudioContext = window.AudioContext||window.webkitAudioContext; //fix up prefixing
+          var context = new AudioContext(); //context
+          var source = context.createBufferSource(); //source node
+          source.connect(context.destination); //connect source to speakers so we can hear it
+          var request = new XMLHttpRequest();
+          request.open('GET', url, true); 
+          request.responseType = 'arraybuffer'; //the  response is an array of bits
+          request.onload = function() {
+              context.decodeAudioData(request.response, function(response) {
+                  source.buffer = response;
+                  source.start(0); //play audio immediately
+                  source.loop = false;
+              }, function () { console.error('The request failed.'); } );
+          }
+          request.send();
+}
+function countChar(val) {
+    if(envTyping==true || envTyping==1 ){
+    var length = val.value.length;
+    // console.log(length);
+    if( length > 0 ) 
+    Typing(true);
+  
+     else
+    Typing(false); 
+  }
+}
+const Typing = (boolean) => {
+
+
+    if(envTyping==true || envTyping==1 ){
+        setTimeout( () => {
+          console.log('typing'+boolean);
+        
+        
+        
+        
+          let channel = Echo.private('chat')
+        
+            channel.whisper('typing', {
+              user_id: userId,
+              conversation_id:response_conversation_id,
+              typing: boolean
+            })
+        }, 300)
+    }
+}
+
 $(document).ready(function () {
     
     getConversations(false);
-
-
-    // $('#groupForm').validate({ // initialize the plugin
-    //     rules: {
-    //         groupName: {
-    //             required: true,
-    //             minlength: 1
-
-    //         },
-    //         groupDescription    : {
-    //             required: true,
-    //             minlength: 1
-    //         }
-    //     },
-    //     submitHandler: function (form) { // for demo
-    //         alert('valid form submitted'); // for demo
-    //         return false; // for demo
-    //     }
-    // });
-
 });
-// const a ='http://192.168.43.194:8000';
 
 
 

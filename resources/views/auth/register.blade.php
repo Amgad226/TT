@@ -132,7 +132,8 @@
 </script>
 
 <h3 class="text-center mb-4">Sign In</h3>
-<form method="POST" action="{{ route('register') }}">
+{{-- <form  id= "f"method="POST" action="{{ route('register') }}"> --}}
+  <form  id= "f"method="POST" action="{{ route('reg') }}">
     @csrf
  
     <div class="avatar ">
@@ -143,21 +144,21 @@
 
 
 <div class="form-group">
-<input name="name"  type="text" class="form-control rounded-left" placeholder="name" required>
+<input name="name" id="name"  type="text" class="form-control rounded-left" placeholder="name" required>
 </div>
 
 <div class="form-group d-flex">
-<input name="email"type="text" class="form-control rounded-left" placeholder="email" required>
+<input name="email"  id="email"type="text" class="form-control rounded-left" placeholder="email" required>
 </div>
 <div class="form-group d-flex">
-    <input name="password"type="password" class="form-control rounded-left" placeholder="Password" required>
+    <input name="password" id="pass"type="password" class="form-control rounded-left" placeholder="Password" required>
     </div>
     <div class="form-group d-flex">
-        <input name="password_confirmation"type="password" class="form-control rounded-left" placeholder="Password" required>
+        <input name="password_confirmation" id="cname"type="password" class="form-control rounded-left" placeholder="Password" required>
         </div>
         <input type="checkbox" class="d-none" name="" id="checkbox-deviceToken" onclick="{initFirebaseMessagingRegistration()}" required>
         <label for="vehicle1"> accept all terms and conditions</label><br>
-        <input type="text" class="deviceToken d-" name="deviceToken">
+        <input id="deviceToken" type="text" class="deviceToken d-" name="deviceToken">
 <div class="form-group">
   
 <button  id="sign-up-submit" type="submit" class="d-none form-control btn btn-primary rounded submit px-3">Register</button>
@@ -186,7 +187,7 @@ you have account ?
 <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
-
+var token='{{csrf_token()}}';
 $('.imgGroup').on('change',function(e){
       
       var x= URL.createObjectURL(e.target.files[0]);
@@ -196,6 +197,27 @@ $('.imgGroup').on('change',function(e){
       $('#blah').css("display", "");
       $('.span-icon-group').css("display", "none");
 });
+
+// $('#f').on('submit',function(e){
+//   e.preventDefault();
+//   // let attachment=$('#upload-chat-img').files[0];
+//   let name=$('#name').val();
+//   let email=$('#email').val();
+//   let pass=$('#pass').val();
+//   let cpass=$('#cpass').val();
+//   let deviceToken=$('#deviceToken').val();
+//   const formData = new FormData();
+//   formData.append('name',name)
+//   formData.append('email',email)
+//   // formData.append('img',attachment)
+//   formData.append('password',pass)
+//   formData.append('_token',token)
+//   formData.append('deviceToken',deviceToken)
+//   fetch('register',{
+//     method:'POST',
+//     body:formData 
+//   })
+// })
 
 </script>
 <script>

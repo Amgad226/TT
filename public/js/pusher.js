@@ -19,10 +19,17 @@ setTimeout(() => {
                     // }
                     // play();
                 //---------------to replace last message in chat card------------------
-                 var message_body_with_slice=data.message.body.slice(143, -129);
-                 message_body_with_slice=message_body_with_slice.slice(0,10);  
-                $(`.last-message[data-messages=${data.message.conversation_id}]`).empty()  ;
-                $(`.last-message[data-messages=${data.message.conversation_id}]`).append(message_body_with_slice);  
+                if(data.message.type=='text'){
+                    var message_body_with_slice=data.message.body.slice(143, -129);
+                    message_body_with_slice=message_body_with_slice.slice(0,10);  
+                   $(`.last-message[data-messages=${data.message.conversation_id}]`).empty()  ;
+                   $(`.last-message[data-messages=${data.message.conversation_id}]`).append(message_body_with_slice);
+                }
+                else {
+                    $(`.last-message[data-messages=${data.message.conversation_id}]`).empty()  ;
+                   $(`.last-message[data-messages=${data.message.conversation_id}]`).append(data.message.type);
+                }
+           
                 
                     // conversation id from pusher   conversation id from chat 
                     if(data.message.conversation_id==response_conversation_id)
@@ -134,9 +141,9 @@ setTimeout(() => {
                             }
                              play();
 
-                            $(".toast").toast({ delay: 3000 });
-                            $('.toast').toast({animation: true});
-                            $('.toast').toast('show');                       
+                            $(".toast-recive").toast({ delay: 3000 });
+                            $('.toast-recive').toast({animation: true});
+                            $('.toast-recive').toast('show');                       
                     //      }
                     // });
 

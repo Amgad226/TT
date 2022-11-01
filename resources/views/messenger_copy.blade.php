@@ -4631,6 +4631,14 @@
        }
    });     
          </script>
+         {{-- <script src="{{ asset ('assets/js/ss.js')  }}" crossorigin="anonymous"></script> --}}
+        {{-- <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script> --}}
+        {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> --}}
+        {{-- <script src="https://js.pusher.com/7.0/pusher.min.js"></script> --}}
+        {{-- <script src="{{asset('pushJS/push.js')}}"></script>  --}}
+        {{-- <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script> --}}
+        {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.1.2/howler.core.min.js"></script> --}}
+
     </body>
 </html>
 

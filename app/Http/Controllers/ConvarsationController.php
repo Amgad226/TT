@@ -12,9 +12,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
-use function PHPSTORM_META\map;
+
 
 class ConvarsationController extends Controller
 {
@@ -47,6 +48,7 @@ class ConvarsationController extends Controller
                     $chats[$j + 1] = $temp;
                 }
             }           
+            // $chats[$i]->conversation['unRead_message']=$this->countUnReadMessage($chats[$i]->conversation_id);
   
             // $chats[$i]['conversation']['nameChats']=$this->countUnReadMessage($chats[$i]->conversation->lable);
        
@@ -119,51 +121,66 @@ class ConvarsationController extends Controller
 
     }
 
-    public function readMessage(Request $request ){
+ 
+
+    public function createGroup(Request $request){
    
-        $validator = Validator::make($request-> all(),[
-                
-            'message_id'=>['required','exists:messages,id'],
-          ]);
+        $validator = Validator::make($request->all(), [
+            // 'message' => ['required', 'string'],
+
+            'users_id*' => [],
+            'groupName'=>['required'],
+            'groupDescription'=>['required'],
+            'img'=>'mimes:jpg,png,jpeg,gif,svg|max:2048',
+            // 'img'=>'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+
+        ]);
+
+        // dd(gettype($request->users_id));
     
-             if ($validator->fails())
-             { 
-                 $errors = []; foreach ($validator->errors()->messages() as $key => $value) {     $key = 'message';     $errors[$key] = is_array($value) ? implode(',', $value) : $value; }       return response()->json( ['message'=>$errors['message'],'status'=>0],200);
-             }
+  
+        if ($validator->fails()) {$errors = [];foreach ($validator->errors()->messages() as $key => $value) {    $key = 'message';    $errors[$key] = is_array($value) ? implode(',', $value) : $value;}return response()->json([    'message' => $errors['message'],    'status' => 0], 200);}
+        $users_id = explode(",", $request->users_id);
+    
+        if (request()->hasFile('img')){
+            $extension='.'.$request->img->getclientoriginalextension();
+            $path=public_path('/img/group');
+            if(!File::exists( $path))
+            File::makeDirectory( $path,0777,true);
+            $Name= $request->groupName;  
+            $uniqid_img='('.uniqid().')';
+            $image=$request->file('img') ; 
+            $image->move($path,$uniqid_img.$Name.$extension);
+            $imgToDB='img/group/'.$uniqid_img.$Name.$extension;
+        }
+        // dd( $imgToDB);
+        //  array_push($users_id,(string)Auth::id());
+         // dd($users_id);
 
-        //  return $request->message_id; 
-        //  sleep(2);
-             $a=Resipient::where('message_id',$request->message_id)->where('user_id',Auth::id())->where('read_at',null)->update(['read_at'=>now()]);
-            //  $a->update(['read_at'=>now()]);
-            // return $a ;
-             return $a;
+        $groupName=($request->groupName!=null)?$request->groupName:'group';
+        $group=Conversation::create([
+            'user_id',Auth::id(),
+            'lable'=>$groupName,
+            'type'=>'group',
+            'img'=>$imgToDB,
+            'description'=>$request->groupDescription,
+        ]);
+        $group->update(['user_id'=>Auth::id()]);
 
+        foreach($users_id as $user_id){
+            Participant::create(['user_id' => $user_id, 'conversation_id' => $group->id]);
+        }
+        Participant::create(['user_id' => Auth::id(), 'conversation_id' => $group->id ,'role'=>'admin' ]);
 
+        return response()->json([    'message' => 'group created successfuly',    'status' => 1], 200);
     }
-
-    public function getUsers(){
-        
-        $f= DB::table('friends')->
-        select('user2_id')->
-        where('user1_id',Auth::id())->
-        where('acceptable',1)->
-        distinct()->
-        get()->
-        map(function ($query) {
-            return $query->user2_id;
-          });
-        $users = DB::table('users')->where('id','<>',Auth::id())->whereNotIn('id', $f)->get();
-        return $users;
-    }  
+ 
     
     public function countMessageInConversation($user_id,$conversation_id){
 
      return Message::where([['conversation_id',$conversation_id],['user_id',$user_id]])->count();
     }
-    //create function in laravel
-// function laravel ?
- //how to create function in laravel?
- // create m
+
     public function users_not_in_group($id){
 
         // Conversation::find($id);
@@ -207,7 +224,6 @@ class ConvarsationController extends Controller
         // ',[$id]);
         // ',[$o,$id]);
     }
-
 
 
     public function getParticipants( $id){
@@ -277,5 +293,50 @@ class ConvarsationController extends Controller
              }
           $conversation->partiscipants()->detach($request->user_id);
         return 'done';
+    }
+
+
+    public function search_chat(Request $request)
+    {
+        return;
+        $search = DB::table('partiscipants')->
+        // select('conversations.id as conversation_id' , 'conversations.img','messages.type as lastMessageType','messages.body', 'users.name', 'messages.created_at'
+        select('conversations.id as conversation_id'
+            )->join(
+                'partiscipants as par2',
+                'partiscipants.conversation_id',
+                '=',
+                'par2.conversation_id'
+            )->join(
+                'users',
+                'users.id',
+                '=',
+                'par2.user_id'
+            )->join(
+                'conversations',
+                'conversations.id',
+                '=',
+                'partiscipants.conversation_id'
+            )->join(
+                'messages',
+                'messages.id',
+                '=',
+                'conversations.last_message_id'
+            )->where(
+                'partiscipants.user_id', '<>', 'par2.user_id'
+            )->where('partiscipants.user_id', '=', Auth::id()
+            )->where('par2.user_id', '<>', Auth::id()
+            // )->where('users.name', 'like', "%" . $request->name . "%"
+            )->get() 
+            
+            ->map(function($e){
+                return $e=$e->conversation_id;
+            }) ;   
+        //  return   Conversation::lable();
+            $searchd = Conversation::where('lable', 'like', "%" . $request->name . "%")->get();
+          return  $searchd->namee();
+        return $searchd;
+        // dd($search);
+
     }
 }
