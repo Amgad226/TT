@@ -17,7 +17,7 @@ return [
 
     'stateful' => explode(',', env('SANCTUM_STATEFUL_DOMAINS', sprintf(
         '%s%s',
-        'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,192.168.43.194:8000,192.168.1.36:8000,192.168.1.36:8000,192.168.1.36',
+        'localhost,localhost:3000,127.0.0.1,127.0.0.1:8000,192.168.43.194:8000,192.168.1.36:8000,192.168.1.36:8000,192.168.1.36,http://tt-226.herokuapp.com',
         Sanctum::currentApplicationUrlWithPort()
     ))),
 
