@@ -222,7 +222,7 @@ $('.imgGroup').on('change',function(e){
 </script>
 <script>
 
-  var firebaseConfig = {
+var firebaseConfig = {
 apiKey: "AIzaSyCe0NvBofKhiRr4UiwkW7FRL52KbtRCk0k",
 authDomain: "tt-project-dbf57.firebaseapp.com",
 projectId: "tt-project-dbf57",
@@ -230,12 +230,14 @@ storageBucket: "tt-project-dbf57.appspot.com",
 messagingSenderId: "350664799609",
 appId: "1:350664799609:web:432b6095e6c11370c6eba8",
 measurementId: "G-D6JWRECXPD"
-  };
+};
 
   firebase.initializeApp(firebaseConfig);
   const messaging = firebase.messaging();
 
   function initFirebaseMessagingRegistration() {
+    firebase.initializeApp(firebaseConfig);
+  const messaging = firebase.messaging();
           messaging
           .requestPermission()
           .then(function () {
