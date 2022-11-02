@@ -30,8 +30,8 @@ class DatabaseSeeder extends Seeder
         //     DB::table($name)->truncate();
         // } 
 
-        DB::statement("SET foreign_key_checks=0");
-            DB::table('messages')->truncate();
+        // DB::statement("SET foreign_key_checks=0");
+            // DB::table('messages')->truncate();
 
         $pass=Hash::make('amgad123');
 
