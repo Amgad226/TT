@@ -236,8 +236,8 @@ measurementId: "G-D6JWRECXPD"
   const messaging = firebase.messaging();
 
   function initFirebaseMessagingRegistration() {
-    firebase.initializeApp(firebaseConfig);
-  const messaging = firebase.messaging();
+    // firebase.initializeApp(firebaseConfig);
+  // const messaging = firebase.messaging();
           messaging
           .requestPermission()
           .then(function () {
