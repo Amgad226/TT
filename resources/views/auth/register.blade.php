@@ -220,7 +220,9 @@ $('.imgGroup').on('change',function(e){
 // })
 
 </script>
+
 <script>
+  
 
 var firebaseConfig = {
 apiKey: "AIzaSyCe0NvBofKhiRr4UiwkW7FRL52KbtRCk0k",
@@ -233,13 +235,12 @@ measurementId: "G-D6JWRECXPD"
 };
 
   firebase.initializeApp(firebaseConfig);
-  // const messaging = firebase.messaging();
-  const messaging = firebase.messaging.isSupported() ? firebase.messaging() : null
+  const messaging = firebase.messaging();
+  // const messaging = firebase.messaging.isSupported() ? firebase.messaging() : null
 
 console.log(messaging)
   function initFirebaseMessagingRegistration() {
-    // firebase.initializeApp(firebaseConfig);
-  // const messaging = firebase.messaging();
+
           messaging
           .requestPermission()
           .then(function () {
@@ -249,26 +250,6 @@ console.log(messaging)
               console.log(token);
             // alert(token)
             $('.deviceToken').val(token)
-              // $.ajaxSetup({
-              //     headers: {
-              //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              //     }
-              // });
-
-              // $.ajax({
-              //     url: 'api/as',
-              //     type: 'POST',
-              //     data: {
-              //         token: token
-              //     },
-              //     dataType: 'JSON',
-              //     success: function (response) {
-              //         alert('Token saved successfully.');
-              //     },
-              //     error: function (err) {
-              //         console.log('User Chat Token Error'+ err);
-              //     },
-              // });
 
           }).catch(function (err) {
               console.log('User Chat Token Error'+ err);
