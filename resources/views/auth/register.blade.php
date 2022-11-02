@@ -132,8 +132,8 @@
 </script>
 
 <h3 class="text-center mb-4">Sign In</h3>
-{{-- <form  id= "f"method="POST" action="{{ route('register') }}"> --}}
-  <form  id= "f"method="POST" action="{{ route('reg') }}">
+<form  id= "f"method="POST" action="{{ route('register') }}">
+  {{-- <form  id= "f"method="POST" action="{{ route('reg') }}"> --}}
     @csrf
  
     <div class="avatar ">
