@@ -234,7 +234,9 @@ measurementId: "G-D6JWRECXPD"
 
   firebase.initializeApp(firebaseConfig);
   const messaging = firebase.messaging();
+  const messaging = firebase.messaging.isSupported() ? firebase.messaging() : null
 
+console.log(messaging)
   function initFirebaseMessagingRegistration() {
     // firebase.initializeApp(firebaseConfig);
   // const messaging = firebase.messaging();
