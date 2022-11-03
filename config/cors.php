@@ -23,7 +23,7 @@ return [
     'maxAge' => 86400,
     'hosts' => [],
 
-    'paths' => ['api/*','sanctum/csrf-cookie'],
+    'paths' => ['api/*','login','register','logout','sanctum/csrf-cookie'],
 
     'allowed_methods' => ['*'],
 

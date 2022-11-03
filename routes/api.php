@@ -39,7 +39,7 @@ use PhpParser\Node\Stmt\Return_;
 
 Route::get('test',function(){
 
-dd(config('app.envTyping'));
+// dd(config('app.envTyping'));
  
      
     // try {
