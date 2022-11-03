@@ -88,6 +88,9 @@
   
   fetch('https://ipwho.is/', {
   method: 'GET',
+         headers: {
+            'Authorization':`Bearer ${tokenn}`
+        }
   }).then(res =>
       {
     $('.check-loader').css('display','block');

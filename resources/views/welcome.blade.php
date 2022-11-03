@@ -53,7 +53,10 @@
                   </div>
 
                   <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                    <button type="button" class="btn btn-primary btn-lg" onclick="{  fetch('api/send',{ method: 'POST',})}">Register</button>
+                    <button type="button" class="btn btn-primary btn-lg" onclick="{  fetch('api/send',{ method: 'POST',
+                    headers: {
+                       'Authorization':`Bearer ${tokenn}`
+                   }})}">Register</button>
                   </div>
 
                 </form>
@@ -66,7 +69,11 @@
                   
                 </div> --}}
               </div>
-              <button type="button"onclick="{fetch(`api/send`,{ method: 'GET',})}">Register</button>
+              <button type="button"onclick="{fetch(`api/send`,
+              { method: 'GET',
+              headers: {
+                 'Authorization':`Bearer ${tokenn}`
+             }})}">Register</button>
             </div>
           </div>
         </div>

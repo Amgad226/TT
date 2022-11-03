@@ -92,8 +92,8 @@ for(let i = 0; i<
                             method: "POST",
                             body:data,
                             headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
+                               'Authorization':'Bearer ${tokenn}'
+                           }
                         });
                         // alert(12)
                     }
@@ -387,8 +387,8 @@ const getUsers=function(){
                                     method: "POST",
                                     body:data,
                                     headers: {
-                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                    }
+                                       'Authorization':'Bearer ${tokenn}'
+                                   }
                                     });
                                  }
                             </script>

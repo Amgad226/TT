@@ -87,7 +87,10 @@ function inputImageMessage(){
     formData.append('conversation_id',response_conversation_id);
         fetch('api/messages', {
         method: 'Post',
-        body: formData
+        body: formData headers: {
+            'Authorization':`Bearer ${tokenn}`
+            }
+        
       })
         .then((response) => response.json())
         .then((result) => {
@@ -254,10 +257,10 @@ var a =$(element.parentElement.parentElement.parentElement.parentElement);
    
  
          fetch(`/api/messages/${id}`, {
-         method: 'POST',
-        //  headers: {
-        //      'X-CSRF-TOKEN': '${tokenn}'
-        //  }
+         method: 'POST' ,
+         headers: {
+            'Authorization':`Bearer ${tokenn}`
+        }
          })
                 a.replaceWith (`
      <div class="message-content">
@@ -696,9 +699,8 @@ const open_chat=function(thiss, toLoader=''){
     method: 'POST',
     body:data,
     headers: {
-        'X-CSRF-TOKEN': '${tokenn}'
-        
-    }
+       'Authorization':`Bearer ${tokenn}`
+   }
     })
     $.get(`/api/conversations/${id}/messages` , function(response)
     {
@@ -757,8 +759,9 @@ const open_chat=function(thiss, toLoader=''){
             {
                 method: 'GET',
                 headers: {
-                    'X-CSRF-TOKEN': +tokenn
-                }})
+                   'Authorization':`Bearer ${tokenn}`
+               }
+            })
                 .then(res =>
                     {
 
@@ -791,8 +794,9 @@ const open_chat=function(thiss, toLoader=''){
             {
                 method: 'GET',
                 headers: {
-                    'X-CSRF-TOKEN': +tokenn
-                }})
+                   'Authorization':`Bearer ${tokenn}`
+               }
+            })
                 .then(res =>
                     {
 
@@ -1174,9 +1178,8 @@ const notification=function(chat){
                     method: 'DELETE',
                     body:data,
                     headers: {
-                        'X-CSRF-TOKEN': '${tokenn}'
-                        
-                    }
+                       'Authorization':'Bearer ${tokenn}'
+                   }
                     })
             
                 // this.parentNode.parentNode.style.display = 'none';
@@ -1195,9 +1198,8 @@ const notification=function(chat){
                     method: 'PUT',
                     body:data,
                     headers: {
-                        'X-CSRF-TOKEN': '${tokenn}'
-                    }
-                    })
+                       'Authorization':'Bearer ${tokenn}'
+                   }
                     this.parentNode.parentNode.replaceWith('added succesfuly')
 
                     }">
@@ -1309,8 +1311,8 @@ const getFriends=function(toLoader){
                                 method: 'POST',
                                 body:data,
                                 headers: {
-                                    'X-CSRF-TOKEN': +'${tokenn}'
-                                }
+                                   'Authorization':'Bearer ${tokenn}'
+                               }
                                 }).then(res =>
                                     {
                                         if (res.status>=200 && res.status <300) 
@@ -1419,8 +1421,8 @@ for(let i = 0; i<
                             method: "POST",
                             body:data,
                             headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
+                               'Authorization':'Bearer ${tokenn}'
+                           }
                         }).then(res =>
                             {
                                 if (res.status>=200 && res.status <300) 
@@ -1516,8 +1518,8 @@ const getUsers=function(toLoader){
                                 method: 'POST',
                                 body:data,
                                 headers: {
-                                    'X-CSRF-TOKEN': +'${tokenn}'
-                                }
+                                   'Authorization':'Bearer ${tokenn}'
+                               }
                                 })
                          }" >
                      
@@ -1604,8 +1606,8 @@ for(let i = 0; i<
                         method: 'POST',
                         body:data,
                         headers: {
-                            'X-CSRF-TOKEN': +'${tokenn}'
-                        }
+                           'Authorization':'Bearer ${tokenn}'
+                       }
                         })
                  }" >
                     
@@ -1713,8 +1715,8 @@ $('#upload-profile-photo').on('change',function(e){
      method: 'POST',
      body:data,
      headers: {
-     'X-CSRF-TOKEN': tokenn
-     }
+        'Authorization':`Bearer ${tokenn}`
+    }
      }).then(response=>{
 
         return response.json()
@@ -1773,8 +1775,8 @@ $("#groupForm").on('submit',function(e){
      method: 'POST',
      body:data,
      headers: {
-     'X-CSRF-TOKEN': tokenn
-     }
+        'Authorization':`Bearer ${tokenn}`
+    }
      }).then(response=>{
 
         return response.json()
@@ -1894,7 +1896,13 @@ function fetchUpdateName(){
     var data = new FormData;
     data.append('new_name',$('.new_name').val())
     data.append('new_img',$('.new_img').val())
-    fetch('api/updateName',{method:'post',body:data})
+    fetch('api/updateName'
+    ,{
+        method:'post',body:data,
+        headers: {
+           'Authorization':`Bearer ${tokenn}`
+        }
+})
     .then(res =>{
                   if (res.status>=200 && res.status <300) 
                   return res.json()

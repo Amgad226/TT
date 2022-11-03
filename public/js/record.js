@@ -82,8 +82,10 @@ jQuery(document).ready(function () {
                     method: 'POST',
                     body:data,
                     headers: {
-                        'X-CSRF-TOKEN': +'${tokenn}'
-                    }})
+                       'Authorization':`Bearer ${tokenn}`
+                   }
+                }
+                    )
                     .then(res =>
                         {
                           if (res.status>=200 && res.status <300) 
@@ -100,7 +102,9 @@ jQuery(document).ready(function () {
                                         fetch('api/messages', {
                                         method: 'POST',
                                         body:request,
-                                        headers: {  'X-CSRF-TOKEN': +'${tokenn}'}
+                                        headers: {
+                                           'Authorization':`Bearer ${tokenn}`
+                                       }
                                         }).then(res => { 
                                           return res.json()
                                         }).then(data=>{

@@ -802,7 +802,7 @@
                              {{__('Welcome in TT')}} 
                             
                              
-                             {{-- <button onclick="cheakTokennnn()">checkToken</button> --}}
+                             <button onclick="cheakTokennnn()">checkToken</button>
 
                         </div>
                         <script>
@@ -825,21 +825,21 @@
                                            });
                                     }
                    
-                            // function ff(){
-                            //     fetch('/api/test', {
-                            //     method: 'get',
+                            function ff(){
+                                fetch('/api/test', {
+                                method: 'get',
                                 
-                            //     headers: {
-                            //     'Authorization':`Bearer ${tt}`
-                            //     }
-                            //     }).then(response=>{
+                                headers: {
+                                'Authorization':`Bearer ${tokenn}`
+                                }
+                                }).then(response=>{
                                  
-                            //        return response.json()
+                                   return response.json()
                                  
-                            //         }).then(data=>{
-                            //             alert(JSON.stringify(data))
-                            //     });
-                            // }
+                                    }).then(data=>{
+                                        alert(JSON.stringify(data))
+                                });
+                            }
                         </script>
                            
                       <div class="app-bar-name-and-img" style="display: none;">  
@@ -1149,7 +1149,10 @@
                                 data.append('conversation_id',response_conversation_id)
                                 data.append('users_id',arrayInviteToGroup)
                                 fetch('api/conversations/participants',{
-                                    method:"post", 
+                                    method:"post",
+                                   headers: {
+                                      'Authorization':`Bearer ${tokenn}`
+                                  }
                                 body:data}
                                 );
                             }
@@ -1321,7 +1324,7 @@
     
         <!-- Scripts -->
         <script>
-            let tokenn = "{{csrf_token()}}"
+            let tokenn = "{{Request::cookie('token');}}"
             let userId=                {{    Auth::id();            }} ;
             let userimg=              "{{    Auth::user()->img;     }}";
             let username=             "{{    Auth::user()->name     }}";

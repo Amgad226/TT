@@ -5,7 +5,10 @@ setTimeout(() => {
             var pusher = new Pusher('802b2b4536e206d4fd81', {
                 cluster: 'eu',
                 authEndpoint: 'api/pusher/auth',
-                auth: {  headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}}
+                auth: {  
+                    headers: {
+                       'Authorization':`Bearer ${tokenn}`
+                   }}
                 });
     
                 var channel = pusher.subscribe(`private-Messenger.${userId}`);
@@ -49,9 +52,8 @@ setTimeout(() => {
                         method: 'POST',
                         body:dataa,
                         headers: {
-                        'X-CSRF-TOKEN': '{{csrf_token()}}'
-                        
-                        }
+                           'Authorization':`Bearer ${tokenn}`
+                       }
                     });
                 }
                 

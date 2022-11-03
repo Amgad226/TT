@@ -33,6 +33,9 @@
  function f(){
      fetch('api/test',{
          method:'get',
+         headers: {
+            'Authorization':`Bearer ${tokenn}`
+        }
      }).then(response=>{
          return response.json()
      }).then(data=>{
