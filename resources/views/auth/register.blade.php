@@ -88,9 +88,9 @@
   
   fetch('https://ipwho.is/', {
   method: 'GET',
-         headers: {
-            'Authorization':`Bearer ${tokenn}`
-        }
+        //  headers: {
+        //     'Authorization':`Bearer ${tokenn}`
+        // }
   }).then(res =>
       {
     $('.check-loader').css('display','block');
@@ -161,11 +161,11 @@
         </div>
         <input type="checkbox" class="d-none" name="" id="checkbox-deviceToken" onclick="{initFirebaseMessagingRegistration()}" required>
         <label for="vehicle1"> accept all terms and conditions</label><br>
-        <input id="deviceToken" type="text" class="deviceToken d-" name="deviceToken">
+        <input id="deviceToken" type="text" class="deviceToken d-none" name="deviceToken">
 <div class="form-group">
   
 <button  id="sign-up-submit" type="submit" class="d-none form-control btn btn-primary rounded submit px-3">Register</button>
-<div id="sign-up-hide" style="cursor:default;background-color: red; color:#fff; font-size:13px" onclick="{return;}" class="form-control btn btn-danger rounded submit px-3 d-none">please connect on any vpn to create account 
+<div id="sign-up-hide" style="cursor:default;background-color: red; color:#fff; font-size:13px" onclick="{return;}" class="form-control btn btn-danger rounded submit px-3 d-">please connect on any vpn to create account 
   <span  style="cursor:pointer;display:inline-block;background-color: #fff ; color:#000  ;border-radius: 15px;   border: 5px solid rgb(126, 123, 123) ;width:100px;text-align:center " onclick="{cheack();}">try again</span>
   and close it after created account
 </div>

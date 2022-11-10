@@ -87,7 +87,8 @@ function inputImageMessage(){
     formData.append('conversation_id',response_conversation_id);
         fetch('api/messages', {
         method: 'Post',
-        body: formData headers: {
+        body: formData ,
+        headers: {
             'Authorization':`Bearer ${tokenn}`
             }
         

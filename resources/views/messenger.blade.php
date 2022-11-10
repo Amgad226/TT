@@ -812,11 +812,11 @@
                                       
                                       let Token='{{Cookie::get('apiToken')}}';
                                       var FormDataa = new FormData;
-                                      FormDataa.append('token',Token);
+                                      FormDataa.append('token',tokenn);
                                       fetch('api/cheakToken',{
                                         method:'post',
                                         body:FormDataa ,
-                                        headers: {'Authorization':`Bearer ${Token}`,'Content-Type':'application/json'}
+                                        headers: {'Authorization':`Bearer ${tokenn}`}
                                                   
                                          }).then(res=>{
                                              return res.json()
@@ -1325,6 +1325,7 @@
         <!-- Scripts -->
         <script>
             let tokenn = "{{Request::cookie('token');}}"
+            alert(tokenn)
             let userId=                {{    Auth::id();            }} ;
             let userimg=              "{{    Auth::user()->img;     }}";
             let username=             "{{    Auth::user()->name     }}";
