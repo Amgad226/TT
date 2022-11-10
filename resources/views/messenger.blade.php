@@ -807,7 +807,6 @@
                         </div>
                         <script>
             
-                            Bearer ='6|CBthXqMu51f1klz593yAt06m4wHIGpu5FeMSz5Ot';
                             function cheakTokennnn() {
                                       
                                       let Token='{{Cookie::get('apiToken')}}';
