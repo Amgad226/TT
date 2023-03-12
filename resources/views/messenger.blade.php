@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <!-- Head -->        
+    <!-- Head -->
         <head>
         <meta name="theme-color" content="#6777ef"/>
         <link rel="apple-touch-icon" href="{{ asset('img/logo.png') }}">
@@ -19,8 +19,8 @@
         {{-- <link rel="preconnect" href="https://fonts.gstatic.com"> --}}
         {{-- <link rel="stylesheet" href="{{asset('assets/css/font.Roboto.css')}}"> --}}
         <link rel="stylesheet" href="{{asset('assets/css/Material.Icons.css')}}">
-        
-        
+
+
         <!-- Template CSS -->
         <link rel="stylesheet" href="{{asset('assets/css/template.dark.bundle.css')}}" >
 
@@ -32,8 +32,9 @@
     </head>
 
 
-    
+
     <body>
+
         <!-- secondery loader -->
         <div class="send-image-loader lds-ripple " style="display:none;  top: 40%;  right: 35%;  z-index: 100000;  position: absolute;"><div></div><div></div></div>
         <style>
@@ -100,23 +101,23 @@
                        <div style="height:100/2%; margin: 10px;  width:320px;">
                           <span>new name</span>
                           <input style="color:var(--arrow);height:100/2%; text-align:center;width:330px;" class=" input-group-text new_name username" name="new_name" type="text" value="{{Auth::user()->name}}">
-                       </div>  
+                       </div>
                        <div style="height:100/2%; margin: 10px;  width:320px;">
                            <span>new phone</span>
                            <input style="color:var(--arrow);height:100/2%; text-align:center;width:330px;" class=" input-group-text new_name username" name="new_name" type="text" value="09154891589  {{Auth::user()->phone}}">
-                        </div>  
+                        </div>
                    {{-- <br> --}}
                        <div style="height:100/2% ;margin: 10px;width:320px">
                            <span style="padding-right:10px; ">new img</span>
                            <input   id="upload-profile-photo"  style="height:100/2%; color:var(--arrow);text-align:center;margin-left:0%" class=" input-group-text new_img " name="new_img" type="file" value=".">
                        </div>
-                   
+
                    </div>
                    <div style="color:var(--arrow);width:330px;margin-bottom:5px" onclick="{fetchUpdateName();}" class="icon icon-xl  btn  btn btn-secondary">
                        send
                    </div>
-               
-               
+
+
                    {{-- <button onclick="{popupFun();fetchUpdateName();}">send</button> --}}
         </div>
 
@@ -156,17 +157,17 @@
 
         <!-- Layout -->
         <div class="layout overflow-hidden " >
-       
+
             <!-- Navigation -->
             <nav class=" navigation d-flex flex-column text-center navbar navbar-light hide-scrollbar">
                 <!-- logo -->
-                
-                 <a href="#" title="TT" class="d-none d-xl-block mb-6  welcome-text to-return-home" onclick="{ 
+
+                 <a href="#" title="TT" class="d-none d-xl-block mb-6  welcome-text to-return-home" onclick="{
                      $(`#soso`).empty();
                      response_conversation_id=0
                     //  play();
                     // $(`.toast`).toast({ delay: 6000 });
-                    // $('.toast').toast('show'); 
+                    // $('.toast').toast('show');
                      }">
                     <svg version="1.1" width="46px" height="46px" fill="currentColor" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 46 46" enable-background="new 0 0 46 46" xml:space="preserve">
                         <polygon opacity="0.7" points="45,11 36,11 35.5,1 "/>
@@ -177,14 +178,14 @@
                         <polygon points="28,36 4.5,44 17,26 "/>
                         <polygon points="17,26 1,26 10.8,20.1 "/>
                     </svg>
-                  
+
                 </a>
 
                 <!-- Nav items -->
                 <ul class="  security-chats d-flex nav navbar-nav flex-row flex-xl-column flex-grow-1 justify-content-between justify-content-xl-center align-items-center w-100 py-4 py-lg-2 px-lg-3" role="tablist">
-                
 
-                 
+
+
 
 
                     <!-- Invisible item to center nav vertically -->
@@ -250,7 +251,7 @@
                       <!-- theme -->
                       <li class="nav-item d-  d-xl-block ">
                         <a class="nav-link py-0 py-lg-8" id="tab-support" href="#tab-content-support" title="Support" data-bs-toggle="tab" role="tab">
-                            <div class="icon icon-xl">        
+                            <div class="icon icon-xl">
                                 <svg style="cursor: pointer;"class="toggel"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
                                         <switch>
                                                     <g fill="#a7a6a8" class="color000000 svgShape">
@@ -270,7 +271,7 @@
                             </div>
                         </a>
                     </li>
-       
+
 
                     <!-- Profile -->
                     {{-- <li class="nav-item " >
@@ -295,10 +296,10 @@
             </nav>
             <!-- Navigation -->
 
-            
+
             <!-- Sidebar -->
             <aside class="sidebar bg-light">
-           
+
                  <!-- Mobile: close -->
                 <div class="col-2 d-xl-none welcome-text to-return-home" style="left: 90%; top:4%;   z-index: 1;  position: absolute;">
                     <a class="icon icon-lg text-muted" href="#" data-toggle-chat="">
@@ -325,7 +326,7 @@
 
                                     <!-- Search -->
                                     <div class="mb-6">
-                                     
+
 
                                         <ul class="nav nav-pills nav-justified  adddd" role="tablist">
                                             <li class="nav-item">
@@ -340,7 +341,7 @@
 
                                                 </a>
                                             </li>
-                                        
+
                                         </ul>
                                     </div>
 
@@ -349,7 +350,7 @@
                                         <div class="tab-pane fade show active" id="create-chat-info" role="tabpanel">
 
                                             <div class="card border-0">
-                                           
+
 
                                                 <div class="card-body">
                                                     <form id="groupForm" autocomplete="off">
@@ -357,18 +358,18 @@
                                                             <div class="profile-img text-primary rounded-top">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 400 140.74"><defs><style>.cls-2{fill:#fff;opacity:0.1;}</style></defs><g><g><path d="M400,125A1278.49,1278.49,0,0,1,0,125V0H400Z"/><path class="cls-2" d="M361.13,128c.07.83.15,1.65.27,2.46h0Q380.73,128,400,125V87l-1,0a38,38,0,0,0-38,38c0,.86,0,1.71.09,2.55C361.11,127.72,361.12,127.88,361.13,128Z"/><path class="cls-2" d="M12.14,119.53c.07.79.15,1.57.26,2.34v0c.13.84.28,1.66.46,2.48l.07.3c.18.8.39,1.59.62,2.37h0q33.09,4.88,66.36,8,.58-1,1.09-2l.09-.18a36.35,36.35,0,0,0,1.81-4.24l.08-.24q.33-.94.6-1.9l.12-.41a36.26,36.26,0,0,0,.91-4.42c0-.19,0-.37.07-.56q.11-.86.18-1.73c0-.21,0-.42,0-.63,0-.75.08-1.51.08-2.28a36.5,36.5,0,0,0-73,0c0,.83,0,1.64.09,2.45C12.1,119.15,12.12,119.34,12.14,119.53Z"/><circle class="cls-2" cx="94.5" cy="57.5" r="22.5"/><path class="cls-2" d="M276,0a43,43,0,0,0,43,43A43,43,0,0,0,362,0Z"/></g></g></svg>
                                                             </div>
-        
+
                                                             <div class="profile-body p-0">
                                                                 <div class="avatar avatar-lg">
                                                                     <span class="avatar-text bg-primary add-group-img span-icon-group">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                                                                     </span>
                                                                     <img style="display: none" class="avatar-img" src="" alt="" id="blah">
-        
+
                                                                     <div class="badge badge-lg badge-circle bg-primary border-outline position-absolute bottom-0 end-0">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                                                     </div>
-        
+
                                                                     <input name="img"id="upload-chat-img"  class="d-none imgGroup " type="file">
                                                                     <label class="stretched-label mb-0" for="upload-chat-img"></label>
                                                                 </div>
@@ -417,7 +418,7 @@
                                                 <small class="text-muted me-auto">{{__('Enter chat name and add an optional photo.')}}</small>
                                             </div>
 
-                                           
+
                                         </div>
 
                                         <!-- Members -->
@@ -431,9 +432,9 @@
                                 </div>
 
                             </div>
-                            
+
                             <!-- Button -->
-                            
+
                             <!-- Button -->
                         </div>
                     </div>
@@ -467,20 +468,20 @@
                                         </div>
                                      <!-- list for all users -->
                                     <div id="all_users_in_app">
-                                   
+
                                     </div>
 
-                                 
-                                   
+
+
                                     </div>
                                     <!-- Tabs content -->
-                               
+
                                     <!-- Tabs content -->
                                 </div>
 
                             </div>
 
-                       
+
                         </div>
                     </div>
 
@@ -522,7 +523,7 @@
                                             <input type= "hidden"  name="user_id" value=1>
                                             <input type= "submit"  value="Hi">
                                             </form>  --}}
-                                   
+
 
                                     </div>
 
@@ -542,12 +543,12 @@
                                         <h2 class="fw-bold m-0">{{__('Chats')}}</h2>
 
                                     </div>
-                                    
+
                                     <!-- Search chats -->
                                     <!-- search conversation -->
                                     {{-- <div class="mb-6">
-                                        
-                                        
+
+
                                         <form id="searchhh_chats" action="{{route('search.chat')}}" method="POST">
                                             @csrf
                                             <div class="input-group">
@@ -565,7 +566,7 @@
                                     <!-- Chats -->
                                     <div  class="card-list  security-chats" id="chat-list">
                                             <div id="card_to_append_search">
-                                               
+
 
                                             </div>
                                     </div>
@@ -587,7 +588,7 @@
                                     <h2 class="fw-bold m-0">{{__('Notifications')}}</h2>
                                 </div>
 
-                         
+
                                 <!-- Today -->
                                 <div class="card-list">
                                     <!-- Title -->
@@ -598,19 +599,19 @@
                                     </div>
                                     <!-- Title -->
                                     <div id="cards-notification">
-                                          
-                               
+
+
                                     </div>
 
 
 
 
-                              
+
                                 </div>
-                               
-                          
+
+
                                 <!-- Card -->
-                               
+
                             </div>
                         </div>
                     </div>
@@ -628,10 +629,10 @@
                                     </div>
 
                                     <!-- Search -->
-                              
+
 
                                     <!-- Logout -->
-                                    
+
                                     <div class="d-flex align-items-center my-4 px-6">
                                         <small class="text-muted me-auto">{{__('Logout')}}</small>
                                     </div>
@@ -641,21 +642,21 @@
                                                 <div class="col-auto">
                                                     <div class="avatar">
                                                         <img  data-action='zoom' src="{{Auth::user()->img}}" alt="#" class="avatar-img update-profile-img">
-                                                      
+
                                                         <div class="badge badge-circle bg-secondary border-outline position-absolute bottom-0 end-0">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
                                                         </div>
 
-                                                      
+
                                                     </div>
                                                 </div>
                                                 <div class="col">
                                                     <h5 class="username">{{Auth::user()->name}}</h5>
                                                     <p>{{Auth::user()->email}}</p>
                                                 </div>
-                                           
+
                                                 <div class="col-auto">
-                                                    <form action="{{route('logout')}}" method="post">
+                                                    <form action="/logout" method="post">
                                                         @csrf
                                                     {{-- <a type="submit" href="/api/logout" class="text-muted"> --}}
                                                         <div  class="icon">
@@ -668,7 +669,7 @@
                                                     </form>
                                                         {{-- <form action=""></form> --}}
 
-                                                        
+
                                                     </a>
                                                 </div>
                                             </div>
@@ -713,15 +714,15 @@
                                                                         <input name='verify_password'type="password" class="form-control" id="profile-verify-password" placeholder="{{__('Verify password')}}" autocomplete="">
                                                                         <label for="profile-verify-password">{{__('Verify password')}}</label>
                                                                         <input  class="" type="checkbox" onclick="showHidePassword()">{{__('Show password')}}
-                                                                        
+
                                                                     </div>
                                                                     <button type="submit" class="btn btn-block btn-lg btn-primary w-100">{{__('Save')}}</button>
                                                                 </form>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                   
-                                               
+
+
                                                 </div>
                                             </div>
                                         </div>
@@ -748,13 +749,13 @@
                                                                     <option  value="en">Engilsh</option>
                                                                 </select>
                                                             </form>
-                                                        </div>   
-                                                 </div> 
+                                                        </div>
+                                                 </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                               
+
 
                                 </div>
                             </div>
@@ -763,15 +764,15 @@
                 </div>
             </aside>
             <!-- Sidebar -->
-         
-            
+
+
             <!-- Chat -->
             <main class="main is-visible" data-dropzone-area="">
-              
+
                 <div class="container h-100" >
                     {{-- <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
-                        <p>${body} 
-                            <span class="sended  fas fa-check" style="position:relative ;bottom:-12px;right:-10px;z-index:12;:"> 
+                        <p>${body}
+                            <span class="sended  fas fa-check" style="position:relative ;bottom:-12px;right:-10px;z-index:12;:">
                                 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                                 width="15px" height="15px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;"
                                 xml:space="preserve"><g>
@@ -783,7 +784,7 @@
                             <i class="fa fa-check" aria-hidden="true"></i>
                         </p>
                     </div> --}}
-                  
+
                     <!-- Mobile: close -->
 
                         <div class="col-2 d-xl-none welcome-text" style=" left:5%; top:4%; z-index: 1; position: absolute;  z-index: 1; width:50%; width:50%;">
@@ -791,24 +792,24 @@
                                 <svg fill="var(--arrow)" width="50px" height="50px" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">    <path d="M25 42c-9.4 0-17-7.6-17-17S15.6 8 25 8s17 7.6 17 17-7.6 17-17 17zm0-32c-8.3 0-15 6.7-15 15s6.7 15 15 15 15-6.7 15-15-6.7-15-15-15z"/>    <path fill="var(--arrow)"  d="M25.3 34.7L15.6 25l9.7-9.7 1.4 1.4-8.3 8.3 8.3 8.3z"/>    <path fill="var(--arrow)"   d="M17 24h17v2H17z"/></svg>
                             </a>
                         </div>
-            
+
                     <!-- Mobile: close -->
-                    
+
                     <div  class="d-flex flex-column h-100 position-relative">
-                      
+
                         <!-- Chat: Header -->
-                     
+
                         <div class="welcome-text welcome"  style="">
-                             {{__('Welcome in TT')}} 
-                            
-                             
-                             <button onclick="cheakTokennnn()">checkToken</button>
+                             {{__('Welcome in TT')}}
+
+
+                             {{-- <button onclick="cheakTokennnn()">checkToken</button> --}}
 
                         </div>
                         <script>
-            
+
                             function cheakTokennnn() {
-                                      
+
                                       let Token='{{Cookie::get('apiToken')}}';
                                       var FormDataa = new FormData;
                                       FormDataa.append('token',tokenn);
@@ -816,32 +817,32 @@
                                         method:'post',
                                         body:FormDataa ,
                                         headers: {'Authorization':`Bearer ${tokenn}`}
-                                                  
+
                                          }).then(res=>{
                                              return res.json()
                                            }).then(data=>{
                                              console.log(data)
                                            });
                                     }
-                   
+
                             function ff(){
                                 fetch('/api/test', {
                                 method: 'get',
-                                
+
                                 headers: {
                                 'Authorization':`Bearer ${tokenn}`
                                 }
                                 }).then(response=>{
-                                 
+
                                    return response.json()
-                                 
+
                                     }).then(data=>{
                                         alert(JSON.stringify(data))
                                 });
                             }
                         </script>
-                           
-                      <div class="app-bar-name-and-img" style="display: none;">  
+
+                      <div class="app-bar-name-and-img" style="display: none;">
                             <div class="chat-header border-bottom py-4 py-lg-7">
                                 <div class="row align-items-center">
 
@@ -886,21 +887,21 @@
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
                                                         </a>
                                                     </div>
-    
+
                                                 </div>
                                             </div>
                                             <!-- Toolbar -->
-                                               
+
                                         </div>
                                          <!-- Mobile: more -->
-                                    
+
                                     <!-- Mobile: more -->
                                     </div>
                                     <div class="group-description  col-2 d-xl-none text-end">
                                         <a class="dropdown-item" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-more-group" aria-controls="offcanvas-more-group">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
                                         </a>
-                                  
+
                                     </div>
 
                                 </div>
@@ -920,9 +921,9 @@
                                     {{-- $("#soso").append(` <button class="" >get all messages</button> `);  --}}
                                     <div id="soso" class=" py-6 my-lg-12 " style="padding:0px " id="chat-body" >
                                        <!-- Message -->
-                                  
-           
-                            
+
+
+
 
                                         <!-- Divider -->
                                         <div class="message-divider">
@@ -932,9 +933,9 @@
                                     </div>
                             </div>
                     </div>
-                        
+
                         <!-- Chat: Content -->
-                        
+
 
                         <!-- Chat: Footer -->
                      <div class="footer-input-chat" style="display:none; " >
@@ -961,13 +962,13 @@
                                         <a href="#"onclick="selectFile()"  class="btn btn-icon btn-link text-body "id="">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-paperclip"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
                                         </a>
-                                       
+
                                     </div>
-                                  
+
                                     <div class="col-auto">
-                                       <a href="#"onclick="inputImageMessage()"   class="btn btn-icon btn-link text-body " id=""> 
+                                       <a href="#"onclick="inputImageMessage()"   class="btn btn-icon btn-link text-body " id="">
                                            <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="images" class="svg-inline--fa fa-images " role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path fill="currentColor" d="M528 32H144c-26.51 0-48 21.49-48 48v256c0 26.51 21.49 48 48 48H528c26.51 0 48-21.49 48-48v-256C576 53.49 554.5 32 528 32zM223.1 96c17.68 0 32 14.33 32 32S241.7 160 223.1 160c-17.67 0-32-14.33-32-32S206.3 96 223.1 96zM494.1 311.6C491.3 316.8 485.9 320 480 320H192c-6.023 0-11.53-3.379-14.26-8.75c-2.73-5.367-2.215-11.81 1.332-16.68l70-96C252.1 194.4 256.9 192 262 192c5.111 0 9.916 2.441 12.93 6.574l22.35 30.66l62.74-94.11C362.1 130.7 367.1 128 373.3 128c5.348 0 10.34 2.672 13.31 7.125l106.7 160C496.6 300 496.9 306.3 494.1 311.6zM456 432H120c-39.7 0-72-32.3-72-72v-240C48 106.8 37.25 96 24 96S0 106.8 0 120v240C0 426.2 53.83 480 120 480h336c13.25 0 24-10.75 24-24S469.3 432 456 432z"></path></svg>                                            </a>
-                                      
+
                                     </div>
 
                                     <div class="col">
@@ -988,7 +989,7 @@
                                                     </div>
                                                     <div data-role="recordings"></div>
                                                 </div>
-                                          
+
                                             </a>
 
                                             <a href="#" class="input-group-text text-body pe-0" style="margin: 1; padding:5px" data-emoji-btn="">
@@ -996,12 +997,12 @@
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-smile"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
                                                 </span>
                                             </a>
-                                            
-                                            
-                                            
+
+
+
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-auto">
                                         <button class="btn btn-icon btn-primary rounded-circle ms-5">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-send"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
@@ -1010,28 +1011,28 @@
 
                                 </div>
                             </form>
-                
+
                             <style>
-                                [data-role="controls"] > button[data-recording="true"] 
+                                [data-role="controls"] > button[data-recording="true"]
                                 {
                                     background-color: #ff2038;
                                     background-image: -webkit-gradient(linear, left bottom, left top, from(#ff2038), to(#b30003));
                                     background-image: -o-linear-gradient(bottom, #ff2038 0%, #b30003 100%);
                                     background-image: linear-gradient(0deg, #ff2038 0%, #b30003 100%);
                                 }
-                            
+
                             </style>
 
-                
+
                             <!-- Chat: Form -->
                         </div>
                      </div>
-                     
+
                         <!-- Chat: Footer -->
                     </div>
 
                 </div>
-             
+
             </main>
             <!-- Chat -->
 
@@ -1072,13 +1073,13 @@
                         People
                     </a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="pill" href="#offcanvas-group-tab-media" role="tab" aria-controls="offcanvas-group-tab-media" aria-selected="true">
                         Media
                     </a>
                 </li>
-               
+
                 <li class="nav-item">
                     <a class="nav-link" data-bs-toggle="pill" href="#offcanvas-group-tab-files" role="tab" aria-controls="offcanvas-group-tab-files" aria-selected="false">
                         <span class="avatar-text" data-bs-toggle="tooltip" data-bs-placement="bottom" title="<strong>Add People</strong><p>Invite friends to group</p>">
@@ -1095,8 +1096,8 @@
                 <!-- Members -->
                 <div class="tab-pane fade show active" id="offcanvas-group-tab-members" role="tabpanel">
                     <ul class=" group-description-members list-group list-group-flush">
-                   
-                                                
+
+
                     </ul>
                 </div>
                 <!-- Members -->
@@ -1114,18 +1115,18 @@
                 <!-- Media -->
 
                 <!-- Files -->
-                <div class="tab-pane fade" id="offcanvas-group-tab-files" role="tabpanel" 
+                <div class="tab-pane fade" id="offcanvas-group-tab-files" role="tabpanel"
                 style="height: 240px;display: flex; flex-direction: column;"
                 >
                     {{-- <ul class="list-group list-group-flush "> --}}
                         {{-- <div class="tab-pane fade h-100" id="tap-content-all-users" role="tabpanel">
                             <div class="d-flex flex-column h-100">
                                 <div class="hide-scrollbar"> --}}
-                                    
+
                     <div  class=" invite-friend-group" style="height: 80%;overflow: auto;">
                     </div>
-                          
-                    
+
+
                     {{-- </div>
                             </div>
                         </div> --}}
@@ -1149,10 +1150,9 @@
                                 data.append('users_id',arrayInviteToGroup)
                                 fetch('api/conversations/participants',{
                                     method:"post",
-                                   headers: {
-                                      'Authorization':`Bearer ${tokenn}`
-                                  }
-                                body:data}
+                                    headers: {  'Authorization':`Bearer ${tokenn}`}
+                                    // body:data
+                                }
                                 );
                             }
                         </script>
@@ -1162,27 +1162,27 @@
                     /* width */
                     ::-webkit-scrollbar {
                       width: 5px;
-                      background-color: #24292e; 
+                      background-color: #24292e;
                       background-color:   var( --bs-secondary);
-                    
+
 
                     }
-                    
+
                     /* Track */
                     ::-webkit-scrollbar-track {
-                      box-shadow: inset 0 0 5px #16191C; 
+                      box-shadow: inset 0 0 5px #16191C;
                       border-radius: 10px;
                     }
-                     
+
                     /* Handle */
                     ::-webkit-scrollbar-thumb {
-                      background: #4C6AAF; 
+                      background: #4C6AAF;
                       border-radius: 5px;
                     }
-                    
+
                     /* Handle on hover */
                     ::-webkit-scrollbar-thumb:hover {
-                      background: #21325d; 
+                      background: #21325d;
                     }
                 </style>
                 <!-- Files -->
@@ -1220,9 +1220,9 @@
                                 </div>
                                 <label class="stretched-label mb-0" for="upload-profile-photo"></label>
                             </div>
-                            
+
                             {{-- <input id="upload-profile-photo"  class="d-none" type="file"> --}}
-                       
+
                             <div style="">
                                 <div class="mb-1 username">{{Auth::user()->name}}</div>
                                 <div class="btn btn-sm btn-icon btn-dark"   onclick="{
@@ -1232,7 +1232,7 @@
                                     $('.layout').addClass('to-edit-name');
                                     // $('.modal').addClass('to-edit-name');
                                     $('.modal').addClass('d-none');
-                                 
+
                             }">
                             {{-- edit --}}
                                     <svg   fill="white"  height="50" viewBox="0 0 20 20" width="50" id="cds-4">
@@ -1242,7 +1242,7 @@
                                     </svg>
                                 </div>
                             </div>
-                           
+
                             {{-- <p>last seen 5 minutes ago</p> --}}
 
                         </div>
@@ -1253,7 +1253,7 @@
 
                     <!-- List -->
                     <ul class="list-group list-group-flush">
-       
+
                         <li class="list-group-item">
                             <div class="row align-items-center gx-6">
                                 <div class="col">
@@ -1290,7 +1290,7 @@
 
                     <!-- List -->
                     <ul class="list-group list-group-flush">
-          
+
                     </ul>
                     <!-- List -->
 
@@ -1306,25 +1306,26 @@
                             <form action="{{route('logout')}}" method="post">
                                 @csrf
                                 <input type="submit" value="{{__('Logout')}}"  class="text-danger"style=" background-color: transparent !important ; border:solid 0px #3e444f;">
-                        </li>
+                            </form>
+                            </li>
                     </ul>
                     <!-- List -->
                 </div>
                 <!-- Modal body -->
-                 
+
 
             </div>
             </div>
          </div>
 
         <!-- Layout -->
-        
-    
-    
+
+
+
         <!-- Scripts -->
         <script>
             let tokenn = "{{Request::cookie('token');}}"
-            alert(tokenn)
+            // alert(tokenn)
             let userId=                {{    Auth::id();            }} ;
             let userimg=              "{{    Auth::user()->img;     }}";
             let username=             "{{    Auth::user()->name     }}";
@@ -1332,7 +1333,7 @@
             let stringAdd=            "{{    __('Add')              }}";
             let stringHide=           "{{    __('Hide')             }}";
             let stringConfirm=        "{{    __('Confirm')          }}";
-            let DeleteForAll=         "{{    __('Delete for all')   }}";  
+            let DeleteForAll=         "{{    __('Delete for all')   }}";
             let noSelectedMemberYet  ="{{__('no selected members yet')}}"
             let stringPasswordChanged="{{    __('Password Changed') }}";
             let stringPasswordUpdated="{{    __('Your password has been updated successfully.')}}";
@@ -1353,43 +1354,41 @@
         <script src="{{ asset ('js/pusher.js')}}" ></script>
         <script src="{{ asset ('js/record.js')}}" ></script>
         <script src="{{ asset ('js/markjivo.recorder.js')}}" ></script>
-        
+
         @if ( config('app.envTyping')  ==true)
-       
-         @vite('resources/js/app.js')    
+
+         @vite('resources/js/app.js')
          <script>
              console.log('Typing working')
-            
+
              setTimeout( () => {
-                
+
              Echo.private('chat')
              .listenForWhisper('typing', (e) => {
                  // console.log(e.conversation_id);
-                 
+
                  // if(userId == e.user_id)
                  // {
                      if(response_conversation_id==e.conversation_id)
                      {
                       if(e.typing)
                           $('#is-typing').removeClass('d-none')
-                         
+
                       else
-                          $('#is-typing').addClass('d-none')        
-                        
+                          $('#is-typing').addClass('d-none')
+
                       }
                  // }
                  // this.typing = e.typing;
-                     
-                     
              })
-             }, 3000)
-            
+             }, 300)
+
          </script>
         @endif
-        
+
         <script src="{{ asset ('js/messenger.js')}}" ></script>
 
-     
+
 {{-- <script src="{{ asset('/sw.js') }}"></script>
 <script>
     if (!navigator.serviceWorker.controller) {
@@ -1400,8 +1399,8 @@
 </script> --}}
     </body>
 
-       
+
     </head>
-    
-        
+
+
 </html>

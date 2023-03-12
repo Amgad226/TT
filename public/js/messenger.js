@@ -15,17 +15,17 @@
 // fix searchad                      {done}
 // group info :members,description   {done}
 // group info edit group name and img{done}
-// count msg for all member          {done} 
-// delete message                    {done}  
-// loader to send img/attachment     {done}  
-// date messages                     {done} 
-// count message un readed           {done} 
-// check to send message             {done} 
-// firebase notification             {done} 
-// toast validation                  {done} 
-// edit profile                      {done} 
+// count msg for all member          {done}
+// delete message                    {done}
+// loader to send img/attachment     {done}
+// date messages                     {done}
+// count message un readed           {done}
+// check to send message             {done}
+// firebase notification             {done}
+// toast validation                  {done}
+// edit profile                      {done}
 // delete chat
-// voice chat  
+// voice chat
 
 
 // ----------------------------------------
@@ -44,7 +44,7 @@ function inputImageMessage(){
     //    fileElm.type = "text";
     //    fileElm.accept('jpg');
     fileElm.setAttribute('type','file');
-    
+
     fileElm.addEventListener('change',(e)=>{
         var random=makeid(5)
         // alert(random);
@@ -54,7 +54,7 @@ function inputImageMessage(){
       console.log(extension);
 
         // var allowedExtensions_ =/(\.jpg|\.jpeg|\.png|\.JPG|\.JPEG|\.PNG|\.gif)$/;
-        
+
         const allowedExtensions = ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG","webp"];
         if (allowedExtensions.includes(extension)==false) {
             alert('Invalid file type');
@@ -78,7 +78,7 @@ function inputImageMessage(){
     if(fileElm.files==0){
         return;
     }
-    
+
     let attachment=fileElm.files[0];
     const formData = new FormData();
 
@@ -91,7 +91,7 @@ function inputImageMessage(){
         headers: {
             'Authorization':`Bearer ${tokenn}`
             }
-        
+
       })
         .then((response) => response.json())
         .then((result) => {
@@ -100,22 +100,22 @@ function inputImageMessage(){
                 alert(result.message);
                 return;
             }
-       
-            
-            
-            
-            
-            
+
+
+
+
+
+
             $('#'+random).attr('src', result.link_attachment);
-            
-            
-            
+
+
+
         // var attachment =result.obj_msg.body
         // var date = result.obj_msg.created_at
         // var msg={'body':attachment  ,'created_at':date ,'id':result.obj_msg.id};
         // addMessage(msg,'message-out',true);
         // $('.send-image-loader').css('display','none')
-                
+
 
         })
         .catch((error) => {
@@ -124,12 +124,12 @@ function inputImageMessage(){
           $('.send-image-loader').css('display','none')
 
         });
- 
-    
+
+
    });
    fileElm.click()
-    
-   
+
+
 }
 
 function selectFile(){
@@ -137,7 +137,7 @@ function selectFile(){
     //    fileElm.type = "text";
     //    fileElm.accept('jpg');
     fileElm.setAttribute('type','file');
- 
+
     fileElm.addEventListener('change',()=>{
         $('.send-image-loader').css('display','block')
 
@@ -149,17 +149,17 @@ function selectFile(){
             $('.send-image-loader').css('display','none')
 
               return ;
-        } 
+        }
 
- 
 
-     
+
+
      if(fileElm.files==0){
          return;
      }
      let attachment=fileElm.files[0];
      const formData = new FormData();
- 
+
      formData.append('type', 'attachment');
      formData.append('attachment',attachment);
      formData.append('conversation_id',response_conversation_id);
@@ -189,11 +189,11 @@ function selectFile(){
         $('.send-image-loader').css('display','none')
 
          });
-  
+
     });
     fileElm.click()
-     
-    
+
+
  }
 // ----------switch theme--------------
 
@@ -206,9 +206,9 @@ function getCookie(name) {
 
 if(getCookie('theme')==`<link rel="stylesheet" type="text/css" href="assets/css/template.bundle.css">`){
     $('head').append(getCookie('theme'));
-    $(".toggel").empty(); 
+    $(".toggel").empty();
 
-        $(".toggel").append(` 
+        $(".toggel").append(`
         <svg  style="cursor: pointer;"class="toggel" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
         <path fill="#95aac9" d="M29.56 19.36a1 1 0 0 0-1.21.07A10.49 10.49 0 0 1 21.51 22 10.17 10.17 0 0 1 11.2 12a9.94 9.94 0 0 1 4.28-8.1 1 1 0 0 0 .36-1.17 1 1 0 0 0-1-.64A14.1 14.1 0 0 0 2 16a14.21 14.21 0 0 0 14.37 14 14.34 14.34 0 0 0 13.57-9.44 1 1 0 0 0-.38-1.2ZM16.37 28A12.2 12.2 0 0 1 4 16a12 12 0 0 1 7.57-11.11A11.82 11.82 0 0 0 9.2 12a12.17 12.17 0 0 0 12.31 12 12.49 12.49 0 0 0 4.89-1 12.5 12.5 0 0 1-10.03 5Z" data-name="Layer 46"/>
         </svg>
@@ -219,14 +219,14 @@ var dark= true;
 $(`.toggel`).on('click',function(e){
     if(dark)
     {
-        
+
         //light mode
         dark=false;
         $('head').append('<link rel="stylesheet" type="text/css" href="assets/css/template.bundle.css">');
         document.cookie='theme=<link rel="stylesheet" type="text/css" href="assets/css/template.bundle.css">'
-        $(".toggel").empty(); 
+        $(".toggel").empty();
 
-        $(".toggel").append(` 
+        $(".toggel").append(`
         <svg  style="cursor: pointer;"class="toggel" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
         <path fill="#95aac9" d="M29.56 19.36a1 1 0 0 0-1.21.07A10.49 10.49 0 0 1 21.51 22 10.17 10.17 0 0 1 11.2 12a9.94 9.94 0 0 1 4.28-8.1 1 1 0 0 0 .36-1.17 1 1 0 0 0-1-.64A14.1 14.1 0 0 0 2 16a14.21 14.21 0 0 0 14.37 14 14.34 14.34 0 0 0 13.57-9.44 1 1 0 0 0-.38-1.2ZM16.37 28A12.2 12.2 0 0 1 4 16a12 12 0 0 1 7.57-11.11A11.82 11.82 0 0 0 9.2 12a12.17 12.17 0 0 0 12.31 12 12.49 12.49 0 0 0 4.89-1 12.5 12.5 0 0 1-10.03 5Z" data-name="Layer 46"/>
         </svg>
@@ -239,8 +239,8 @@ $(`.toggel`).on('click',function(e){
         $('head').append('<link rel="stylesheet" type="text/css" href="assets/css/template.dark.bundle.css">');
         document.cookie='theme=<link rel="stylesheet" type="text/css" href="assets/css/template.dark.bundle.css">'
 
-        $(".toggel").empty(); 
-        $(".toggel").append(` 
+        $(".toggel").empty();
+        $(".toggel").append(`
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96"><switch><g fill="#a7a6a8" class="color000000 svgShape">
             <path d="M52 4v8a4 4 0 0 1-8 0V4a4 4 0 0 1 8 0zm-4 76a4 4 0 0 0-4 4v8a4 4 0 0 0 8 0v-8a4 4 0 0 0-4-4zM14.059 14.059a4 4 0 0 0 0 5.657l5.657 5.657a4 4 0 0 0 5.657-5.657l-5.657-5.657a4 4 0 0 0-5.657 0zm56.568 56.568a4 4 0 0 0 0 5.657l5.657 5.657a4 4 0 0 0 5.657-5.657l-5.657-5.657a4 4 0 0 0-5.657 0zM0 48a4 4 0 0 0 4 4h8a4 4 0 0 0 0-8H4a4 4 0 0 0-4 4zm80 0a4 4 0 0 0 4 4h8a4 4 0 0 0 0-8h-8a4 4 0 0 0-4 4zM14.059 81.941a4 4 0 0 0 5.657 0l5.656-5.657a4 4 0 0 0-5.656-5.657l-5.657 5.657a4 4 0 0 0 0 5.657zm56.568-56.568a4 4 0 0 0 5.657 0l5.657-5.657a4 4 0 0 0-5.657-5.657l-5.657 5.657a4 4 0 0 0 0 5.657zM72 48c0 13.255-10.745 24-24 24S24 61.255 24 48s10.745-24 24-24 24 10.745 24 24zm-8 0c0-8.837-7.163-16-16-16s-16 7.163-16 16 7.163 16 16 16 16-7.163 16-16z" class="color000000 svgShape"/></g></switch></svg>
         `);
@@ -255,8 +255,8 @@ function deleteMessge (element){
     console.log(id)
 var a =$(element.parentElement.parentElement.parentElement.parentElement);
 // return;
-   
- 
+
+
          fetch(`/api/messages/${id}`, {
          method: 'POST' ,
          headers: {
@@ -265,19 +265,19 @@ var a =$(element.parentElement.parentElement.parentElement.parentElement);
          })
                 a.replaceWith (`
      <div class="message-content">
- 
+
          <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
-             <p>deleted message  
+             <p>deleted message
 
              </p>
-         </div> 
-    </div>    
+         </div>
+    </div>
          `)
-       
+
 
 }
 function dropdown(thiss){
-    
+
     {
         if(drop_down==false)
         {
@@ -290,28 +290,29 @@ function dropdown(thiss){
 
         $(thiss.childNodes[3]).addClass('dropdown-menu')
         drop_down=false
-        } 
+        }
     }
-    
+
 }
  //0----------Loader----------
 function hideLoader(thiss=''){
     if(thiss!='')
     thiss.css('visibility','visible');
-  
+
     $('#Loader').addClass('hide');
 }
 function addLoader(thiss=''){
     if(thiss!='')
     thiss.css('visibility','hidden');
-  
+
     $('#Loader').removeClass('hide');
 }
 //----------send message manually----------
 
 $("#targetttt").on('submit',function(e){
+
     e.preventDefault();
-    
+
     let body=$(this).find('.input-have-message').val()
     if(body==''){
         return;
@@ -320,31 +321,24 @@ $("#targetttt").on('submit',function(e){
     data.append('conversation_id',response_conversation_id)
     data.append('body',body)
     data.append('title',username+' send message')
-    // fetch(`api/send`,{ method: 'POST', body:data, })
 
      var random_class_to_add_message_id=makeid(5);
      var deleteAction =makeid(5);
-    // alert(body)
-    // console.log($(this).serialize())
-    // return;
-    // alert(1)
+
     $.post($(this).attr('action') ,$(this).serialize() , function(response){
-        // $('.sended').css("visibility", "");
         $(`.${deleteAction}`).removeClass("visibilty-hidden");
         $(`.${random_class_to_add_message_id}`).attr('message-id',response.obj_msg.id);
-        
-        // addMessage(response.obj_msg ,'message-out')
     }
-    
+
     );
     var user={'img':`${userimg}`,"name":`${username}`}
-    
+
     var msgg = {
         'random_class_to_add_message_id':random_class_to_add_message_id,
         'deleteAction':deleteAction,
         'body': body,
     //     'body':`<div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
-    //     <p>${body} <span class="sended" style="position:relative ;bottom:-12px;right:-10px;z-index:0;visibility:hidden"> 
+    //     <p>${body} <span class="sended" style="position:relative ;bottom:-12px;right:-10px;z-index:0;visibility:hidden">
     //        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
     //     width="15px" height="15px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;"
     //     xml:space="preserve"><g>
@@ -358,139 +352,31 @@ $("#targetttt").on('submit',function(e){
         'type':'text'
     }
     addMessage(msgg,'message-out',true,true ,'visibilty-hidden')
-    // addMessage(msgg,'message-out',true,false)
 
     $(this).find('.input-have-message').val('');
     // Typing(false)
 
 
 });
-const addMessagesToGroup = function(msg ,c = '' ,isAnimate = true ,deleteAction=true){
-    const $container = $('.form-ccontainer');
-    if (isAnimate) 
-    {
-        $container.animate({
-          scrollTop: $container.prop('scrollHeight')
-        });
-    }
-    // else 
-    // {
-    //     $container.scrollTop($container.prop('scrollHeight'))
-    //     // $container.scrollTop = 9c9;
-    // }
-    // -------------
 
 
-    var something=msg.body;
+//------------------------get messages in chat -----------------------------------
 
-    var dropdown  = '' ;
-    var dir;
-        if(c=='')
-        {
-             something=something.replace('visibility:','visibility:hidden')
-            //  ${something}
-        
-        dir=`
-        <img class="avatar" src="${msg.user.img}" alt="" style="">
+function appendWithGroupMessageStyle(image, name, message ){
+    return `
+        <img class="avatar" src="${image}" alt="" style="">
         <div  style=" display: flex;flex-direction: column; ">
-                <p style=" font-size:;   position: relative;top: 5px; background-color:  ;margin-bottom:0px "> ${msg.user.name}</p>
-                
+                <p style=" font-size:;   position: relative;top: 5px; background-color:  ;margin-bottom:0px "> ${name}</p>
+                      ${message}
 
-
-                <div class="message-text" >
-                        <p>${something} 
-                            <span class="sended  " style="position:relative ;bottom:-12px;right:-10px;z-index:0;visibility:">
-                                <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"width="15px" height="15px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;"xml:space="preserve"><g><path fill="var( --bs-white)" d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704C78.477,17.894,78.477,18.586,78.049,19.015z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
-                                </svg>
-                            </span>
-                        </p>
-                </div> 
-                
-                
-        </div>   
-        `;
-        
-        }
-      
-        else
-        // else
-        {
-            // dir= something;
-            dir=` 
-            <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
-                <p>${something} 
-                    <span class="sended  " style="position:relative ;bottom:-12px;right:-10px;z-index:0;visibility:">
-                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"width="15px" height="15px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;"xml:space="preserve"><g><path fill="var( --bs-white)" d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704C78.477,17.894,78.477,18.586,78.049,19.015z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
-                        </svg>
-                    </span>
-                </p>
-            </div> `;
-
-            if(deleteAction==true)
-            {
-            dropdown=`<div class="message-action">
-            <div class="dropdown"  onclick="dropdown(this)">
-                    <a class="icon text-muted" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
-                    </a>
-
-                    <ul id="dropdown-menu" class="dropdown-menu ">
-
-                        <li message-id=${msg.id} onclick ="{deleteMessge(this)}">
-                            <a class="dropdown-item d-flex align-items-center text-danger" href="#">
-                                <span class="me-auto" >${DeleteForAll}</span>
-                                <div class="icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                </div>
-                            </a>
-                        </li>
-
-                    </ul>
-            </div>
-        </div>`;
-            }
-        }
-            
-        $("#soso").append(`
-        <div class="name-to-group message ${c} ">
-            <div class="message-inner" >
-                   <div class="message-body">
-                         <div class="message-content">
-                               ${dir}
-                               ${dropdown}
-                        </div> 
-                    </div>
-                    <div class="message-footer">
-                        <span class="extra-small text-muted">${moment(msg.created_at).fromNow()}</span>
-                    </div>
-            </div>
         </div>
-          `); 
-    
+        `;
 }
-const addMessage = function(msg ,c = '' ,isAnimate = true ,deleteAction=true ,classDeletMessage=''){
-    const $container = $('.form-ccontainer');
-    if (isAnimate) 
-    {
-        $container.animate({
-          scrollTop: $container.prop('scrollHeight')
-        });
-    }
-    // // else 
-    // // {
-    // //     $container.scrollTop($container.prop('scrollHeight'))
-    // //     // $container.scrollTop = 9c9;
-    // // }
-    // // -------------
-
-
-    var something=msg.body;
-    var link_attachment=msg.body;
-    // console.log(msg)
+function styleMessage(msg,classDeletMessage){
     if(msg.type=='text')
     {
             something= `<div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
-                            <p>${msg.body} 
+                            <p>${msg.body}
                                 <span class="sended ${msg.deleteAction} ${classDeletMessage}  " style="position:relative ;bottom:-12px;right:-10px;z-index:0;visibility:">
                                     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"width="15px" height="15px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;"xml:space="preserve"><g><path fill="var( --bs-white)" d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704C78.477,17.894,78.477,18.586,78.049,19.015z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
                                     </svg>
@@ -500,7 +386,7 @@ const addMessage = function(msg ,c = '' ,isAnimate = true ,deleteAction=true ,cl
     }
 
     else if(msg.type=='img'){
-        something= `<img  width="200"  class="img-fluid rounded" src="${link_attachment}" data-action="zoom" alt="">`;
+        something= ` <img  width="200"  class="img-fluid rounded" src="${msg.body}" data-action="zoom" alt="">`;
 
     }
 
@@ -508,20 +394,18 @@ const addMessage = function(msg ,c = '' ,isAnimate = true ,deleteAction=true ,cl
     {
         // alert()
         something=`
-        <audio style='border: 5px solid #2787F5; border-radius: 50px;'  controls ><source src="${link_attachment}" type="audio/WAV"></audio>
-        
-        <span class="sended ${msg.deleteAction} ${classDeletMessage}  "   style="position:absolute;right:23px; z-index:120;visibility:visiable"> 
+        <audio style='border: 5px solid #2787F5; border-radius: 50px;'  controls ><source src="${msg.body}" type="audio/WAV"></audio>
+
+        <span class="sended ${msg.deleteAction} ${classDeletMessage}  "   style="position:absolute;right:23px; z-index:120;visibility:visiable">
             <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="12px" height="12px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;" xml:space="preserve"><g>
                <path fill="#2787F5" d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704 c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704 C78.477,17.894,78.477,18.586,78.049,19.015z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
             </svg>
         </span>`;
     }
-   
+
     else if(msg.type=='attachment')
     {
-//     console.log(msg.attachment.link_attachment )
-// return;
-        // console.log(attachment)
+//
         something=`<div class="message-text">
         <div class="row align-items-center gx-4">
             <div class="col-auto">
@@ -542,83 +426,113 @@ const addMessage = function(msg ,c = '' ,isAnimate = true ,deleteAction=true ,cl
         </div>
       </div>`;
     }
-     
+return something
 
-    var dropdown  = '' ;
+}
+function appendDeleteDropDown(deleteAction,classDeletMessage,random_class_to_add_message_id,id,DeleteForAll ){
+    return `<div class="message-action  ${deleteAction} ${classDeletMessage} " >
+    <div class="dropdown"  onclick="dropdown(this)">
+            <a class="icon text-muted" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+            </a>
 
-        if(c=='')
+            <ul id="dropdown-menu" class="dropdown-menu" style ='list-style-type: none' >
+
+                <li  class=${random_class_to_add_message_id} message-id=${id} onclick ="{deleteMessge(this)}" style = 'background-color:var("--delete-message") '>
+                    <a class="dropdown-item d-flex align-items-center text-danger" href="#">
+                        <span class="me-auto" >${DeleteForAll}</span>
+                        <div class="icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        </div>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>`;
+
+}
+function appendMessageInChat(c,message,dropdown,created_at ){
+    $("#soso").append(`
+
+    <div class="name-to-group message ${c} ">
+
+    <div class="message-inner" >
+        <div class="message-body">
+            <div class="message-content">
+           ${message}
+
+           ${dropdown }
+            </div>
+        </div>
+
+        <div class="message-footer">
+            <span class="extra-small text-muted">${moment(created_at).fromNow()}</span>
+        </div>
+    </div>
+</div>
+    `);
+
+}
+function animateMessage(){
+    $('.form-ccontainer').animate({  scrollTop: $('.form-ccontainer').prop('scrollHeight')});
+}
+const addMessagesToGroup = function(msg ,c= '' ,isAnimate = true ,deleteAction=true){
+
+    if (isAnimate)
+    {
+        animateMessage();
+    }
+   var  message=styleMessage(msg, '');
+
+        if(c=='')//receiver message //to remove received check from received messages
         {
-             something=something.replace('visibility:','visibility:hidden')
+           message=message.replace('visibility:','visibility:hidden');
+           message= appendWithGroupMessageStyle(msg.user.img, msg.user.name, message);/////////
         }
         else
         {
             if(deleteAction==true)
             {
-               
-                dropdown=`<div class="message-action  ${msg.deleteAction} ${classDeletMessage} " >
-                <div class="dropdown"  onclick="dropdown(this)">
-                        <a class="icon text-muted" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
-                        </a>
-
-                        <ul id="dropdown-menu" class="dropdown-menu" style ='list-style-type: none' >
-
-                            <li  class=${msg.random_class_to_add_message_id} message-id=${msg.id} onclick ="{deleteMessge(this)}" style = 'background-color:var("--delete-message") '>
-                                <a class="dropdown-item d-flex align-items-center text-danger" href="#">
-                                    <span class="me-auto" >${DeleteForAll}</span>
-                                    <div class="icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                    </div>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </div>`;
-             }
+               var dropdown=appendDeleteDropDown('','','',msg.id,DeleteForAll);
+            }
         }
-        // ${something}
-             $("#soso").append(`
-  
-             <div class="name-to-group message ${c} ">
-        
-             <div class="message-inner" >
-                 <div class="message-body">
-                     <div class="message-content">
-                    ${something}       
-        
-                    ${dropdown }
-                     </div> 
-                 </div>
+        appendMessageInChat(c,message,dropdown='',msg.created_at)
+}
+const addMessage = function(msg ,c= '' ,isAnimate = true ,deleteAction=true ,classDeletMessage=''){
 
-                 <div class="message-footer">
-                     <span class="extra-small text-muted">${moment(msg.created_at).fromNow()}</span>
-                 </div>
-             </div>
-         </div>
-  
-             `); 
-    //  }
-    
- 
+    if (isAnimate)
+    {
+        animateMessage();
+    }
+    var message =styleMessage(msg,classDeletMessage)
+
+        if(c=='') //receiver message //to remove received check from received messages
+        {
+             message=message.replace('visibility:','visibility:hidden')
+        }
+        else
+        {
+            if(deleteAction==true)
+            {
+               var dropdown=appendDeleteDropDown(msg.deleteAction,classDeletMessage,msg.random_class_to_add_message_id,msg.id,DeleteForAll);
+            }
+        }
+        appendMessageInChat(c,message,dropdown='',msg.created_at);
 }
 
-//------------messages in chat----------
 var u=0;
-// var response_conversation_id=0
-
 Object.defineProperty(this, 'response_conversation_id', {
     get: function () { return u; },
     set: function (set) {
         // response_conversation_id = v;
-        u=set 
-       
-        $('#is-typing').addClass('d-none')  
-       
+        u=set
+
+        $('#is-typing').addClass('d-none')
+
       console.log('Value changed! New Conversation: ' + set);
     }
-  });
-
+});
 
 $(`#chat-list`).on('click','[data-messages]',function(e){
     e.preventDefault();
@@ -628,20 +542,20 @@ $(`#chat-list`).on('click','[data-messages]',function(e){
     // $(this).css('background-color','green')
     $(this).addClass('shadowww')
 
-    
+
                                          //to hide (Loader)
     open_chat($(this).attr('data-messages')  ,$(this));
     // $(this).css('background-color','red')
 })
 
 const showAllMessages=function(){
-    $(".show-all-messages").css('visibility','hidden'); 
+    $(".show-all-messages").css('visibility','hidden');
     addLoader()
     $(`#soso`).empty();
     $.get(`/api/conversations/${response_conversation_id}/allMessages` , function(response)
     {
 
-   
+
         if(response.conversation.type=='peer')
         {
             for(i in response.messeges)
@@ -649,12 +563,12 @@ const showAllMessages=function(){
                 let msg = response.messeges[i];
                 let c  = msg.user_id ==userId ? 'message-out' :'';
                 addMessage(msg , c ,false)
-            }   
+            }
             hideLoader()
             const $container = $('.form-ccontainer');
             $container.scrollTop($container.prop('scrollHeight'))
 
-            
+
         }
         else
         {
@@ -663,214 +577,179 @@ const showAllMessages=function(){
             let msg = response.messeges[i];
             let c  = msg.user_id ==userId ? 'message-out' :'';
             addMessagesToGroup(msg , c ,false,true)
-            }   
+            }
             hideLoader()
             const $container = $('.form-ccontainer');
             $container.scrollTop($container.prop('scrollHeight'))
 
         }
-        
+
     })
 }
 var arrayInviteToGroup=[];
-const open_chat=function(thiss, toLoader=''){
-    
-    $('.group-description').css('visibility','hidden'); 
-    $('.group-description').css('display','none'); 
-    addLoader(toLoader)
-    // alert(1)
+
+function  open_chat_css_action(){
+    $('.group-description').css('visibility','hidden');
+    $('.group-description').css('display','none');
     $(`#soso`).empty();
-    
     $(".to-return-home").removeClass("welcome-text");
     $(".footer-input-chat").css("display", "block");
     $(".app-bar-name-and-img").css("display", "block");
     $(".welcome-text").css("display", "none");
     $(".form-ccontainer").css("display", "block");
     $(".to-return-home").addClass("welcome-text");
-//    return;
-    // e.preventDefault();
-    let id =thiss;
-    // let id =$(thiss).attr('data-messages');
-    // $(`#soso`).empty();
-    $('input[name=conversation_id]').val(id)
-    
-    let data = new FormData
-    data.append('conversation_id',id)
-    fetch('/api/readAllMessages', {
-    method: 'POST',
-    body:data,
-    headers: {
-       'Authorization':`Bearer ${tokenn}`
-   }
-    })
-    $.get(`/api/conversations/${id}/messages` , function(response)
-    {
-        console.log(response)
-        // return;
+}
 
-         response_conversation_id=response.conversation.id;
-         $('#conversation-id-input-target').text(response_conversation_id)
-        //  response_conversation_id=response.conversation.partiscipants[0].pivot.user_id;
-      
-        
+function getAndAppendGroupMembers(conversation_id){
+
+
+
+    fetch(`api/conversations/${conversation_id}/getParticipants`, {
+        method: 'GET',
+        headers: {'Authorization':`Bearer ${tokenn}`}
+        }).then(res =>
+            {return res.json()}).then(data=> {
+                    for(let i in data)
+                    $('.group-description-members').append(`<li class="list-group-item">
+                    <div class="row align-items-center gx-5">
+                        <div class="col-auto">
+                            <a href="#" class="avatar avatar-online">
+                                <img class="avatar-img" src="${data[i].user.img}" alt="">
+                            </a>
+                        </div>
+
+                        <div class="col">    <h5><a href="#">  ${data[i].user.name} </a></h5>
+                        <span class="extra-small text-primary"> ${data[i].message_count}</span>
+                        </div>
+
+                        <div class="col-auto">
+                                    <span class="extra-small text-primary"> ${data[i].role}</span>
+                                </div>
+                    </div>
+                </li>`)
+                 });
+
+    fetch(`api/users_not_in_group/${conversation_id}`,
+    {
+        method: 'GET',
+        headers: {
+           'Authorization':`Bearer ${tokenn}`
+       }
+    })
+        .then(res =>
+            {
+
+              return res.json()
+            }
+                ).then(data=>
+                {
+
+                    for(let i in data)
+                    $('.invite-friend-group').append(`
+                    <div class="card-body" style="background-color:var(--bs-body-bg)">
+
+                        <div class="row align-items-center gx-5">
+                            <div class="col-auto">
+                                <div class="avatar avatar-online">
+
+                                        <img class="avatar-img" src="${data[i].img}" alt="">
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h5>${data[i].name}</h5>
+                            </div>
+                            <div class="col-auto">
+                                <div class="form-check">
+
+
+                             <input class="form-check-input cheack-invite-to-group" type="checkbox" value="${data[i].id}" id="" onclick="{
+                                 if (this.checked == true)
+                                 {
+                                     if(!arrayInviteToGroup.includes($(this).attr('value')))
+                                     {
+                                         arrayInviteToGroup.push($(this).attr('value'));
+                                     }
+                                 }
+                                else
+                                {
+                                 const index = arrayInviteToGroup.indexOf($(this).attr('value'));
+                                 arrayInviteToGroup.splice(index, 1);
+                                }
+                             console.log(arrayInviteToGroup)
+
+                              }" >
+
+                                <label class="form-check-label" for="id-member-9"></label>
+                                </div>
+                            </div>
+                        </div>
+                   <div>
+                   `)
+    });
+
+}
+
+const open_chat=function(conversation_id, toLoader=''){
+
+    open_chat_css_action();
+    addLoader(toLoader)
+
+    $('input[name=conversation_id]').val(conversation_id)
+
+    $.get(`/api/conversations/${conversation_id}/messages` , function(response)
+    {
+        response_conversation_id=conversation_id; //to change active chat id
+        $('#conversation-id-input-target').text(conversation_id)
+
         $('#chat-name').text(response.conversation.lable);
         $('#chat-img').attr('src',response.conversation.img);
         $('#chat-img').attr('data-action','zoom');
-        // $('#chat-img').attr('src',response.conversation.partiscipants[0].img);
-        
+
         if(response.read_more)
-        $(".show-all-messages").css('visibility','visible'); 
+        $(".show-all-messages").css('visibility','visible');
 
         else
-        $(".show-all-messages").css('visibility','hidden'); 
+        $(".show-all-messages").css('visibility','hidden');
 
 
-     
         if(response.conversation.type=='peer')
-        {   
-            
+        {
             for(i in response.messeges)
-            { 
-                // let message_id= response.messages
+            {
                 let msg = response.messeges[i];
-                // break;
                 let c  = msg.user_id ==userId ? 'message-out' :'';
                 addMessage(msg , c ,false)
-            }   
-            hideLoader(toLoader)
-            const $container = $('.form-ccontainer');
-            $container.scrollTop($container.prop('scrollHeight'))
-
-            
+            }
         }
         else
         {
-            console.log(response)
-            $('.group-description').css('visibility','visible'); 
-            $('.group-description').css('display','block'); 
+            $('.group-description').css('visibility','visible');
+            $('.group-description').css('display','block');
             $('.group-description-name').empty();
             $('.group-description-name').append(response.conversation.lable);
             $('.group-description-description').empty();
             $('.group-description-description').append(response.conversation.description);
             $('.group-description-img').attr('src',response.conversation.img)
             $('.group-description-members').empty();
-            // $('.invite-friend-group').empty()
 
-            fetch(`api/conversations/${response.conversation.id}/getParticipants`, 
-            {
-                method: 'GET',
-                headers: {
-                   'Authorization':`Bearer ${tokenn}`
-               }
-            })
-                .then(res =>
-                    {
+            getAndAppendGroupMembers(conversation_id)
 
-                      return res.json()
-                    }
-                        ).then(data=>
-                        {
-                            // return;
-                            for(let i in data)
-                            $('.group-description-members').append(`<li class="list-group-item">
-                            <div class="row align-items-center gx-5">
-                                <div class="col-auto">
-                                    <a href="#" class="avatar avatar-online">
-                                        <img class="avatar-img" src="${data[i].user.img}" alt="">
-                                    </a>
-                                </div>
-                
-                                <div class="col">    <h5><a href="#">  ${data[i].user.name} </a></h5>   
-                                <span class="extra-small text-primary"> ${data[i].message_count}</span>
-                                </div>
-                                
-                                <div class="col-auto">
-                                            <span class="extra-small text-primary"> ${data[i].role}</span>
-                                        </div>
-                            </div>
-                        </li>`)
-                         });
-         
-            fetch(`api/users_not_in_group/${response.conversation.id}`, 
-            {
-                method: 'GET',
-                headers: {
-                   'Authorization':`Bearer ${tokenn}`
-               }
-            })
-                .then(res =>
-                    {
-
-                      return res.json()
-                    }
-                        ).then(data=>
-                        {
-                            // alert(data)
-                            // return;
-                            for(let i in data)
-                            // <li class="list-group-item">
-                            $('.invite-friend-group').append(`
-                            <div class="card-body" style="background-color:var(--bs-body-bg)">
-
-                                <div class="row align-items-center gx-5">
-                                    <div class="col-auto">
-                                        <div class="avatar avatar-online">
-               
-                                                <img class="avatar-img" src="${data[i].img}" alt="">
-                                        </div>
-                                    </div>
-                                    <div class="col">
-                                        <h5>${data[i].name}</h5>
-                                    </div>
-                                    <div class="col-auto">
-                                        <div class="form-check">
-                                  
-                                        
-                                     <input class="form-check-input cheack-invite-to-group" type="checkbox" value="${data[i].id}" id="" onclick="{
-                                         if (this.checked == true)
-                                         {
-                                             if(!arrayInviteToGroup.includes($(this).attr('value')))
-                                             {
-                                                 arrayInviteToGroup.push($(this).attr('value'));
-                                             }
-                                         }
-                                        else
-                                        {
-                                         const index = arrayInviteToGroup.indexOf($(this).attr('value'));
-                                         arrayInviteToGroup.splice(index, 1);
-                                        }
-                                     console.log(arrayInviteToGroup)
-
-                                      }" >
-                     
-                                        <label class="form-check-label" for="id-member-9"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                           <div>
-                           `)
-                        //    </li>
-            });
-            
-            
-           
             for(i in response.messeges)
             {
                 let msg = response.messeges[i];
                 let c  = msg.user_id ==userId ? 'message-out' :'';
                 addMessagesToGroup(msg , c ,false,true)
-            }   
-            hideLoader(toLoader)
-            const $container = $('.form-ccontainer');
-            $container.scrollTop($container.prop('scrollHeight'))
+            }
 
         }
-        
+        hideLoader(toLoader)
+        $('.form-ccontainer').scrollTop($('.form-ccontainer').prop('scrollHeight'))
+
     })
 }
-// $('.')
-// arrayInviteToGroup
-//----------change_pass---------------
+
+
+//----------------------change_pass -----------------------------------
 
 $("#change_pass").on('submit',function(e){
     e.preventDefault();
@@ -895,7 +774,7 @@ $("#change_pass").on('submit',function(e){
         $('.bodyToastPassword').empty()
         $('.bodyToastPassword').append(response.message)
         $(`.toastPassword`).toast({ delay: 3000 });
-        $('.toastPassword').toast('show'); 
+        $('.toastPassword').toast('show');
         // alert(response.message)
         $('.send-image-loader').css('display','none')
     });
@@ -928,19 +807,16 @@ $("#searchhh_chats").on('submit',function(e){
     e.preventDefault();
     $.post($(this).attr('action') ,$(this).serialize() , function(response){
         console.log(response)
-        // return; 
-        search_chats(response)  
+        // return;
+        search_chats(response)
 
     });
 // $(this).find('#aso').val('');
 });
 
 const search_chats = function(res){
-    
-    $("#chat-list").replaceWith(` 
-    <div id="chat-list">
-</div>
-`);
+
+$("#chat-list").replaceWith(`  <div id="chat-list"></div>`);
 for(let i = 0; i<
     res.length ;i++)
     {
@@ -951,19 +827,19 @@ for(let i = 0; i<
                 var message_body_with_slice=res[i].body.slice(140, -129);
                 res[i].body=message_body_with_slice.slice(0,10);
             }
-        
+
     $("#chat-list").append(`
-    <div id="card_to_append_search" style=" chat-id=${res[i].conversation_id} margin-bottom: 13px   " 
+    <div id="card_to_append_search" style=" chat-id=${res[i].conversation_id} margin-bottom: 13px   "
     onclick="{   open_chat( ${res[i].conversation_id} );     $('main').addClass('is-visible');   }"   >
-    
+
 
     <a href="#" class="card border-0 text-reset">
-    
+
         <div  class="card-body">
             <div class="row gx-5">
             <div class="col-auto">
             <div class="avatar avatar-online">
-              
+
                 <img src="${res[i].img}" alt="#" class="avatar-img">
             </div>
         </div>
@@ -973,7 +849,7 @@ for(let i = 0; i<
                         <h5 class="me-auto mb-0">  ${res[i].lable}</h5>
 
                         <span class="text-muted extra-small ms-2"> ${moment(res[i].created_at).fromNow()}</span>
-                     
+
                     </div>
 
                     <div class="d-flex align-items-center">
@@ -985,7 +861,7 @@ for(let i = 0; i<
                 </div>
             </div>
 
-        
+
             </div>
     </a>
 
@@ -1005,7 +881,7 @@ const getConversations=function(pauseLoder=true){
     if(pauseLoder==true)
     addLoader($(`#tab-chats`))
     $.get('/api/conversations',function(response){
-  
+
         for(i in response)
         {
             // console.log(response[i].conversation.lable);
@@ -1017,7 +893,7 @@ const getConversations=function(pauseLoder=true){
 }
 
 const conversation=function(chat){
-  
+
 var countUnReadMsg=chat.conversation.unRead_message
 // alert(countUnReadMsg)
 if(countUnReadMsg!=0){
@@ -1034,7 +910,7 @@ else{
     }>
         <span class="unread-message-count" data-messages=${chat.conversation.id} style= >new message</span>
     </div>`;
-    
+
 }
 
     var message_body_with_slice;
@@ -1046,25 +922,25 @@ else{
     message_body_with_slice=chat.conversation.last_massege.type;
 
     $('#chat-list').append(`
-    
-    
+
+
     <a  onclick="{
-        
-       
+
+
 
     $('main').addClass('is-visible');
-    
+
     $('.unread-message-count[data-messages=${chat.conversation.id}]').html(0);
     $('.unread-message-count[data-messages=${chat.conversation.id}]').addClass('d-none');
-    
-   
+
+
     }" href="" id="roro" data-messages=${chat.conversation.id} class="card border-0 text-reset add-shadow zz  ">
 
     <div style="" class="card-body zz" >
         <div class="row gx-5">
             <div class="col-auto">
                 <div class="avatar avatar-online">
-                  
+
                     <img src="${chat.conversation.img}" alt="#" class="avatar-img">
                 </div>
             </div>
@@ -1079,7 +955,7 @@ else{
 
                 <div class="d-flex align-items-center ">
                     <div class="line-clamp me-auto last-message" data-messages=${chat.conversation.id}>
-                    ${message_body_with_slice} 
+                    ${message_body_with_slice}
                     </div>
                    ${counter}
 
@@ -1089,7 +965,7 @@ else{
     </div>
     <!-- .card-body -->
 
-    
+
 </a>
 
     `)
@@ -1117,7 +993,7 @@ const getNotification=function(toLoader){
     addLoader(toLoader)
 
     $.get('/api/getNotification',function(response){
-  
+
         for(i in response)
         {
         notification(response[i])
@@ -1131,7 +1007,7 @@ const notification=function(chat){
     if(chat.type=='request')
     {
     $('#cards-notification').append(`
-    
+
     <div id="cardNoti"  class="card border-0 mb-5">
     <div class="card-body">
 
@@ -1152,16 +1028,16 @@ const notification=function(chat){
                     <h5 class="me-auto mb-0">
                         <a href="#">${chat.title}</a>
                         <a href="#"> </a>
-                      
+
                     </h5>
                     <span class="extra-small text-muted ms-2">${chat.created_at}</span>
-                    
+
                 </div>
 
                 <div class="d-flex">
                     <div class="me-auto">${chat.body}</div>
 
-                   
+
                 </div>
             </div>
         </div>
@@ -1174,7 +1050,7 @@ const notification=function(chat){
                 onclick="{
                     let data = new FormData
                     data.append('_token','${tokenn}')
-                   
+
                     fetch('/api/friend/${chat.refernce}', {
                     method: 'DELETE',
                     body:data,
@@ -1182,19 +1058,19 @@ const notification=function(chat){
                        'Authorization':'Bearer ${tokenn}'
                    }
                     })
-            
+
                 // this.parentNode.parentNode.style.display = 'none';
                 this.parentNode.parentNode.replaceWith('deleted succesfuly')
-                
-                
+
+
                 }">
             </div>
             <div id = 'button-notification' class="col button-notification">
                 <input href="#" value="${stringConfirm}" class="btn btn-sm btn-primary w-100" onclick="{
                     let data = new FormData
                     data.append('_token','${tokenn}')
-                  
-                
+
+
                     fetch('/api/friend/${chat.refernce}', {
                     method: 'PUT',
                     body:data,
@@ -1208,13 +1084,13 @@ const notification=function(chat){
         </div>
     </div>
  </div>
-    
+
     `)
     }
 
-    else 
+    else
     {
-    $('#cards-notification').append(` 
+    $('#cards-notification').append(`
      <div class="card-list mt-8">
 
 
@@ -1270,34 +1146,34 @@ const getFriends=function(toLoader){
 
         $.get('/api/friend',function(response){
             // console.log(response)
-        for(i in response) 
+        for(i in response)
         {
 
          $('#friends_in_searsh').append(`
 
             <div id="friends_in_searsh" class="card-list">
-          
+
             <div class="card border-0">
                 <div id="users-body" class="card-body">
-        
+
                     <div class="row align-items-center gx-5">
                         <div class="col-auto">
                             <a href="#" class="avatar avatar-online">
-                             
+
                                 <img class="avatar-img" src="${response[i].img}" alt="">
-                                
-                                
+
+
                             </a>
                         </div>
-        
+
                         <div class="col">
                             <h5>
                               <a href="#">${response[i].name}</a></h5>
                              <!-- <p>${response[i].last_seen_at}</p> -->
                         </div>
-        
+
                         <div  class="col-auto">
-                        <input type="submit" value="${stringHi}" user-id=${response[i].id}  style="${styleHi}" 
+                        <input type="submit" value="${stringHi}" user-id=${response[i].id}  style="${styleHi}"
                         onclick="
                         {
                          $('.send-image-loader').css('display','block')
@@ -1316,7 +1192,7 @@ const getFriends=function(toLoader){
                                }
                                 }).then(res =>
                                     {
-                                        if (res.status>=200 && res.status <300) 
+                                        if (res.status>=200 && res.status <300)
                                         return res.json()
                                         else
                                         throw new Error();
@@ -1335,20 +1211,20 @@ const getFriends=function(toLoader){
                             play(soundDone)
                             $('.send-image-loader').css('display','none')
 
-                                    
+
                                 })
                          }" >
-                      
-                            
-                         
+
+
+
                         </div>
-        
+
                     </div>
-        
+
                 </div>
             </div>
             <!-- Card -->
-        
+
                  </div>
                  <br>
          `)
@@ -1369,33 +1245,33 @@ $('#input-search-friends').on('keyup',function() {
 $("#search_friends").on('submit',function(e){
     e.preventDefault();
     $.post($(this).attr('action') ,$(this).serialize() , function(response){
-        search_friends(response)  
+        search_friends(response)
     });
 // $('#input-search-friends').val('');
 });
 const search_friends = function(res){
-    
-    $("#friends_in_searsh").replaceWith(` 
+
+    $("#friends_in_searsh").replaceWith(`
     <div id="friends_in_searsh" class="card-list">
     </div>
 `);
 for(let i = 0; i<
     res.length ;i++)
 {
-  console.log(res)  
+  console.log(res)
     $("#friends_in_searsh").append(`
     <div id="friends_in_searsh" class="card-list">
-  
+
     <div class="card border-0">
         <div id="users-body" class="card-body">
 
             <div class="row align-items-center gx-5">
                 <div class="col-auto">
                     <a href="#" class="avatar avatar-online">
-                     
+
                         <img class="avatar-img" src="${res[i].img}" alt="">
-                        
-                        
+
+
                     </a>
                 </div>
 
@@ -1406,7 +1282,7 @@ for(let i = 0; i<
                 </div>
 
                 <div  class="col-auto">
-         
+
                     <input class="onlL" onclick=myFunction()  type="submit" value="${stringHi}"  style="text-decoration: none;border-radius: 9px;border:solid 1px #3e444f ;cursor : pointer;padding:0px 15px ;text-align: center;color:#fff;background-color: #16191c ;" >
                     <script>
                     function myFunction() {
@@ -1426,7 +1302,7 @@ for(let i = 0; i<
                            }
                         }).then(res =>
                             {
-                                if (res.status>=200 && res.status <300) 
+                                if (res.status>=200 && res.status <300)
                                 return res.json()
                                 else
                                 throw new Error();
@@ -1445,13 +1321,13 @@ for(let i = 0; i<
                     play(soundDone)
                     $('.send-image-loader').css('display','none')
 
-                            
+
                         })
                     }
                     </script>
-                    
-                    
-            
+
+
+
                 </div>
 
             </div>
@@ -1478,39 +1354,39 @@ const getUsers=function(toLoader){
 
     $.get('/api/getUsers',function(response){
 
-        for(i in response) 
+        for(i in response)
         {
 
             $('#all_users_in_app').append(`
 
-            
+
             <div id="user_in_all_user" class="card-list">
-          
+
             <div class="card border-0">
                 <div id="users-body" class="card-body">
-        
+
                     <div class="row align-items-center gx-5">
                         <div class="col-auto">
                             <a href="#" class="avatar avatar-online">
-                             
+
                                 <img class="avatar-img" src="${response[i].img}" alt="">
-                                
-                                
+
+
                             </a>
                         </div>
-        
+
                         <div class="col">
                             <h5>
                               <a href="#">${response[i].name}</a></h5>
                              <!-- <p>${response[i].last_seen_at}</p> -->
                         </div>
-        
+
                         <div  class="col-auto">
 
-                        <input class="addfriend" type="submit" value="${stringAdd}" user-id=${response[i].id} " 
+                        <input class="addfriend" type="submit" value="${stringAdd}" user-id=${response[i].id} "
                         onclick="
-                        {   
-                            
+                        {
+
                             $(this).attr('class','addfriend_done')
                             let data = new FormData
                             data.append('_token','${tokenn}')
@@ -1523,16 +1399,16 @@ const getUsers=function(toLoader){
                                }
                                 })
                          }" >
-                     
-                             
+
+
                         </div>
-        
+
                     </div>
-        
+
                 </div>
             </div>
             <!-- Card -->
-        
+
          </div>
          <br>
             `)
@@ -1550,7 +1426,7 @@ $("#form-search-users").on('submit',function(e){
     $.post($(this).attr('action') ,$(this).serialize() , function(response){
     $(`#all_users_in_app`).empty();
 
-    search_users(response)  
+    search_users(response)
     });
 // $('#form-search-users').val('');
 });
@@ -1562,8 +1438,8 @@ $('#input-search-users').on('keyup',function() {
 });
 
 const search_users = function(res){
-    
-    $("#all_users_in_app").replaceWith(` 
+
+    $("#all_users_in_app").replaceWith(`
     <div id="all_users_in_app" class="card-list">
     </div>
 `);
@@ -1571,19 +1447,19 @@ for(let i = 0; i<
     res.length ;i++)
 {
     $("#all_users_in_app").append(`
-  
+
     <div id="all_users_in_app" class="card-list">
-  
+
     <div class="card border-0">
         <div id="users-body" class="card-body">
 
             <div class="row align-items-center gx-5">
                 <div class="col-auto">
                     <a href="#" class="avatar avatar-online">
-                     
+
                         <img class="avatar-img" src="${res[i].img}" alt="">
-                        
-                        
+
+
                     </a>
                 </div>
 
@@ -1594,11 +1470,11 @@ for(let i = 0; i<
                 </div>
 
                 <div  class="col-auto">
-         
-                <input class="addfriend" type="submit" value="${stringAdd}" user-id=${res[i].id} " 
+
+                <input class="addfriend" type="submit" value="${stringAdd}" user-id=${res[i].id} "
                 onclick="
-                {   
-                    
+                {
+
                     $(this).attr('class','addfriend_done')
                     let data = new FormData
                     data.append('_token','${tokenn}')
@@ -1611,8 +1487,8 @@ for(let i = 0; i<
                        }
                         })
                  }" >
-                    
-            
+
+
                 </div>
 
             </div>
@@ -1642,7 +1518,7 @@ $(`.tap-friend-group`).on('click',function(e){
  const getFriendsToCreateGroup =function(){
     $.get('/api/friend',function(response){
 
-        for(i in response) 
+        for(i in response)
         {
             $('.friends-create-group  ').append(`
             <div class="card-body" style="background-color:var(--bs-body-bg)">
@@ -1659,8 +1535,8 @@ $(`.tap-friend-group`).on('click',function(e){
                      </div>
                      <div class="col-auto">
                          <div class="form-check">
-                   
-                         
+
+
         <input onclick="{
             if (this.checked == true)
             {
@@ -1675,15 +1551,15 @@ $(`.tap-friend-group`).on('click',function(e){
             arrayGroup.splice(index, 1);
            }
            ifArrayGroup();
-            
+
          }" class="form-check-input cheack-group" type="checkbox" value="${response[i].id}" id="id-member-9">
-      
+
                          <label class="form-check-label" for="id-member-9"></label>
                          </div>
                      </div>
                  </div>
             <div>
-    
+
             `)
         }
     })
@@ -1700,7 +1576,7 @@ const ifArrayGroup=function(){
         $('.button-create-group').css("display", "none");
         $('.if-arrayGroup').empty();
         $('.if-arrayGroup').append('you must add at least 1 member to your group');
-        $(".if-arrayGroup").css("background-color", "#D32535"); 
+        $(".if-arrayGroup").css("background-color", "#D32535");
     }
 }
 
@@ -1721,38 +1597,38 @@ $('#upload-profile-photo').on('change',function(e){
      }).then(response=>{
 
         return response.json()
-     
+
          }).then(data=>{
             console.log(data)
             if(data.status==0){
             document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
             play(soundErorr)
-         
+
              }
             else{
                 document.documentElement.style.setProperty('--password', 'rgb(15, 161, 44)');
                  $('.update-profile-img').attr('src',x);
             play(soundDone)
-             
+
 
             }
             $('.bodyToastPassword').empty()
             $('.bodyToastPassword').append(data.message)
             $(`.toastPassword`).toast({ delay: 3000 });
-            $('.toastPassword').toast('show'); 
+            $('.toastPassword').toast('show');
          })
 });
 
 
 $('.imgGroup').on('change',function(e){
-    
+
     var x= URL.createObjectURL(e.target.files[0]);
-    
+
     imgGroup=e.target.files[0];
     $('#blah').attr('src',x);
     $('#blah').css("display", "");
     $('.span-icon-group').css("display", "none");
-    
+
 
 });
 
@@ -1781,14 +1657,14 @@ $("#groupForm").on('submit',function(e){
      }).then(response=>{
 
         return response.json()
-     
+
          }).then(data=>{
             console.log(data)
             if(data.status==0){
             document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
             play(soundErorr)
 
-         
+
              }
             else{
                 arrayGroup=[];
@@ -1804,7 +1680,7 @@ $("#groupForm").on('submit',function(e){
                 $('.button-create-group').css("display", "none");
                 $('.if-arrayGroup').empty();
                 $('.if-arrayGroup').append(noSelectedMemberYet);
-                $(".if-arrayGroup").css("background-color", "#D32535"); 
+                $(".if-arrayGroup").css("background-color", "#D32535");
                 document.documentElement.style.setProperty('--password', 'rgb(15, 161, 44)');
 
             play(soundDone)
@@ -1813,7 +1689,7 @@ $("#groupForm").on('submit',function(e){
             $('.bodyToastPassword').empty()
             $('.bodyToastPassword').append(data.message)
             $(`.toastPassword`).toast({ delay: 3000 });
-            $('.toastPassword').toast('show'); 
+            $('.toastPassword').toast('show');
          })
 
 
@@ -1825,7 +1701,7 @@ $("#groupForm").on('submit',function(e){
 // $(`.zz`).on('click',function(e){
 //     $("main").addClass("is-visible");
 // });
-    
+
 
 //------say_hi-----
 $(".say_hi").on('submit',function(e){
@@ -1842,11 +1718,11 @@ var pop =false
 $(document).mouseup(function(e)
 {
     if(pop==true){
-   
+
 var container = $(".popup");
 
     // if the target of the click isn't the container nor a descendant of the container
-    if (!container.is(e.target) && container.has(e.target).length === 0) 
+    if (!container.is(e.target) && container.has(e.target).length === 0)
     {
         console.log('in edit')
         // container.hide();
@@ -1865,12 +1741,12 @@ console.log('out')
 
 
 function popupFun(){
-   
+
     $('.layout').removeClass('to-edit-name');
     $('.modal').removeClass('to-edit-name');
     $('.modal').removeClass('d-none');
     // $('.popup').addClass('d-none');
-    
+
     $(".popup").animate({'top':'-1000px'}, "fast");
     setTimeout(() => {
     $(".popup").animate({'top':'45%'}, "fast");
@@ -1881,12 +1757,12 @@ function popupFun(){
 }
 function fetchUpdateName(){
     $('.send-image-loader').css('display','block')
-    
+
     $('.layout').removeClass('to-edit-name');
     $('.modal').removeClass('to-edit-name');
     $('.modal').removeClass('d-none');
     // $('.popup').addClass('d-none');
-    
+
     $(".popup").animate({'left':'15px'}, "fast");
     setTimeout(() => {
     $(".popup").animate({'left':'50%'}, "fast");
@@ -1905,7 +1781,7 @@ function fetchUpdateName(){
         }
 })
     .then(res =>{
-                  if (res.status>=200 && res.status <300) 
+                  if (res.status>=200 && res.status <300)
                   return res.json()
                   else
                   throw new Error();
@@ -1914,7 +1790,7 @@ function fetchUpdateName(){
                         {
                          $('.bodyToastPassword').append(data.message)
                          $(`.toastPassword`).toast({ delay: 3000 });
-                         $('.toastPassword').toast('show'); 
+                         $('.toastPassword').toast('show');
                          play(soundDone)
                           $('.send-image-loader').css('display','none')
                         })
@@ -1922,20 +1798,20 @@ function fetchUpdateName(){
     $('.username').append($('.new_name').val());
     $('.modal').removeClass('d-none');
 
-    
+
 
 
 }
 
 function play(sound=tele) {
-                   
+
     var url = sound;
           window.AudioContext = window.AudioContext||window.webkitAudioContext; //fix up prefixing
           var context = new AudioContext(); //context
           var source = context.createBufferSource(); //source node
           source.connect(context.destination); //connect source to speakers so we can hear it
           var request = new XMLHttpRequest();
-          request.open('GET', url, true); 
+          request.open('GET', url, true);
           request.responseType = 'arraybuffer'; //the  response is an array of bits
           request.onload = function() {
               context.decodeAudioData(request.response, function(response) {
@@ -1950,11 +1826,11 @@ function countChar(val) {
     if(envTyping==true || envTyping==1 ){
     var length = val.value.length;
     // console.log(length);
-    if( length > 0 ) 
+    if( length > 0 )
     Typing(true);
-  
+
      else
-    Typing(false); 
+    Typing(false);
   }
 }
 const Typing = (boolean) => {
@@ -1963,12 +1839,8 @@ const Typing = (boolean) => {
     if(envTyping==true || envTyping==1 ){
         setTimeout( () => {
           console.log('typing'+boolean);
-        
-        
-        
-        
           let channel = Echo.private('chat')
-        
+
             channel.whisper('typing', {
               user_id: userId,
               conversation_id:response_conversation_id,
@@ -1979,7 +1851,7 @@ const Typing = (boolean) => {
 }
 
 $(document).ready(function () {
-    
+
     getConversations(false);
 });
 

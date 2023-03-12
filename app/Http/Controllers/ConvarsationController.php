@@ -20,13 +20,13 @@ use Illuminate\Support\Facades\Validator;
 class ConvarsationController extends Controller
 {
 
- 
+
     public function index(){
            //    return 1;
         $chats =Participant::with(['conversation'
             =>function($query_one){
                 $query_one->orderBy('last_message_id','asc');
-                $query_one->with(['lastMassege','partiscipants' 
+                $query_one->with(['lastMassege','partiscipants'
                     =>function($query_two) {
                         // return($query_two);
                      $query_two->where('id','<>',Auth::id());
@@ -34,48 +34,48 @@ class ConvarsationController extends Controller
                         ]);
                 }])
              ->where('user_id',Auth::id())->get();
-     
-       
+
+
         for ($i = 0; $i < count($chats) ; $i++)
         {
-          
+
             for ($j = 0; $j <  count($chats) - $i -1; $j++)
-            { 
+            {
                 if ($chats[$j]->conversation->last_message_id < $chats[$j+1]->conversation->last_message_id)
                 {
                     $temp = $chats[$j];
                     $chats[$j] = $chats[$j + 1];
                     $chats[$j + 1] = $temp;
                 }
-            }           
+            }
             // $chats[$i]->conversation['unRead_message']=$this->countUnReadMessage($chats[$i]->conversation_id);
-  
+
             // $chats[$i]['conversation']['nameChats']=$this->countUnReadMessage($chats[$i]->conversation->lable);
-       
+
         }
         foreach($chats as $chat ){
             // if($chat->conversation->type=='group')
             // $chat->load('user');
             $chat->conversation['unRead_message']=$this->countUnReadMessage($chat->conversation_id);
         }
-        
+
         return($chats);
     }
 
     public function countUnReadMessage( $conversation_id= 2){
-   
+
         // $validator = Validator::make($request-> all(),[
-                
+
         //     'conversation_id'=>['required','exists:conversations,id'],
         //   ]);
-    
+
         //      if ($validator->fails())
-        //      { 
+        //      {
         //          $errors = []; foreach ($validator->errors()->messages() as $key => $value) {     $key = 'message';     $errors[$key] = is_array($value) ? implode(',', $value) : $value; }       return response()->json( ['message'=>$errors['message'],'status'=>0],200);
         //      }
 
-             
- 
+
+
             $a =DB::table('conversations')->select('messages.id')->
             join('messages','conversations.id','=','messages.conversation_id')->
             join('resipients','messages.id','=','resipients.message_id')->
@@ -88,43 +88,44 @@ class ConvarsationController extends Controller
             $ss=Resipient::where('user_id',Auth::id())->whereIn('message_id',$a)->where('read_at',null)->count();
             // $ss=Resipient::where('user_id',Auth::id())->whereIn('message_id',$a)->where('read_at',null)->update(['read_at'=>now()]);
             return $ss;
-        
+
 
     }
 
 
     public function readAllMessages(Request $request ){
-        $validator = Validator::make($request-> all(),[
-                
-            'conversation_id'=>['required','exists:conversations,id'],
-          ]);
-    
-             if ($validator->fails())
-             { 
-                 $errors = []; foreach ($validator->errors()->messages() as $key => $value) {     $key = 'message';     $errors[$key] = is_array($value) ? implode(',', $value) : $value; }       return response()->json( ['message'=>$errors['message'],'status'=>0],200);
-             }
+        // $validator = Validator::make($request-> all(),[
 
-             
- 
-            $a =DB::table('conversations')->select('messages.id')->
-            join('messages','conversations.id','=','messages.conversation_id')->
-            where('conversations.id',$request->conversation_id)->
-            get()  ->map(function($e){
-                return $e=$e->id;
-            }) ;   
+        //     'conversation_id'=>['required','exists:conversations,id'],
+        //   ]);
 
-        
-            // $ss=Resipient::where('user_id',Auth::id())->whereIn('message_id',$a)->where('read_at',null)->count();
-            $ss=Resipient::where('user_id',Auth::id())->whereIn('message_id',$a)->where('read_at',null)->update(['read_at'=>now()]);
-            return $ss;
-        
+        //      if ($validator->fails())
+        //      {
+        //          $errors = []; foreach ($validator->errors()->messages() as $key => $value) {     $key = 'message';     $errors[$key] = is_array($value) ? implode(',', $value) : $value; }       return response()->json( ['message'=>$errors['message'],'status'=>0],200);
+        //      }
+
+
+
+        //     $a =DB::table('conversations')->select('messages.id')->
+        //     join('messages','conversations.id','=','messages.conversation_id')->
+        //     where('conversations.id',$request->conversation_id)->
+        //     get()  ->map(function($e){
+        //         return $e=$e->id;
+        //     }) ;
+
+
+        //     // $ss=Resipient::where('user_id',Auth::id())->whereIn('message_id',$a)->where('read_at',null)->count();
+        //     $ss=Resipient::where('user_id',Auth::id())->whereIn('message_id',$a)->where('read_at',null)->update(['read_at'=>now()]);
+        //     return $ss;
+
 
     }
 
- 
+
+
 
     public function createGroup(Request $request){
-   
+
         $validator = Validator::make($request->all(), [
             // 'message' => ['required', 'string'],
 
@@ -137,19 +138,19 @@ class ConvarsationController extends Controller
         ]);
 
         // dd(gettype($request->users_id));
-    
-  
+
+
         if ($validator->fails()) {$errors = [];foreach ($validator->errors()->messages() as $key => $value) {    $key = 'message';    $errors[$key] = is_array($value) ? implode(',', $value) : $value;}return response()->json([    'message' => $errors['message'],    'status' => 0], 200);}
         $users_id = explode(",", $request->users_id);
-    
+
         if (request()->hasFile('img')){
             $extension='.'.$request->img->getclientoriginalextension();
             $path=public_path('/img/group');
             if(!File::exists( $path))
             File::makeDirectory( $path,0777,true);
-            $Name= $request->groupName;  
+            $Name= $request->groupName;
             $uniqid_img='('.uniqid().')';
-            $image=$request->file('img') ; 
+            $image=$request->file('img') ;
             $image->move($path,$uniqid_img.$Name.$extension);
             $imgToDB='img/group/'.$uniqid_img.$Name.$extension;
         }
@@ -174,8 +175,8 @@ class ConvarsationController extends Controller
 
         return response()->json([    'message' => 'group created successfuly',    'status' => 1], 200);
     }
- 
-    
+
+
     public function countMessageInConversation($user_id,$conversation_id){
 
      return Message::where([['conversation_id',$conversation_id],['user_id',$user_id]])->count();
@@ -188,15 +189,15 @@ class ConvarsationController extends Controller
 
         $idd=[];
             foreach($friend_users as $u )
-            { 
+            {
                 if($u->user1_id != Auth::id())
                 array_push($idd,$u->user1_id );
                 else
                  array_push($idd,$u->user2_id );
             }
 
-        $users_id_in_chat=DB::select('SELECT users.id FROM `users` 
-        JOIN partiscipants on partiscipants.user_id = users.id 
+        $users_id_in_chat=DB::select('SELECT users.id FROM `users`
+        JOIN partiscipants on partiscipants.user_id = users.id
         WHERE partiscipants.conversation_id=?',[$id]);
 
          $ids_in_chat=[];
@@ -218,8 +219,8 @@ class ConvarsationController extends Controller
         //     return   DB::select('
         // SELECT name , id,img from users
         // where id in (2,3) and
-        //  id not IN (SELECT users.id FROM `users` 
-        // JOIN partiscipants on partiscipants.user_id = users.id 
+        //  id not IN (SELECT users.id FROM `users`
+        // JOIN partiscipants on partiscipants.user_id = users.id
         // WHERE partiscipants.conversation_id=?)
         // ',[$id]);
         // ',[$o,$id]);
@@ -228,7 +229,7 @@ class ConvarsationController extends Controller
 
     public function getParticipants( $id){
 
-        //with query 
+        //with query
         $participant=Participant::with(['user'=>function($query1){
             $query1->groupBy('id');
             $query1->select('id','name','img');
@@ -253,22 +254,22 @@ class ConvarsationController extends Controller
      //     }
      //     $conversation->makeHidden(['user_id','lable','img','last_message_id','description','type']);
      //     $conversation->partiscipants->makeHidden(['email','email_verified_at','created_at','updated_at','pivot']);
- 
-     //     return $conversation; 
+
+     //     return $conversation;
 
     }
 
     public function addParticipants(Request $request ){
-        
+
         $validator = Validator::make($request-> all(),[
             'conversation_id'=>['required','exists:conversations,id'],
             'users_id'=>['required','exists:users,id'],
           ]);
         $users_id = explode(",", $request->users_id);
 
- 
+
              if ($validator->fails())
-             { 
+             {
                  $errors = []; foreach ($validator->errors()->messages() as $key => $value) {     $key = 'message';     $errors[$key] = is_array($value) ? implode(',', $value) : $value; }       return response()->json( ['message'=>$errors['message'],'status'=>0],400);
              }
              foreach($users_id as $user_id){
@@ -281,14 +282,14 @@ class ConvarsationController extends Controller
 
 
     public function removeParticipant(Request $request ,Conversation $conversation){
-        
+
         $validator = Validator::make($request-> all(),[
-                
+
             'user_id'=>['required','string','exists:users,id'],
           ]);
-    
+
              if ($validator->fails())
-             { 
+             {
                  $errors = []; foreach ($validator->errors()->messages() as $key => $value) {     $key = 'message';     $errors[$key] = is_array($value) ? implode(',', $value) : $value; }       return response()->json( ['message'=>$errors['message'],'status'=>0],400);
              }
           $conversation->partiscipants()->detach($request->user_id);
@@ -327,11 +328,11 @@ class ConvarsationController extends Controller
             )->where('partiscipants.user_id', '=', Auth::id()
             )->where('par2.user_id', '<>', Auth::id()
             // )->where('users.name', 'like', "%" . $request->name . "%"
-            )->get() 
-            
+            )->get()
+
             ->map(function($e){
                 return $e=$e->conversation_id;
-            }) ;   
+            }) ;
         //  return   Conversation::lable();
             $searchd = Conversation::where('lable', 'like', "%" . $request->name . "%")->get();
           return  $searchd->namee();

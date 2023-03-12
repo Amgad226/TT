@@ -29,6 +29,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         // dd(Auth::user());
-       
+
     }
 }
