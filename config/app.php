@@ -18,7 +18,7 @@ return [
     'name' => env('APP_NAME', 'Laravel'),
 
     'storeGoogleDrive'=>env('STORE_IN_GOOGLE_DRIVE',false),
-    'envTyping'=>env('envTyping',false)   , 
+    'envTyping'=>env('envTyping',false)   ,
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -187,10 +187,10 @@ return [
         App\Providers\GoogleDriveServiceProvider::class,
 
         /*
-        
+
         * Package Service Providers...
         */
-        
+
         // Laravel\Passport\PassportServiceProvider::class,
         /*
         * Application Service Providers...

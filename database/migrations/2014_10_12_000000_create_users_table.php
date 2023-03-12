@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('img');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->text('deviceToken');
+            $table->text('deviceToken')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

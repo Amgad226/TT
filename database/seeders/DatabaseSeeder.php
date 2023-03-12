@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
         //         continue;
         //     }
         //     DB::table($name)->truncate();
-        // } 
+        // }
 
         // DB::statement("SET foreign_key_checks=0");
             // DB::table('messages')->truncate();
@@ -45,22 +45,22 @@ class DatabaseSeeder extends Seeder
         User::create(['name'=>'Ali'   ,'email'=>'Ali@gmail.com'   ,'password'=>($pass)  ,'img'=>'/img/ali.jpg'          ,'deviceToken'=>' ' ]);
         User::create(['name'=>'hesham','email'=>'hisham@gmail.com','password'=>($pass)  ,'img'=>'/img/hesham.jpg'       ,'deviceToken'=>' ' ]);
         User::create(['name'=>'joli'  ,'email'=>'joli@gmail.com'  ,'password'=>($pass)  ,'img'=>'/img/user_default.png' ,'deviceToken'=>' ' ]);
-  
-  
+
+
 //             for($i=0;$i<50;$i++){
 
 //    \App\Models\Message::create([
 //             'conversation_id' => 1,
 //             'user_id' =>1,
 //             'body' => '<div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;"><p>
-//             @@@@@ 
+//             @@@@@
 //             <span class="sended  fas fa-check" style="position:relative ;bottom:-12px;right:-10px;z-index:12;visibility:"></span> </p></div> ',
 //             'created_at'=>now(),
 //             'type' => 'text',
 //         ]);
 
 //       }
-     
+
 
         // \App\Models\User::factory(10000)->create();
 

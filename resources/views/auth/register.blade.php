@@ -4,7 +4,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<title>Login 01</title>
+<title>Sign Up</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -61,16 +61,16 @@
         }
       }
   </style>
-  
+
 <section class="ftco-section">
 <div class="container">
 <div class="row justify-content-center">
 
 </div>
 <div class="row justify-content-center">
-    
+
 <div class="col-md-7 col-lg-5">
-    
+
 <div class="login-wrap p-4 p-md-5">
     {{-- <li class="nav-item"> --}}
     {{-- </li> --}}
@@ -85,7 +85,7 @@
     // s.classList.add('d-none');
     // var element = document.getElementById("s");
   //  element.classList.add("d-none");
-  
+
   fetch('https://ipwho.is/', {
   method: 'GET',
         //  headers: {
@@ -95,9 +95,9 @@
       {
     $('.check-loader').css('display','block');
 
-    if (res.status>=200 && res.status <300) 
+    if (res.status>=200 && res.status <300)
       return res.json()
-   
+
         }
           ).then(data=>
           {
@@ -107,10 +107,10 @@
               // alert(data.country)
               $('#sign-up-submit').addClass('d-none');
               $('#checkbox-deviceToken').addClass('d-none');
-              
+
               $('#sign-up-hide').removeClass('d-none');
               setTimeout(() => {
-                
+
                 $('.check-loader').css('display','none');
               }, 500);
 
@@ -120,10 +120,10 @@
               $('#s').addClass('d-none');
               $('#sign-up-submit').removeClass('d-none');
               $('#checkbox-deviceToken').removeClass('d-none');
-              
+
               $('#sign-up-hide').addClass('d-none');
               setTimeout(() => {
-                
+
                 $('.check-loader').css('display','none');
               }, 500);
 
@@ -138,11 +138,11 @@
 <form  id= "f"method="POST" action="{{ route('register') }}">
   {{-- <form  id= "f"method="POST" action="{{ route('reg') }}"> --}}
     @csrf
- 
+
     <div class="avatar ">
       <img style="display: " class="avatar-img" src="" alt="" id="blah">
     </div>
-    
+
     <input name="img"id="upload-chat-img"  class="d- imgGroup " type="file">
 
 
@@ -163,14 +163,14 @@
         <label for="vehicle1"> accept all terms and conditions</label><br>
         <input id="deviceToken" type="text" class="deviceToken d-none" name="deviceToken">
 <div class="form-group">
-  
+
 <button  id="sign-up-submit" type="submit" class="d-none form-control btn btn-primary rounded submit px-3">Register</button>
-<div id="sign-up-hide" style="cursor:default;background-color: red; color:#fff; font-size:13px" onclick="{return;}" class="form-control btn btn-danger rounded submit px-3 d-">please connect on any vpn to create account 
+<div id="sign-up-hide" style="cursor:default;background-color: red; color:#fff; font-size:13px" onclick="{return;}" class="form-control btn btn-danger rounded submit px-3 d-">please connect on any vpn to create account
   <span  style="cursor:pointer;display:inline-block;background-color: #fff ; color:#000  ;border-radius: 15px;   border: 5px solid rgb(126, 123, 123) ;width:100px;text-align:center " onclick="{cheack();}">try again</span>
   and close it after created account
 </div>
 {{-- <button> --}}
-  
+
 
 
 {{-- </button> --}}
@@ -192,9 +192,9 @@ you have account ?
 <script>
 var token='{{csrf_token()}}';
 $('.imgGroup').on('change',function(e){
-      
+
       var x= URL.createObjectURL(e.target.files[0]);
-      
+
       imgGroup=e.target.files[0];
       $('#blah').attr('src',x);
       $('#blah').css("display", "");
@@ -218,14 +218,14 @@ $('.imgGroup').on('change',function(e){
 //   formData.append('deviceToken',deviceToken)
 //   fetch('register',{
 //     method:'POST',
-//     body:formData 
+//     body:formData
 //   })
 // })
 
 </script>
 
 <script>
-  
+
 
 var firebaseConfig = {
 apiKey: "AIzaSyCe0NvBofKhiRr4UiwkW7FRL52KbtRCk0k",

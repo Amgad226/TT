@@ -1,30 +1,30 @@
 //Pusher.logToConsole = true;
 
 setTimeout(() => {
-    
+
             var pusher = new Pusher('802b2b4536e206d4fd81', {
                 cluster: 'eu',
                 authEndpoint: 'api/pusher/auth',
-                auth: {  
+                auth: {
                     headers: {
                        'Authorization':`Bearer ${tokenn}`
                    }}
                 });
-    
+
                 var channel = pusher.subscribe(`private-Messenger.${userId}`);
                 let dataa = new FormData
                 channel.bind('new-message', function(data) {
                     console.log(123)
                     // $(`.unread-message-count[data-messages=${data.message.conversation_id}]`).css('visibility','visiable');
-                    // $(document).ready(function(){});  
+                    // $(document).ready(function(){});
                     // window.onload = function(){
-                       
+
                     // }
                     // play();
                 //---------------to replace last message in chat card------------------
                 if(data.message.type=='text'){
                     var message_body_with_slice=data.message.body.slice(143, -129);
-                    message_body_with_slice=message_body_with_slice.slice(0,10);  
+                    message_body_with_slice=message_body_with_slice.slice(0,10);
                    $(`.last-message[data-messages=${data.message.conversation_id}]`).empty()  ;
                    $(`.last-message[data-messages=${data.message.conversation_id}]`).append(message_body_with_slice);
                 }
@@ -32,21 +32,21 @@ setTimeout(() => {
                     $(`.last-message[data-messages=${data.message.conversation_id}]`).empty()  ;
                    $(`.last-message[data-messages=${data.message.conversation_id}]`).append(data.message.type);
                 }
-           
-                
-                    // conversation id from pusher   conversation id from chat 
+
+
+                    // conversation id from pusher   conversation id from chat
                     if(data.message.conversation_id==response_conversation_id)
                     {
-    
+
                         if(data.message.conversation.type=='group'){
-    
+
                             addMessagesToGroup(data.message,'',true)
                         }
                         else{
-                          
+
                             addMessage(data.message,'',true)
                         }
-                        
+
                         dataa.append('message_id',data.message.id)
                         fetch('/api/readMessage', {
                         method: 'POST',
@@ -56,9 +56,9 @@ setTimeout(() => {
                        }
                     });
                 }
-                
+
                 else{
-                   
+
                     // Push.create(data.message.user.name, {
                     //     body: message_body_with_slice,
                     //     icon: logo,
@@ -68,27 +68,27 @@ setTimeout(() => {
                     //         this.close();
                     //         open_chat(data.message.conversation_id)
                     //     }
-                    // });     
+                    // });
                     //-----------to replace number of message un readed-----------------
                     // $(`.unread-message-count[data-messages=${data.message.conversation_id}]`).css('visibility','visiable');
                     // alert($(`.unread-message-count[data-messages=${data.message.conversation_id}]`).text())
                     if($(`.unread-message-count[data-messages=${data.message.conversation_id}]`).text()>=1){
 
-                        $(`.unread-message-count[data-messages=${data.message.conversation_id}]`).removeClass('d-none')   
+                        $(`.unread-message-count[data-messages=${data.message.conversation_id}]`).removeClass('d-none')
                         $(`.unread-message-count[data-messages=${data.message.conversation_id}]`).html(parseInt($(`.unread-message-count[data-messages=${data.message.conversation_id}]`).text())+1);
-                        
+
                     }
 
                     else{
-                        $(`.unread-message-count[data-messages=${data.message.conversation_id}]`).removeClass('d-none')   
-                        $(`.unread-message-count[data-messages=${data.message.conversation_id}]`).html(1)   
+                        $(`.unread-message-count[data-messages=${data.message.conversation_id}]`).removeClass('d-none')
+                        $(`.unread-message-count[data-messages=${data.message.conversation_id}]`).html(1)
                     }
-                  
+
                     // else{
-    
+
 
                     // }
-                    
+
                     //-----------------to reciave toast ---------------------
 
                     // Push.create(data.message.user.name, {
@@ -99,17 +99,17 @@ setTimeout(() => {
                     //     onClick: function () {
                     //         window.focus();
                     //         this.close();
-                    //         open_chat(data.message.conversation_id)   
+                    //         open_chat(data.message.conversation_id)
 
                     //     }
-                    // });  
+                    // });
                     //--------------------------------------------------------
                     // Notification.requestPermission().then(prem=>{
                     //     if(prem=="granted")
                     //     {
                     //          play();
 
-                    //         const notificationn=   new Notification(data.message.user.name,{ 
+                    //         const notificationn=   new Notification(data.message.user.name,{
                     //             body:message_body_with_slice,
                     //             icon:logo,
                     //             timestamp:500,
@@ -118,14 +118,14 @@ setTimeout(() => {
                     //             notificationn.onclick=(e)=>{
                     //                 window.focus();
                     //                 this.close();
-                    //                 open_chat(data.message.conversation_id)   
+                    //                 open_chat(data.message.conversation_id)
                     //                                          }
                     //                 setTimeout(() => {
-                    //                     notificationn.close(); 
+                    //                     notificationn.close();
                     //                 }, 1000);
                     //     }
                     //     else
-                    //     {   
+                    //     {
                             // play();
 
                             $('.goToChat').attr('chat-id',data.message.conversation_id)
@@ -139,24 +139,24 @@ setTimeout(() => {
                             else
                             {
                                 $('.headarToast').append(data.message.user.name);
-                                $('.bodyToast').append(message_body_with_slice);    
+                                $('.bodyToast').append(message_body_with_slice);
                             }
                              play();
 
                             $(".toast-recive").toast({ delay: 3000 });
                             $('.toast-recive').toast({animation: true});
-                            $('.toast-recive').toast('show');                       
+                            $('.toast-recive').toast('show');
                     //      }
                     // });
 
 
 
-                 
-                    
+
+
                         // console.log( data.message.user.name+' sent message');
-                    } 
+                    }
                 });
-            
+
                 channel.bind('pusher:subscription_error', function(data) {
                     console.log(data);
                 });
