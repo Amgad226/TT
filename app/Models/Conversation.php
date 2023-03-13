@@ -15,31 +15,26 @@ public $timestamps=false;
     protected $fillable=[
         'user_id','lable' ,'type','img', 'last_message_id','description'
     ];
-    
+
     protected function img(): Attribute
     {
-        if($this->type!='group')
-        {
+        if($this->type!='group'){
         return Attribute::make(
             get: fn ($value) =>$this->partiscipants->where('id','<>',Auth::id())->first()->img,
         );
         }
-        else
-        {
-        return Attribute::make(
-            get: fn ($value) =>$value,
-        );
-
+        else {
+             return Attribute::make(
+                 get: fn ($value) =>$value,
+             );
         }
-        
-       
- 
     }
 
      public function namee()
     {
        return $this->partiscipants->where('id','<>',Auth::id())->first()->name;
     }
+
 
     protected function lable(): Attribute
     {
@@ -56,7 +51,7 @@ public $timestamps=false;
         );
 
         }
-    }    
+    }
     public function partiscipants()
     {
         return $this->belongsToMany(User::class,'partiscipants')

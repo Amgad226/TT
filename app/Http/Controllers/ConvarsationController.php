@@ -22,7 +22,6 @@ class ConvarsationController extends Controller
 
 
     public function index(){
-           //    return 1;
         $chats =Participant::with(['conversation'
             =>function($query_one){
                 $query_one->orderBy('last_message_id','asc');
@@ -35,16 +34,16 @@ class ConvarsationController extends Controller
                 }])
              ->where('user_id',Auth::id())->get();
 
+            //  retirn
+             for ($i = 0; $i < count($chats) ; $i++)
+             {
 
-        for ($i = 0; $i < count($chats) ; $i++)
-        {
-
-            for ($j = 0; $j <  count($chats) - $i -1; $j++)
-            {
-                if ($chats[$j]->conversation->last_message_id < $chats[$j+1]->conversation->last_message_id)
-                {
-                    $temp = $chats[$j];
-                    $chats[$j] = $chats[$j + 1];
+                 for ($j = 0; $j <  count($chats) - $i -1; $j++)
+                 {
+                     if ($chats[$j]->conversation->last_message_id < $chats[$j+1]->conversation->last_message_id)
+                     {
+                         $temp = $chats[$j];
+                         $chats[$j] = $chats[$j + 1];
                     $chats[$j + 1] = $temp;
                 }
             }
@@ -53,26 +52,18 @@ class ConvarsationController extends Controller
             // $chats[$i]['conversation']['nameChats']=$this->countUnReadMessage($chats[$i]->conversation->lable);
 
         }
+
         foreach($chats as $chat ){
             // if($chat->conversation->type=='group')
             // $chat->load('user');
             $chat->conversation['unRead_message']=$this->countUnReadMessage($chat->conversation_id);
         }
+        // return 1 ;
 
-        return($chats);
+        return  $chats ;
     }
 
     public function countUnReadMessage( $conversation_id= 2){
-
-        // $validator = Validator::make($request-> all(),[
-
-        //     'conversation_id'=>['required','exists:conversations,id'],
-        //   ]);
-
-        //      if ($validator->fails())
-        //      {
-        //          $errors = []; foreach ($validator->errors()->messages() as $key => $value) {     $key = 'message';     $errors[$key] = is_array($value) ? implode(',', $value) : $value; }       return response()->json( ['message'=>$errors['message'],'status'=>0],200);
-        //      }
 
 
 
@@ -91,37 +82,6 @@ class ConvarsationController extends Controller
 
 
     }
-
-
-    public function readAllMessages(Request $request ){
-        // $validator = Validator::make($request-> all(),[
-
-        //     'conversation_id'=>['required','exists:conversations,id'],
-        //   ]);
-
-        //      if ($validator->fails())
-        //      {
-        //          $errors = []; foreach ($validator->errors()->messages() as $key => $value) {     $key = 'message';     $errors[$key] = is_array($value) ? implode(',', $value) : $value; }       return response()->json( ['message'=>$errors['message'],'status'=>0],200);
-        //      }
-
-
-
-        //     $a =DB::table('conversations')->select('messages.id')->
-        //     join('messages','conversations.id','=','messages.conversation_id')->
-        //     where('conversations.id',$request->conversation_id)->
-        //     get()  ->map(function($e){
-        //         return $e=$e->id;
-        //     }) ;
-
-
-        //     // $ss=Resipient::where('user_id',Auth::id())->whereIn('message_id',$a)->where('read_at',null)->count();
-        //     $ss=Resipient::where('user_id',Auth::id())->whereIn('message_id',$a)->where('read_at',null)->update(['read_at'=>now()]);
-        //     return $ss;
-
-
-    }
-
-
 
 
     public function createGroup(Request $request){

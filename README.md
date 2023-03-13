@@ -20,3 +20,5 @@ in terminal
 - php artisan serve 
 
 - npm run dev
+
+- php artisan queue:work

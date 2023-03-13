@@ -17,19 +17,21 @@ class Message extends Model
     ];
     protected $casts = [
         'attachment' => 'array',
+        'created_at' => 'datetime',
+
     ];
     protected function createdAt(): Attribute
     {
-       
+
         return Attribute::make(
             // get: fn ($value) =>$value->diffForHumans(),
             // set: fn ($value) =>$value->format('Y-m-d H:i:s'),
         );
 
-        
-        
-       
- 
+
+
+
+
     }
     public function conversation()
     {
@@ -48,6 +50,6 @@ class Message extends Model
         return $this->belongsToMany(User::class,'resipients')
         // ->withPivot(['read_at','deleted_at'])
         ;
-        
+
     }
 }

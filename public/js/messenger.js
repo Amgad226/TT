@@ -40,6 +40,7 @@ function makeid(length) {
 }
 
 function inputImageMessage(){
+    // alert();
     let fileElm= document.createElement('input');
     //    fileElm.type = "text";
     //    fileElm.accept('jpg');
@@ -65,6 +66,8 @@ function inputImageMessage(){
         // var x= URL.createObjectURL(e.target.files[0]);
         var user={'img':`${userimg}`,"name":`${username}`}
         var msgg = {
+            'input':true,
+            'type':'img',
             'body':`
             <img id="${random}" width="200" class="img-fluid rounded" src="${gif}" data-action="zoom" alt="">
             `,
@@ -354,7 +357,6 @@ $("#targetttt").on('submit',function(e){
     addMessage(msgg,'message-out',true,true ,'visibilty-hidden')
 
     $(this).find('.input-have-message').val('');
-    // Typing(false)
 
 
 });
@@ -386,13 +388,16 @@ function styleMessage(msg,classDeletMessage){
     }
 
     else if(msg.type=='img'){
+        if(msg?.input==true)
+        something=msg.body;
+        else
         something= ` <img  width="200"  class="img-fluid rounded" src="${msg.body}" data-action="zoom" alt="">`;
-
     }
 
     else if(msg.type=='audio')
     {
-        // alert()
+
+        // alert(123)
         something=`
         <audio style='border: 5px solid #2787F5; border-radius: 50px;'  controls ><source src="${msg.body}" type="audio/WAV"></audio>
 
@@ -453,7 +458,7 @@ function appendDeleteDropDown(deleteAction,classDeletMessage,random_class_to_add
 
 }
 function appendMessageInChat(c,message,dropdown,created_at ){
-    $("#soso").append(`
+    $("#messages_container").append(`
 
     <div class="name-to-group message ${c} ">
 
@@ -533,6 +538,14 @@ Object.defineProperty(this, 'response_conversation_id', {
       console.log('Value changed! New Conversation: ' + set);
     }
 });
+var v= 1;
+Object.defineProperty(this, 'conversationPageId', {
+    get: function () { return v; },
+    set: function (set) {
+        v=set
+      console.log('Value changed! New Conversation Page: ' + set);
+    }
+});
 
 $(`#chat-list`).on('click','[data-messages]',function(e){
     e.preventDefault();
@@ -546,15 +559,21 @@ $(`#chat-list`).on('click','[data-messages]',function(e){
                                          //to hide (Loader)
     open_chat($(this).attr('data-messages')  ,$(this));
     // $(this).css('background-color','red')
-})
+});
 
-const showAllMessages=function(){
-    $(".show-all-messages").css('visibility','hidden');
-    addLoader()
-    $(`#soso`).empty();
-    $.get(`/api/conversations/${response_conversation_id}/allMessages` , function(response)
+const showMoreMessages=function(){
+
+    conversationPageId++;
+
+    addLoader();
+    $(`#messages_container`).empty();
+
+    $.get(`/api/conversations/${response_conversation_id}/messages?page=${conversationPageId}` , function(response)
     {
+        if(response.read_more!=1){
+            $(".show-all-messages").css('visibility','hidden');
 
+        }
 
         if(response.conversation.type=='peer')
         {
@@ -564,11 +583,6 @@ const showAllMessages=function(){
                 let c  = msg.user_id ==userId ? 'message-out' :'';
                 addMessage(msg , c ,false)
             }
-            hideLoader()
-            const $container = $('.form-ccontainer');
-            $container.scrollTop($container.prop('scrollHeight'))
-
-
         }
         else
         {
@@ -578,11 +592,11 @@ const showAllMessages=function(){
             let c  = msg.user_id ==userId ? 'message-out' :'';
             addMessagesToGroup(msg , c ,false,true)
             }
-            hideLoader()
-            const $container = $('.form-ccontainer');
-            $container.scrollTop($container.prop('scrollHeight'))
-
         }
+        hideLoader();
+        // animateMessage()
+
+        // $('.form-ccontainer').scrollTop( - ($('.form-ccontainer').prop('scrollHeight')) )
 
     })
 }
@@ -591,7 +605,7 @@ var arrayInviteToGroup=[];
 function  open_chat_css_action(){
     $('.group-description').css('visibility','hidden');
     $('.group-description').css('display','none');
-    $(`#soso`).empty();
+    $(`#messages_container`).empty();
     $(".to-return-home").removeClass("welcome-text");
     $(".footer-input-chat").css("display", "block");
     $(".app-bar-name-and-img").css("display", "block");
@@ -693,10 +707,9 @@ const open_chat=function(conversation_id, toLoader=''){
 
     open_chat_css_action();
     addLoader(toLoader)
-
+    conversationPageId=1 //to change active page of chat
     $('input[name=conversation_id]').val(conversation_id)
-
-    $.get(`/api/conversations/${conversation_id}/messages` , function(response)
+    $.get(`/api/conversations/${conversation_id}/messages?page=${conversationPageId}` , function(response)
     {
         response_conversation_id=conversation_id; //to change active chat id
         $('#conversation-id-input-target').text(conversation_id)

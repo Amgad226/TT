@@ -33,7 +33,7 @@ class sendNotification implements ShouldQueue
     public function handle()
     {
         $ch = curl_init();
-    
+
         curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
@@ -41,7 +41,7 @@ class sendNotification implements ShouldQueue
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $this->dataString);
 
-        $response = curl_exec($ch);
+         curl_exec($ch);
 
         // dd($response);
     }

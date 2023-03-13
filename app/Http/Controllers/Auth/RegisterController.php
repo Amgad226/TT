@@ -32,12 +32,12 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    // protected $redirectTo = RouteServiceProvider::HOME;
-    protected function redirectTo()
-    {
-        return view('auth.login');
+    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected function redirectTo()
+    // {
+    //     return view('/');
 
-    }
+    // }
 
 
     /**
@@ -75,7 +75,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        // dd( $data['img']);
+
+        // dd( $data);
         // $uniqid=uniqid();
         //  $link_attachment = $data['img']->move('img',$uniqid.'.'.$data['img']->getclientoriginalextension());
 

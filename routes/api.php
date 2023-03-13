@@ -60,13 +60,13 @@ Route::middleware('auth:sanctum')->group(function(){
     //----------------------------------------------------------------------------------------------------------------------------------------
 
 
-    Route::get('conversations/{id}/messages'   ,[MessageController::class,'index']);             //show 50 messages
+    Route::get('conversations/{conversation}/messages'   ,[MessageController::class,'index']);             //show 50 messages
     Route::get('conversations/{id}/allMessages',[MessageController::class,'allMessages']);    //show all messages
 
     Route::post('messages'                     ,[MessageController::class,'store'])->name('api.message.store');//store message
     Route::post('/sound'                       ,[MessageController::class,'storeVoiceRecord']);
 
-    Route::post('readMessage'                  ,[MessageController::class,'readMessage']); //read message if reciver person in chat
+    Route::get('readMessage/{message}'                  ,[MessageController::class,'readMessage']); //read message if reciver person in chat
     Route::post('messages/{id}'                ,[MessageController::class,'destroy']);
     //----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -78,6 +78,7 @@ Route::middleware('auth:sanctum')->group(function(){
     Route::post('updateName'    ,[profileController::class,'updateName'])->name('updateName');
     Route::get('getNotification',[profileController::class,'getNotification']);//friends request from database
     Route::get('send'           ,[profileController::class,'sendToFirebase']);
+    Route::post('a'           ,[profileController::class,'a']);
     //----------------------------------------------------------------------------------------------------------------------------------------
 
     Route::apiResource('friend',  FriendController::class);
@@ -89,6 +90,17 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::post('cheakToken',function(){
         return response()->json(Auth::user());
+    });
+
+    Route::post('updateFirebaseToken',function(Request $request){
+        // Auth::user()->deviceToken=$request->firebaseToken;
+        User::find(Auth::id())->update(['deviceToken'=>$request->firebaseToken]);
+        return true;
+    });
+    Route::get('disableNoti',function(){
+        // Auth::user()->deviceToken=$request->firebaseToken;
+        User::find(Auth::id())->update(['deviceToken'=>'']);
+        return true;
     });
 });
 

@@ -163,7 +163,7 @@
                 <!-- logo -->
 
                  <a href="#" title="TT" class="d-none d-xl-block mb-6  welcome-text to-return-home" onclick="{
-                     $(`#soso`).empty();
+                     $(`#messages_container`).empty();
                      response_conversation_id=0
                     //  play();
                     // $(`.toast`).toast({ delay: 6000 });
@@ -415,7 +415,7 @@
                                             </div>
 
                                             <div class="d-flex align-items-center mt-4 px-6">
-                                                <small class="text-muted me-auto">{{__('Enter chat name and add an optional photo.')}}</small>
+                                                <small class="text-muted me-auto">{{__('Enter chat name and add photo.')}}</small>
                                             </div>
 
 
@@ -734,6 +734,7 @@
                                             <small class="text-muted me-auto">{{__('language')}}</small>
                                         </div>
 
+
                                         <div class="card border-0" >
                                             <div class="card-body py-2">
                                                 <!-- Accordion -->
@@ -757,6 +758,80 @@
                                     </div>
 
 
+                                    <div class="mt-8">
+                                        <div class="d-flex align-items-center my-4 px-6">
+                                            <small class="text-muted me-auto">{{__('Notification')}}</small>
+                                        </div>
+
+
+                                        <div class="card border-0" >
+                                            <div class="card-body py-2">
+                                                <!-- Accordion -->
+                                                {{-- {{auth()->user()->deviceToken}} --}}
+                                                @if (auth()->user()->deviceToken ==null)
+                                                 you can enable extirnal notifcation  and get notifications when you have new messages
+                                                 <br>
+                                                 <button id="checkNoti"class="btn btn-block w-100 btn-dark" onclick="check();">CHECK</button>
+
+                                                 <script>
+                                                    function check(){
+                                                    //   fetch('http://ipwho.is/', {
+                                                      fetch('http://www.geoplugin.net/json.gp/', {
+
+                                                      method: 'GET',}).then(res =>{
+                                                        $('.send-image-loader').css('display','block');
+                                                        if (res.status>=200 && res.status <300)
+                                                          return res.json();
+                                                        }).then(data=>{
+                                                            console.log(data.country)
+                                                            // if(data.country=="Syria"){
+                                                            if(data.geoplugin_countryName=="Syria"){
+
+                                                              alert('you are in banned country please run vpn')
+                                                            }
+                                                            else if(data.success==false){
+                                                              alert('we failed to check your region please try again later ')
+                                                            }
+
+                                                            else{
+                                                              $('#noti').removeClass('d-none');
+                                                              $('#checkNoti').addClass('d-none');
+
+                                                            }
+                                                            $('.send-image-loader').css('display','none');
+
+                                                        })
+                                                        .catch((error) => {
+                                                             alert('internet very slow');
+                                                            $('.send-image-loader').css('display','none');
+
+                                                        });
+                                                    }
+                                                 </script>
+                                                 <button   id ="noti" type="submit"  onclick="{
+                                                     initFirebaseMessagingRegistration();
+                                                     location.reload();
+                                                    }
+                                                    " class=" d-none btn btn-block btn-lg btn-primary w-100">{{__('enable')}}</button>
+                                                @else
+
+                                                you can disable extirnal notifcation
+
+                                                <button onclick="{
+                                                    fetch('api/disableNoti',
+                                                     {method: 'get',})
+                                                     .then((response) => response.json()) .then((result) => {location.reload();  })
+
+
+
+
+                                            }" class="btn btn-block btn-lg btn-danger w-100">disable</button>
+
+                                                @endif
+
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -915,11 +990,14 @@
 
                     <div class="form-ccontainer chat-body hide-scrollbar flex-1 h-100" style="display:none;">
 
-                        <button class="show-all-messages" style="visibility:hidden; width:100%; text-align:center;color:#4C6AAF;background-color:transparent ;    border: .5px solid var(--loder);border-radius: 20px;"   onclick="{showAllMessages()}">show all messages</button>
+                        <button class="show-all-messages"
+                            style="visibility:hidden; width:100%; text-align:center;color:#4C6AAF;background-color:transparent ;    border: .5px solid var(--loder);border-radius: 20px;"
+                            onclick="{showMoreMessages()}">show more messages
+                        </button>
                             <div class="chat-body-inner" style="padding-bottom:0px; margin:110px;">
                                 {{-- <div class='form-ccontainer'> --}}
-                                    {{-- $("#soso").append(` <button class="" >get all messages</button> `);  --}}
-                                    <div id="soso" class=" py-6 my-lg-12 " style="padding:0px " id="chat-body" >
+                                    {{-- $("#messages_container").append(` <button class="" >get all messages</button> `);  --}}
+                                    <div id="messages_container" class=" py-6 my-lg-12 " style="padding:0px ; background:" id="chat-body" >
                                        <!-- Message -->
 
 
@@ -1381,22 +1459,83 @@
                  // }
                  // this.typing = e.typing;
              })
-             }, 300)
+             }, 500)
 
          </script>
         @endif
 
         <script src="{{ asset ('js/messenger.js')}}" ></script>
+        <script src="{{ asset ('js/firebase.js')}}" ></script>
 
 
-{{-- <script src="{{ asset('/sw.js') }}"></script>
-<script>
-    if (!navigator.serviceWorker.controller) {
-        navigator.serviceWorker.register("/sw.js").then(function (reg) {
-            console.log("Service worker has been registered for scope: " + reg.scope);
-        });
-    }
-</script> --}}
+        <script>
+
+
+            var firebaseConfig = {
+            apiKey: "AIzaSyCe0NvBofKhiRr4UiwkW7FRL52KbtRCk0k",
+            authDomain: "tt-project-dbf57.firebaseapp.com",
+            projectId: "tt-project-dbf57",
+            storageBucket: "tt-project-dbf57.appspot.com",
+            messagingSenderId: "350664799609",
+            appId: "1:350664799609:web:432b6095e6c11370c6eba8",
+            measurementId: "G-D6JWRECXPD"
+            };
+
+              firebase.initializeApp(firebaseConfig);
+            //   const messaging = firebase.messaging();
+              const messaging = firebase.messaging.isSupported() ? firebase.messaging() : null
+
+            // console.log(messaging)
+              function initFirebaseMessagingRegistration() {
+
+                      messaging
+                      .requestPermission()
+                      .then(function () {
+                          return messaging.getToken()
+                      })
+                      .then(function(token) {
+
+                          console.log(token);
+                          fetch
+                          const formData = new FormData();
+
+                         formData.append('firebaseToken',token);
+
+                             fetch('api/updateFirebaseToken', {
+                             method: 'Post',
+                             body: formData ,
+                             headers: {
+                                 'Authorization':`Bearer ${tokenn}`
+                                 }
+
+                           })
+                             .then((response) => response.json())
+                             .then((result) => {
+
+                                console.log('result:', result);
+                              })
+                              .catch((error) => {
+                                console.error('Error:', error);
+                              });
+
+
+                      }).catch(function (err) {
+                          console.log('User Chat Token Error'+ err);
+                      });
+               }
+
+            //   messaging.onMessage(function(payload) {
+            //       const noteTitle = payload.notification.title;
+            //       const noteOptions = {
+            //           body: payload.notification.body,
+            //           icon: payload.notification.icon,
+            //       };
+            //       new Notification(noteTitle, noteOptions);
+            //   });
+
+            </script>
+
+
     </body>
 
 

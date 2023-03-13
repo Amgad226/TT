@@ -21,14 +21,15 @@ use Illuminate\Support\Facades\Storage;
 
 Auth::routes();
 
-Route::get('as',function(){
-    return response()->json(['status'=>0,'message'=>'you shoud login']);
-})->name('jsonResponse');
+// Route::get('as',function(){
+//     return response()->json(['status'=>0,'message'=>'you shoud login']);
+// })->name('jsonResponse');
 
 
 Route::view('/','messenger')->name('tt')->middleware('auth:sanctum');
-Route::view('/a','welcome')->name('tt')->middleware('auth:sanctum');
+// Route::view('/a','welcome')->name('tt')->middleware('auth:sanctum');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
+Route::view('/404','404')->name('404');

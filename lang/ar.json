@@ -28,7 +28,7 @@
     "Enter a chat name":"ادخل اسم المجموعة",
     "Description":"وصف المجموعة",
     "no selected members yet":"لم يتم تحديد اعضاء بعد",
-    "Enter chat name and add an optional photo.":"ادخل اسم ووصف وصورة اختيارة ",
+    "Enter chat name and add photo.":"ادخل اسم وقم بأضافة صورة للمجموعة  ",
     "Add":"اضافة",
     "Password Changed":"تغيير كلمة المرور ",
     "Your password has been updated successfully.":"تم تغيير كلمة مرورك بنجاح",
@@ -38,7 +38,7 @@
     "Confirm":"قبول",
     "Users":"المستخدمين",
     "Delete for all":"الحذف لدى الجميع"
-    
+
 
 
 }

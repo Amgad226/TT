@@ -138,7 +138,8 @@ class profileController extends Controller
              $data = [
                  "registration_ids" => $firebaseToken,
                  "notification" => [
-                     "title" =>$r->title,
+                     "title" =>'new message',
+                    //  "title" =>$r->title,
                      "body" => $r->body,
                      "content_available" => true,
                      "icon"=>asset('logo.png'),
@@ -173,6 +174,42 @@ class profileController extends Controller
 
     }
 
+    public function a(Request $r){
+        $firebaseToken = ['eObHKIEZX-2X5htjFbbhkb:APA91bG4nBaLbVlw239yijB1RLtnw7cMCQ146QicvO5zLPLx6XwukddGujJDJmdFWjdlmCAa1-032IErymEU-O8cQLZq1umMKJqehcpWN_uCdYUwZ0ijCfD06ZU_1hGQX8tTpa9mE0I-'];
+
+        $SERVER_API_KEY = config('global.FIREBASE_SERVER_API_KEY');
+
+        $data = [
+            "registration_ids" => $firebaseToken,
+            "notification" => [
+                "title" =>$r->title,
+                "body" => $r->body,
+                "content_available" => true,
+                "icon"=>asset('logo.png'),
+                "click_action"=>'/',
+                "priority" => "high",
+                // "vibrate"=> [200, 100, 200, 100, 200, 100, 200],
+                // "tag"=> 'vibration-sample'
+            ]
+        ];
+        $dataString = json_encode($data);
+
+        $headers = [
+            'Authorization: key=' . $SERVER_API_KEY,
+            'Content-Type: application/json',
+        ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+      return   $response = curl_exec($ch);
+    }
     public function login(Request $request)
     {
         $request->validate([

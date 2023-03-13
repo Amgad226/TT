@@ -12,7 +12,6 @@ setTimeout(() => {
                 });
 
                 var channel = pusher.subscribe(`private-Messenger.${userId}`);
-                let dataa = new FormData
                 channel.bind('new-message', function(data) {
                     console.log(123)
                     // $(`.unread-message-count[data-messages=${data.message.conversation_id}]`).css('visibility','visiable');
@@ -30,7 +29,7 @@ setTimeout(() => {
                 }
                 else {
                     $(`.last-message[data-messages=${data.message.conversation_id}]`).empty()  ;
-                   $(`.last-message[data-messages=${data.message.conversation_id}]`).append(data.message.type);
+                    $(`.last-message[data-messages=${data.message.conversation_id}]`).append(data.message.type);
                 }
 
 
@@ -47,10 +46,8 @@ setTimeout(() => {
                             addMessage(data.message,'',true)
                         }
 
-                        dataa.append('message_id',data.message.id)
-                        fetch('/api/readMessage', {
-                        method: 'POST',
-                        body:dataa,
+                        fetch(`/api/readMessage/${data.message.id}`, {
+                        method: 'get',
                         headers: {
                            'Authorization':`Bearer ${tokenn}`
                        }

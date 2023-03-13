@@ -2,6 +2,12 @@
 /public/build
 /public/hot
 /public/storage
+/public/attachments
+/public/image
+/public/img
+/public/voice_records
+/public/storage
+
 /storage/*.key
 /vendor
 .env

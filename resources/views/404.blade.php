@@ -14,9 +14,9 @@
           <div class="grid-row">
             <div class="colmun colmun-left">
               <h1 class="px-spc-b-20">404 ERROR.</h1>
-              <h1 class="px-spc-b-20">We can't find the page you are looking for.</h1>
-              <span class="px-spc-b-20"> Please check your network connection and try again..</span>
-                <a href="/" class="px-spc-b-20">Back to Home Page</a>
+              <h1 class="px-spc-b-20">We just have Arabic and English language.</h1>
+              <span class="px-spc-b-20"> We work to add more languages for you. </span>
+                <a style="font-size: 25px; color:red" href="/" class=" px-spc-b-20">Back to Home Page</a>
 
             </div>
 

@@ -20,11 +20,16 @@ class setAppLang
     public function handle(Request $request, Closure $next)
     {
         $local=request('local',Cookie::get('local','en'));
+        if( $local!="en" &&  $local!="ar" && $local!=""){
+            // dd();
+          return   redirect('/404');
+        }
         if(strlen($local)>2)
         {
             $local= Crypt::decrypt($local);
         }
         // dd($local);
+
         App::setlocale( $local);
         Cookie::queue('local', $local,60*24*365);
         return $next($request);
