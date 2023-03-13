@@ -259,45 +259,16 @@ class ConvarsationController extends Controller
 
     public function search_chat(Request $request)
     {
-        return;
-        $search = DB::table('partiscipants')->
-        // select('conversations.id as conversation_id' , 'conversations.img','messages.type as lastMessageType','messages.body', 'users.name', 'messages.created_at'
-        select('conversations.id as conversation_id'
-            )->join(
-                'partiscipants as par2',
-                'partiscipants.conversation_id',
-                '=',
-                'par2.conversation_id'
-            )->join(
-                'users',
-                'users.id',
-                '=',
-                'par2.user_id'
-            )->join(
-                'conversations',
-                'conversations.id',
-                '=',
-                'partiscipants.conversation_id'
-            )->join(
-                'messages',
-                'messages.id',
-                '=',
-                'conversations.last_message_id'
-            )->where(
-                'partiscipants.user_id', '<>', 'par2.user_id'
-            )->where('partiscipants.user_id', '=', Auth::id()
-            )->where('par2.user_id', '<>', Auth::id()
-            // )->where('users.name', 'like', "%" . $request->name . "%"
-            )->get()
-
-            ->map(function($e){
-                return $e=$e->conversation_id;
-            }) ;
-        //  return   Conversation::lable();
-            $searchd = Conversation::where('lable', 'like', "%" . $request->name . "%")->get();
-          return  $searchd->namee();
-        return $searchd;
-        // dd($search);
-
+        return  DB::table('partiscipants')->
+        select('conversations.id as conversation_id' , 'conversations.img','messages.type as lastMessageType','messages.body', 'users.name', 'messages.created_at')
+            ->join('partiscipants as par2','partiscipants.conversation_id','=','par2.conversation_id')
+            ->join('users','users.id','=','par2.user_id')
+            ->join('conversations','conversations.id','=','partiscipants.conversation_id')
+            ->join('messages','messages.id','=','conversations.last_message_id')
+            ->where('partiscipants.user_id', '<>', 'par2.user_id')
+            ->where('partiscipants.user_id', '=', Auth::id())
+            ->where('par2.user_id', '<>', Auth::id())
+            ->where('users.name', 'like', "%" . $request->name . "%")
+            ->get();
     }
 }

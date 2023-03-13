@@ -20,11 +20,13 @@ class MessageCreated implements ShouldBroadcast , ShouldQueue
 
 
     public $message;
-    public $type;
-    public function __construct(Message $message , $type)
+    public $user_id;
+
+    public function __construct(Message $message ,  $user_id)
     {
         $this->message=$message;
-        $this->type=$type;
+
+        $this->user_id=$user_id;
     }
 
     /**
@@ -35,8 +37,8 @@ class MessageCreated implements ShouldBroadcast , ShouldQueue
     public function broadcastOn()
     {
       
-            $other_user=$this->message->conversation->partiscipants()->where('user_id','<>',Auth::id())->first();
-            return new PrivateChannel('Messenger.'.$other_user->id);
+       
+            return new PrivateChannel('Messenger.'.$this->user_id);
             // return new PrivateChannel('Messenger.'.'2');
             
         
@@ -46,9 +48,15 @@ class MessageCreated implements ShouldBroadcast , ShouldQueue
         return 'new-message';
     }
     public function broadcastWith () {
+        $this->message->makeHidden(['updated_at','deleted_at','']);
+        $this->message->conversation->makeHidden(['id','user_id','img','description']);
+        $this->message->user->makeHidden(['id','email','email_verified_at','deviceToken','created_at','updated_at']);
+        // $this->message->makeVisible('')
         return [
-            'message'       =>$this->message,
+            'message'=>$this->message
+            
         ];
+       
         // return $this->message;
     }
 }

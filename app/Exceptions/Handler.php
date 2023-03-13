@@ -48,14 +48,16 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        // $this->reportable(function (Throwable $e) {
-
-        // });
-
+        $this->reportable(function (Throwable $e) {
+ 
+        });
+ 
 
 
             $this->renderable(function (NotFoundHttpException $exception) {
             // return $exception;
+            // return redirect('/404');
+
             return  response()->json([
                    'status' => 0,
                    'message' => 'not found',

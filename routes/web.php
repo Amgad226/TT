@@ -19,7 +19,11 @@ use Illuminate\Support\Facades\Storage;
 // Route::get('/a/{id?}',[MessengerController::class,'index'])->middleware('auth')->name('messenger');
 
 
-Auth::routes();
+// Auth::routes(['except' => ['password.request', 'verification.notice', 'verification.verify']]);
+// Auth::routes(['register' => true, 'reset' => false, 'verify' => false, 'confirm' => false, 'except' => ['password.request', 'verification.notice', 'verification.verify']]);
+// Auth::routes(['reset' => false, 'verify' => false, 'confirm' => false]);
+Auth::routes(['register' => true, 'reset' => false, 'verify' => false, 'confirm' => false]);
+
 
 // Route::get('as',function(){
 //     return response()->json(['status'=>0,'message'=>'you shoud login']);

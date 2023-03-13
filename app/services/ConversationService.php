@@ -2,6 +2,7 @@
 namespace App\services;
 
 use App\Models\Conversation;
+use App\Models\Message;
 use App\Models\Resipient;
 use Illuminate\Support\Facades\DB;
 
@@ -61,25 +62,30 @@ class ConversationService{
         return Conversation::findOrFail($conversation_id);
     }
 
+    public function store_message_db($conversation_id, $user_id, $msg, $type){
+        $attachment='';
+        // dd();
+        $message =Message::create([
+            'conversation_id' => $conversation_id,
+            'user_id' => $user_id,
+            'body' => $msg['message'],
+            'type' => $type,
+        ]);
+     
+        if($type=='attachment'){
+            $attachment=$msg['attachment'];
+            $message->update(['attachment'=> $attachment]);
+        }
 
-     // $conversationService->store_message_db($conversation->id,Auth::id() ,$msg ,$request->post('type') );
-    // public function store_message_db($conversation_id, $user_id, $msg, $type){
+        // DB::statement(' INSERT INTO resipients (user_id,message_id) SELECT user_id ,? FROM partiscipants WHERE conversation_id=? ', [$message->id, $conversation_id]);
+        DB::statement('INSERT INTO resipients (user_id, message_id) SELECT user_id, ? FROM partiscipants p WHERE conversation_id = ? AND NOT EXISTS ( SELECT 1 FROM resipients r WHERE r.user_id = p.user_id AND r.message_id = ?)', [$message->id, $conversation_id, $message->id]);
+        // SQL statement will only insert new rows into the recipients table if there is no existing row with the same user_id and message_id values.
 
-    //     $message =Conversation::create([
-    //         'id' => $conversation_id,
-    //         'user_id' => $user_id,
-    //         'body' => $msg['message'],
-    //         'type' => $type,
-    //     ]);
+        Resipient::where('message_id',$message->id)->where('user_id',$user_id)->where('read_at',null)->update(['read_at'=>now()]);
 
-    //     if($type=='attachment'){
-    //         $message->update(['attachment'=> $msg['attachment']]);
-    //     }
+        // $conversation->update(['last_message_id' => $message->id]);
+        DB::table('conversations')->where('id',$conversation_id)->update(['last_message_id' => $message->id]);
 
-
-    //     // DB::table('conversations')->where('id',$conversation_id)->update(['last_message_id' => $message->id]);
-    //     return $message;
-
-
-    // }
+        return [$message,$attachment];
+    }
 }

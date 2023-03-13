@@ -25,7 +25,7 @@ Broadcast::channel('Messenger.{id}', function ($user, $id) {
         // return array('name' => $user->name);
         return $user;
       }
-    //   return $user->id === Message::findOrNew($user)->user_id;
+    
 
 });
 

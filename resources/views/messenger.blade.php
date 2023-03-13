@@ -1228,8 +1228,8 @@
                                 data.append('users_id',arrayInviteToGroup)
                                 fetch('api/conversations/participants',{
                                     method:"post",
-                                    headers: {  'Authorization':`Bearer ${tokenn}`}
-                                    // body:data
+                                    headers: {  'Authorization':`Bearer ${tokenn}`},
+                                    body:data
                                 }
                                 );
                             }
