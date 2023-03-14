@@ -1427,11 +1427,11 @@
         <script src="{{ asset ('assets/js/template.js')}}" ></script>
         <script src="{{ asset ('assets/js/vendor.js')  }}" ></script>
         <script src="{{ asset ('assets/js/moment.js')  }}" crossorigin="anonymous"></script>
-        <script src="{{ asset ('js/jquery.js')}}" ></script>
-        <script src="{{ asset ('js/7.2.pusher.min.js')}}" ></script>
-        <script src="{{ asset ('js/pusher.js')}}" ></script>
-        <script src="{{ asset ('js/record.js')}}" ></script>
-        <script src="{{ asset ('js/markjivo.recorder.js')}}" ></script>
+        <script src="{{ asset ('assets/js/jquery.js')}}" ></script>
+        <script src="{{ asset ('assets/js/7.2.pusher.min.js')}}" ></script>
+        <script src="{{ asset ('assets/js/pusher.js')}}" ></script>
+        <script src="{{ asset ('assets/js/record.js')}}" ></script>
+        <script src="{{ asset ('assets/js/markjivo.recorder.js')}}" ></script>
 
         @if ( config('app.envTyping')  ==true)
 
@@ -1464,8 +1464,9 @@
          </script>
         @endif
 
-        <script src="{{ asset ('js/messenger.js')}}" ></script>
-        <script src="{{ asset ('js/firebase.js')}}" ></script>
+        <script src="{{ asset ('assets/js/messenger.js')}}" ></script>
+        <script src="{{ asset ('assets/js/firebase.js')}}" ></script>
+         {{-- @vite('resources/js/messenger.js') --}}
 
 
         <script>

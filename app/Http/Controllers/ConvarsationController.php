@@ -81,7 +81,6 @@ class ConvarsationController extends Controller
         ->get();
     }
 
-
     public function getParticipants( $id){
 
         $participant=Participant::
