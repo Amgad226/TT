@@ -907,32 +907,32 @@ const getConversations=function(pauseLoder=true){
 
 const conversation=function(chat){
 
-var countUnReadMsg=chat.conversation.unRead_message
+var countUnReadMsg=chat.unRead_message
 // alert(countUnReadMsg)
 if(countUnReadMsg!=0){
     counter=`
     <div class="div-count-msg badge badge-circle bg-primary ms-5 unread-message-count"  style="visibility:visible" onclick={
 
     }>
-        <span class="unread-message-count" data-messages=${chat.conversation.id} >${countUnReadMsg}</span>
+        <span class="unread-message-count" data-messages=${chat.id} >${countUnReadMsg}</span>
     </div>`;
 }
 else{
     counter=`
-    <div class="div-count-msg badge badge-circle bg-primary ms-5  unread-message-count  d-none" data-messages=${chat.conversation.id} onclick={
+    <div class="div-count-msg badge badge-circle bg-primary ms-5  unread-message-count  d-none" data-messages=${chat.id} onclick={
     }>
-        <span class="unread-message-count" data-messages=${chat.conversation.id} style= >new message</span>
+        <span class="unread-message-count" data-messages=${chat.id} style= >new message</span>
     </div>`;
 
 }
 
     var message_body_with_slice;
-    if(chat.conversation.last_massege.type=='text'){
-        aa=chat.conversation.last_massege.body.slice(143,-842);
+    if(chat.last_massege.type=='text'){
+        aa=chat.last_massege.body.slice(143,-842);
         message_body_with_slice=aa.slice(0,10);
     }
     else
-    message_body_with_slice=chat.conversation.last_massege.type;
+    message_body_with_slice=chat.last_massege.type;
 
     $('#chat-list').append(`
 
@@ -943,31 +943,31 @@ else{
 
     $('main').addClass('is-visible');
 
-    $('.unread-message-count[data-messages=${chat.conversation.id}]').html(0);
-    $('.unread-message-count[data-messages=${chat.conversation.id}]').addClass('d-none');
+    $('.unread-message-count[data-messages=${chat.id}]').html(0);
+    $('.unread-message-count[data-messages=${chat.id}]').addClass('d-none');
 
 
-    }" href="" id="roro" data-messages=${chat.conversation.id} class="card border-0 text-reset add-shadow zz  ">
+    }" href="" id="roro" data-messages=${chat.id} class="card border-0 text-reset add-shadow zz  ">
 
     <div style="" class="card-body zz" >
         <div class="row gx-5">
             <div class="col-auto">
                 <div class="avatar avatar-online">
 
-                    <img src="${chat.conversation.img}" alt="#" class="avatar-img">
+                    <img src="${chat.img}" alt="#" class="avatar-img">
                 </div>
             </div>
 
             <div class="col">
                 <div class="d-flex align-items-center mb-3">
 
-                    <h5 class="me-auto mb-0">${chat.conversation.lable}</h5>
+                    <h5 class="me-auto mb-0">${chat.lable}</h5>
 
-                    <span class="text-muted extra-small ms-2">${moment(chat.conversation.last_massege.created_at).fromNow()}</span>
+                    <span class="text-muted extra-small ms-2">${moment(chat.last_massege.created_at).fromNow()}</span>
                 </div>
 
                 <div class="d-flex align-items-center ">
-                    <div class="line-clamp me-auto last-message" data-messages=${chat.conversation.id}>
+                    <div class="line-clamp me-auto last-message" data-messages=${chat.id}>
                     ${message_body_with_slice}
                     </div>
                    ${counter}

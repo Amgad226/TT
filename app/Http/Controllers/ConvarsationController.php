@@ -22,67 +22,22 @@ class ConvarsationController extends Controller
 
 
     public function index(){
-        $chats =Participant::with(['conversation'
-            =>function($query_one){
-                $query_one->orderBy('last_message_id','asc');
-                $query_one->with(['lastMassege','partiscipants'
-                    =>function($query_two) {
-                        // return($query_two);
-                     $query_two->where('id','<>',Auth::id());
-                    }
-                        ]);
-                }])
-             ->where('user_id',Auth::id())->get();
-
-            //  retirn
-             for ($i = 0; $i < count($chats) ; $i++)
-             {
-
-                 for ($j = 0; $j <  count($chats) - $i -1; $j++)
-                 {
-                     if ($chats[$j]->conversation->last_message_id < $chats[$j+1]->conversation->last_message_id)
-                     {
-                         $temp = $chats[$j];
-                         $chats[$j] = $chats[$j + 1];
-                    $chats[$j + 1] = $temp;
-                }
-            }
-            // $chats[$i]->conversation['unRead_message']=$this->countUnReadMessage($chats[$i]->conversation_id);
-
-            // $chats[$i]['conversation']['nameChats']=$this->countUnReadMessage($chats[$i]->conversation->lable);
-
-        }
-
-        foreach($chats as $chat ){
-            // if($chat->conversation->type=='group')
-            // $chat->load('user');
-            $chat->conversation['unRead_message']=$this->countUnReadMessage($chat->conversation_id);
-        }
-        // return 1 ;
-
-        return  $chats ;
+       
+        return Conversation::with([
+        'partiscipants'=>function($query){$query->select('id','name','img');},
+        'lastMassege'=>function($query){$query->select('id','body','type','created_at',);}])
+        ->select('id','lable','img','type','description','last_message_id')
+        ->join('partiscipants', 'conversations.id', '=', 'partiscipants.conversation_id')
+        ->where('partiscipants.user_id', Auth::id())
+        ->orderBy('conversations.last_message_id', 'desc')
+        ->selectRaw('(SELECT COUNT(*) FROM messages 
+        JOIN resipients ON messages.id = resipients.message_id
+        WHERE messages.conversation_id = conversations.id AND 
+        resipients.read_at IS NULL 
+        AND resipients.user_id = ?) 
+        AS unRead_message', [Auth::id()])
+        ->get();
     }
-
-    public function countUnReadMessage( $conversation_id= 2){
-
-
-
-            $a =DB::table('conversations')->select('messages.id')->
-            join('messages','conversations.id','=','messages.conversation_id')->
-            join('resipients','messages.id','=','resipients.message_id')->
-            where('resipients.read_at',null)->
-            where('resipients.user_id',Auth::id())->
-            where('conversations.id',$conversation_id)->
-            count()  ;
-            return $a;
-
-            $ss=Resipient::where('user_id',Auth::id())->whereIn('message_id',$a)->where('read_at',null)->count();
-            // $ss=Resipient::where('user_id',Auth::id())->whereIn('message_id',$a)->where('read_at',null)->update(['read_at'=>now()]);
-            return $ss;
-
-
-    }
-
 
     public function createGroup(Request $request){
 
