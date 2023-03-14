@@ -17,30 +17,21 @@ class FriendController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-    public function index($search=false)
+    public function index()
     {
-      
-        $friend_users= DB::table('friends')->where([['user1_id',Auth::id()],['acceptable',1]])->orWhere([['user2_id',Auth::id()],['acceptable',1]])->get(['id','user1_id','user2_id']);
-
-        $id=[];
-            foreach($friend_users as $u )
-            { 
-                if($u->user1_id != Auth::id())
-                array_push($id,$u->user1_id );
-                else
-                 array_push($id,$u->user2_id );
-            }
-            if($search)
-            return $id; 
-
-            $users=DB::table('users')->whereIn('id',$id)->get(['id','name','img']);
-            return response()->json($users);
+        return  DB::select( "SELECT users.id, users.img, users.name from users  WHERE users.id in (SELECT  CASE     WHEN user1_id = ? THEN user2_id     ELSE user1_id END AS friend_id FROM friends WHERE user1_id = ? OR user2_id = ? AND acceptable = true)" ,[Auth::id(),Auth::id(),Auth::id()]);       
     }
     public function search_friends(Request $request){
-       $users_id= $this->index(true);
-       $users=DB::table('users')->whereIn('id',$users_id)->where('name', 'like', "%" . $request->name . "%")->get(['id','name','img']);
 
-       return $users;
+        return  DB::select( "SELECT users.id, users.img, users.name from users
+                             WHERE name LIKE CONCAT('%', ?, '%') 
+                              AND users.id in (SELECT  CASE     WHEN user1_id = ? THEN user2_id     ELSE user1_id END AS friend_id 
+                              FROM friends
+                               WHERE user1_id = ? OR
+                                user2_id = ? AND 
+                                acceptable = true)"
+                                 ,[ $request->name,Auth::id(),Auth::id(),Auth::id()]); 
+
     }
 
   
