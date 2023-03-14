@@ -2,27 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AddParticipantsRequest;
 use App\Http\Requests\CreateGroupRequest;
+use App\Http\Requests\UserIdRequest;
 use App\Models\Conversation;
-use App\Models\Friend;
-use App\Models\Message;
 use App\Models\Participant;
-use App\Models\Resipient;
-use App\Models\User;
 use App\services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Validator;
-
-
 
 class ConvarsationController extends Controller
 {
-
-
     public function index(){
        
         return Conversation::with([
@@ -57,118 +49,77 @@ class ConvarsationController extends Controller
         ]);
 
         $users_id = explode(",", $request->users_id);
+
+        $participants = [];
         foreach($users_id as $user_id){
-            Participant::create(['user_id' => $user_id, 'conversation_id' => $group->id]);
+            $participants[] = ['conversation_id' => $group->id , 'user_id' => $user_id,];
         }
+
+        Participant::insert($participants);
+
         Participant::create(['user_id' => Auth::id(), 'conversation_id' => $group->id ,'role'=>'admin' ]);
 
         return response()->json(['message' => 'group created successfuly','status' => 1], 200);
     }
 
     public function users_not_in_group($id){
-
-        $friend_users= DB::table('friends')->where([['user1_id',Auth::id()],['acceptable',1]])->orWhere([['user2_id',Auth::id()],['acceptable',1]])->get(['id','user1_id','user2_id']);
-
-        $idd=[];
-            foreach($friend_users as $u )
-            {
-                if($u->user1_id != Auth::id())
-                array_push($idd,$u->user1_id );
-                else
-                 array_push($idd,$u->user2_id );
-            }
-
-        $users_id_in_chat=DB::select('SELECT users.id FROM `users`
-        JOIN partiscipants on partiscipants.user_id = users.id
-        WHERE partiscipants.conversation_id=?',[$id]);
-
-         $ids_in_chat=[];
-        foreach($users_id_in_chat as $user_id_in_chat)
-        {
-         array_push($ids_in_chat,$user_id_in_chat->id);
-        }
-        // return $ids_in_chat;
-
-
-
-     return    DB::table('users')
-            ->select('name','id','img')
-            ->whereIn('id',$idd)
-            ->whereNotIn('id',$ids_in_chat)
-            ->get();
-
-
-        //     return   DB::select('
-        // SELECT name , id,img from users
-        // where id in (2,3) and
-        //  id not IN (SELECT users.id FROM `users`
-        // JOIN partiscipants on partiscipants.user_id = users.id
-        // WHERE partiscipants.conversation_id=?)
-        // ',[$id]);
-        // ',[$o,$id]);
+        
+        return DB::table('users')
+        ->select('name', 'id', 'img')
+        ->whereIn('id', function ($query) {
+            $query->selectRaw('CASE WHEN user1_id = ? THEN user2_id ELSE user1_id END AS friend_id', [Auth::id()])
+                ->from('friends')
+                ->where('user1_id', Auth::id())
+                ->orWhere('user2_id', Auth::id())
+                ->where('acceptable', 1);
+        })
+        ->whereNotIn('id', function ($query) use ($id) {
+            $query->select('user_id')
+                ->from('partiscipants')
+                ->where('conversation_id', $id);
+        })
+        ->get();
     }
 
 
     public function getParticipants( $id){
 
-        //with query
-        $participant=Participant::with(['user'=>function($query1){
+        $participant=Participant::
+        with(['user'=>function($query1){
             $query1->groupBy('id');
-            $query1->select('id','name','img');
-        }] )
-         ->withCount(['message'=>function($query2) use($id){
-            $query2->where('conversation_id',$id);
-         }])
-
-         ->where('conversation_id',$id)
-        //  ->select('conversation_id','user_id',)
-         ->get();
+            $query1->select('id','name','img');}])
+        ->withCount(['message'=>function($query2) use($id){
+                    $query2->where('conversation_id',$id);}])
+        ->where('conversation_id',$id)->get();
 
          $participant->makeHidden(['conversation_id','user_id']);
          return $participant;
-
     }
 
-    public function addParticipants(Request $request ){
+    public function addParticipants(AddParticipantsRequest $request ){
 
-        $validator = Validator::make($request-> all(),[
-            'conversation_id'=>['required','exists:conversations,id'],
-            'users_id'=>['required','exists:users,id'],
-          ]);
-        $users_id = explode(",", $request->users_id);
+        $users_id =explode(",", $request->users_id);
 
+        $participants = [];
+        foreach($users_id as $user_id){
+            $participants[] = ['conversation_id' => $request->conversation_id , 'user_id' => $user_id , 'joined_at'=>Carbon::now()];
+        }
 
-             if ($validator->fails())
-             {
-                 $errors = []; foreach ($validator->errors()->messages() as $key => $value) {     $key = 'message';     $errors[$key] = is_array($value) ? implode(',', $value) : $value; }       return response()->json( ['message'=>$errors['message'],'status'=>0],400);
-             }
-             foreach($users_id as $user_id){
-
-                 Participant::create(['conversation_id'=>$request->conversation_id,'user_id'=>$user_id,'joined_at'=>Carbon::now()]);
-                //  Participant::attach($user_id,['joined_at'=>Carbon::now(),]);
-             }
-        return 'done';
+        Participant::insert($participants);
+             
+        return response()->json(['status'=>1, 'message'=>'done']);
     }
 
 
-    public function removeParticipant(Request $request ,Conversation $conversation){
+    public function removeParticipant(UserIdRequest $request ,Conversation $conversation){
 
-        $validator = Validator::make($request-> all(),[
+        $conversation->partiscipants()->detach($request->validated());
 
-            'user_id'=>['required','string','exists:users,id'],
-          ]);
-
-             if ($validator->fails())
-             {
-                 $errors = []; foreach ($validator->errors()->messages() as $key => $value) {     $key = 'message';     $errors[$key] = is_array($value) ? implode(',', $value) : $value; }       return response()->json( ['message'=>$errors['message'],'status'=>0],400);
-             }
-          $conversation->partiscipants()->detach($request->user_id);
-        return 'done';
+        return response()->json(['status'=>1, 'message'=>'done']);
     }
 
 
-    public function search_chat(Request $request)
-    {
+    public function search_chat(Request $request){
         return  DB::table('partiscipants')->
         select('conversations.id as conversation_id' , 'conversations.img','messages.type as lastMessageType','messages.body', 'users.name', 'messages.created_at')
             ->join('partiscipants as par2','partiscipants.conversation_id','=','par2.conversation_id')

@@ -7,15 +7,49 @@ use App\Http\Controllers\FriendController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\PusherController;
+use App\Models\Conversation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
-Route::get('test',function(){
+Route::get('testQuery/{id}',function($id){
+$user_id=1;
 
-    return response()->json(Cookie::get('token'));
+    return Conversation::with([
+        'partiscipants'=>function($query){$query->select('id','name','img');},
+        'lastMassege'=>function($query){$query->select('id','body','type','created_at',);}])
+        ->select('id','lable','img','type','description','last_message_id')
+        ->join('partiscipants', 'conversations.id', '=', 'partiscipants.conversation_id')
+        ->where('partiscipants.user_id', $user_id)
+        ->orderBy('conversations.last_message_id', 'desc')
+        ->selectRaw('(SELECT COUNT(*) FROM messages 
+        JOIN resipients ON messages.id = resipients.message_id
+        WHERE messages.conversation_id = conversations.id AND 
+        resipients.read_at IS NULL 
+        AND resipients.user_id = ?) 
+        AS unRead_message', [$user_id])
+        ->get();
+
+
+    $userID= 1;
+    return DB::table('users')
+    ->select('name', 'id', 'img')
+    ->whereIn('id', function ($query)use ($userID) {
+        $query->selectRaw('CASE WHEN user1_id = ? THEN user2_id ELSE user1_id END AS friend_id', [$userID])
+            ->from('friends')
+            ->where('user1_id', $userID)
+            ->orWhere('user2_id', $userID)
+            ->where('acceptable', $userID);
+    })
+    ->whereNotIn('id', function ($query) use ($id) {
+        $query->select('user_id')
+            ->from('partiscipants')
+            ->where('conversation_id', $id);
+    })
+    ->get();
 
 });
 
