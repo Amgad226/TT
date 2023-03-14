@@ -91,44 +91,28 @@ function inputImageMessage(){
         fetch('api/messages', {
         method: 'Post',
         body: formData ,
-        headers: {
-            'Authorization':`Bearer ${tokenn}`
-            }
-
-      })
-        .then((response) => response.json())
-        .then((result) => {
-            if(result.status==0)
-            {
+        headers: { 'Authorization':`Bearer ${tokenn}`}
+        }
+        ).then((response) => response.json()
+        ).then((result) => {
+            if(result.status==0){
                 alert(result.message);
                 return;
             }
-
-
-
-
-
-
-            $('#'+random).attr('src', result.link_attachment);
-
-
-
+            else{
+                $('#'+random).attr('src', result.obj_msg.body);
+            }
         // var attachment =result.obj_msg.body
         // var date = result.obj_msg.created_at
         // var msg={'body':attachment  ,'created_at':date ,'id':result.obj_msg.id};
         // addMessage(msg,'message-out',true);
         // $('.send-image-loader').css('display','none')
-
-
         })
         .catch((error) => {
           console.error('Error:', error);
           alert('Error:', error);
           $('.send-image-loader').css('display','none')
-
         });
-
-
    });
    fileElm.click()
 
@@ -172,16 +156,21 @@ function selectFile(){
        })
          .then((response) => response.json())
          .then((result) => {
+            console.log(result);
              if(result.status==0)
              {
                  alert(result.message);
                  return;
              }
 
-         var attachment =result.obj_msg.body
-         var date = result.obj_msg.created_at
-         var msg={'body':attachment  ,'created_at':date ,'id':result.obj_msg.id ,'attachment':result.attachment,'type':result.obj_msg.type};
-         // addMessage(msg,'message-out',true,true,true,record,date);//false
+         var msg={
+            'id':result.obj_msg.id,
+            'body':result.obj_msg.body,
+            'type':result.obj_msg.type,
+            'created_at':result.obj_msg.created_at,
+            'attachment':result.obj_msg.attachment,
+         };
+         
          addMessage(msg,'message-out',true);
         $('.send-image-loader').css('display','none')
 
@@ -375,8 +364,7 @@ function appendWithGroupMessageStyle(image, name, message ){
         `;
 }
 function styleMessage(msg,classDeletMessage){
-    if(msg.type=='text')
-    {
+    if(msg.type=='text'){
             something= `<div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
                             <p>${msg.body}
                                 <span class="sended ${msg.deleteAction} ${classDeletMessage}  " style="position:relative ;bottom:-12px;right:-10px;z-index:0;visibility:">
@@ -394,10 +382,7 @@ function styleMessage(msg,classDeletMessage){
         something= ` <img  width="200"  class="img-fluid rounded" src="${msg.body}" data-action="zoom" alt="">`;
     }
 
-    else if(msg.type=='audio')
-    {
-
-        // alert(123)
+    else if(msg.type=='audio'){
         something=`
         <audio style='border: 5px solid #2787F5; border-radius: 50px;'  controls ><source src="${msg.body}" type="audio/WAV"></audio>
 

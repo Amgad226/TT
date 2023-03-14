@@ -17,7 +17,9 @@ class StoreMessageService {
 
 
     public function storeMessage(){
+
         $attachment='';
+
         if($this->request->type=='text'){
             $message=$this->text();
         }
@@ -39,7 +41,7 @@ class StoreMessageService {
             'message'=>$message,
             'attachment'=>$attachment
         ];
-        // return $message;
+ 
 
 
     }
@@ -52,38 +54,13 @@ class StoreMessageService {
     }
 
     public function image(){
-        $image= $this->request->img;
-        $body=$image;
-        $name=$body->getClientOriginalName();
-        $extension=$body->getclientoriginalextension();
-
-        $image_resize = Image::make($body->getRealPath())->encode($extension);;
-        // $image_resize->resize(1280, 720, function ($constraint) {$constraint->aspectRatio(); });
-        $image_resize->resize(600, 300, function ($constraint) {$constraint->aspectRatio(); });
-
-        $uniqid=uniqid();
-
-        if(config('app.storeGoogleDrive')==true){
-
-        Storage::disk('google')->put('image/'.$name.$uniqid.'.'.$extension ,$image_resize,  );
-        $link_attachment = Storage::disk('google')->url('image/'.$name.$uniqid.'.'.$extension);
-        }
-        else{
-
-           if(! File::isDirectory(public_path('image')))
-            File::makeDirectory(public_path('image'));
-
-            $image_resize->save(public_path('image/'.$name.$uniqid.'.'.$extension));
-            $link_attachment='image/'.$name.$uniqid.'.'.$extension;
-            // dd(2);
-        }
-
-        return $link_attachment;
-
-
+        // dd($this->request);
+        return ImageService::store( $this->request->img ,$this->request->img->getClientOriginalName(),'image');
     }
     public function attachment(){
         $attachment= $this->request->attachment;
+        $name=$attachment->getClientOriginalName();
+        $link_attachment=ImageService::store($attachment , $name,'attachments',false);
 
         $size=(int) (($attachment->getSize())/1000);
         $stringSize=$size.'KB';
@@ -91,20 +68,6 @@ class StoreMessageService {
             $size/=1000;
             $stringSize=$size.'MB';
         }
-
-        $uniqid=uniqid();
-
-        $name=$attachment->getClientOriginalName();
-        $extension=$attachment->getclientoriginalextension();
-
-        if(config('app.storeGoogleDrive')==true){
-            $a= Storage::disk('google')->put('attachment',$attachment  );
-            $link_attachment = Storage::disk('google')->url($a);
-        }
-        else
-        $link_attachment = $attachment->move('attachments',$name.$uniqid.'.'.$extension);
-
-
        return  [
             'link_attachment'=>(string)$link_attachment,
             'stringSize'=>$stringSize,

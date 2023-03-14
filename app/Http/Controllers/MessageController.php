@@ -42,7 +42,7 @@ class MessageController extends Controller
         Resipient::where('message_id',$message->id)->where('user_id',Auth::id())->where('read_at',null)->update(['read_at'=>now()]);
         return ;
     }
-    public function store(storeMessageRequest $request) :Response{
+    public function store(storeMessageRequest $request) {
         DB::beginTransaction();
         try {
             $conversationService=new ConversationService();
@@ -50,27 +50,25 @@ class MessageController extends Controller
           
 
             $service= new StoreMessageService($request);
-            $msg=$service->storeMessage();
+            $messageInfo=$service->storeMessage();
 
 
-            $message=$conversationService->store_message_db($conversation->id,Auth::id() ,$msg ,$request->post('type') );
-            $attachment=$message[1] ?$message :"";
+            $message=$conversationService->store_message_db($conversation->id,Auth::id() ,$messageInfo['message'],$messageInfo['attachment'] ,$request->post('type') );
           
             DB::commit();
 
-            $message[0]->load('user');
+            $message->load('user');
+            $message->user->makeHidden(['email','email_verified_at','deviceToken','created_at','updated_at',]);
+            $message->makeHidden(['updated_at','conversation_id']);
 
-            // return response($message[0]);
-            $this->sendToPusher($message[0]);
+       
+            $this->sendToPusher($message);
 
             $this->sendToFirebase($conversation->id, $conversation->lable, $request->type);
-
+           
             return response([
-            'obj_msg' => $message[0],
-            'link_attachment'=>$msg['message'],
+            'obj_msg' => $message,
             'status' => 1 ,
-            'message_id'=>$message[0]->id,
-            'attachment'=>$attachment
         ]);
         }
         catch (Throwable $e) {

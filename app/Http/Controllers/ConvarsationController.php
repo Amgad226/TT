@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateGroupRequest;
 use App\Models\Conversation;
 use App\Models\Friend;
 use App\Models\Message;
 use App\Models\Participant;
 use App\Models\Resipient;
 use App\Models\User;
+use App\services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -38,68 +40,33 @@ class ConvarsationController extends Controller
         AS unRead_message', [Auth::id()])
         ->get();
     }
-
-    public function createGroup(Request $request){
-
-        $validator = Validator::make($request->all(), [
-            // 'message' => ['required', 'string'],
-
-            'users_id*' => [],
-            'groupName'=>['required'],
-            'groupDescription'=>['required'],
-            'img'=>'mimes:jpg,png,jpeg,gif,svg|max:2048',
-            // 'img'=>'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-
-        ]);
-
-        // dd(gettype($request->users_id));
-
-
-        if ($validator->fails()) {$errors = [];foreach ($validator->errors()->messages() as $key => $value) {    $key = 'message';    $errors[$key] = is_array($value) ? implode(',', $value) : $value;}return response()->json([    'message' => $errors['message'],    'status' => 0], 200);}
-        $users_id = explode(",", $request->users_id);
-
-        if (request()->hasFile('img')){
-            $extension='.'.$request->img->getclientoriginalextension();
-            $path=public_path('/img/group');
-            if(!File::exists( $path))
-            File::makeDirectory( $path,0777,true);
-            $Name= $request->groupName;
-            $uniqid_img='('.uniqid().')';
-            $image=$request->file('img') ;
-            $image->move($path,$uniqid_img.$Name.$extension);
-            $imgToDB='img/group/'.$uniqid_img.$Name.$extension;
-        }
-        // dd( $imgToDB);
-        //  array_push($users_id,(string)Auth::id());
-         // dd($users_id);
+    public function createGroup(CreateGroupRequest $request){
 
         $groupName=($request->groupName!=null)?$request->groupName:'group';
+
+        if ($request->hasFile('img'))
+            $imgToDB=ImageService::store($request->img ,$groupName,'/img/group');
+        
+
         $group=Conversation::create([
             'user_id',Auth::id(),
-            'lable'=>$groupName,
-            'type'=>'group',
-            'img'=>$imgToDB,
+            'lable'=>$request->groupName,
             'description'=>$request->groupDescription,
+            'img'=>$imgToDB,
+            'type'=>'group',
         ]);
-        $group->update(['user_id'=>Auth::id()]);
 
+        $users_id = explode(",", $request->users_id);
         foreach($users_id as $user_id){
             Participant::create(['user_id' => $user_id, 'conversation_id' => $group->id]);
         }
         Participant::create(['user_id' => Auth::id(), 'conversation_id' => $group->id ,'role'=>'admin' ]);
 
-        return response()->json([    'message' => 'group created successfuly',    'status' => 1], 200);
-    }
-
-
-    public function countMessageInConversation($user_id,$conversation_id){
-
-     return Message::where([['conversation_id',$conversation_id],['user_id',$user_id]])->count();
+        return response()->json(['message' => 'group created successfuly','status' => 1], 200);
     }
 
     public function users_not_in_group($id){
 
-        // Conversation::find($id);
         $friend_users= DB::table('friends')->where([['user1_id',Auth::id()],['acceptable',1]])->orWhere([['user2_id',Auth::id()],['acceptable',1]])->get(['id','user1_id','user2_id']);
 
         $idd=[];
@@ -159,18 +126,6 @@ class ConvarsationController extends Controller
 
          $participant->makeHidden(['conversation_id','user_id']);
          return $participant;
-
-     //with php
-     // $conversation= Conversation::with(['partiscipants'])->find($id);
-     //     foreach( $conversation->partiscipants as $q)
-     //     {
-     //         // return $q->id;
-     //         $q['countMessages']=$this->countMessageInConversation($q->id,$id);
-     //     }
-     //     $conversation->makeHidden(['user_id','lable','img','last_message_id','description','type']);
-     //     $conversation->partiscipants->makeHidden(['email','email_verified_at','created_at','updated_at','pivot']);
-
-     //     return $conversation;
 
     }
 

@@ -62,19 +62,17 @@ class ConversationService{
         return Conversation::findOrFail($conversation_id);
     }
 
-    public function store_message_db($conversation_id, $user_id, $msg, $type){
-        $attachment='';
+    public function store_message_db($conversation_id, $user_id, $bodyOrLink,$attachmentInfo, $type){
         // dd();
         $message =Message::create([
             'conversation_id' => $conversation_id,
             'user_id' => $user_id,
-            'body' => $msg['message'],
+            'body' =>  $bodyOrLink,
             'type' => $type,
         ]);
      
         if($type=='attachment'){
-            $attachment=$msg['attachment'];
-            $message->update(['attachment'=> $attachment]);
+            $message->update(['attachment'=> $attachmentInfo]);
         }
 
         // DB::statement(' INSERT INTO resipients (user_id,message_id) SELECT user_id ,? FROM partiscipants WHERE conversation_id=? ', [$message->id, $conversation_id]);
@@ -86,6 +84,6 @@ class ConversationService{
         // $conversation->update(['last_message_id' => $message->id]);
         DB::table('conversations')->where('id',$conversation_id)->update(['last_message_id' => $message->id]);
 
-        return [$message,$attachment];
+        return $message;
     }
 }
