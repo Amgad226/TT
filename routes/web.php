@@ -10,6 +10,7 @@ Auth::routes(['register' => true, 'reset' => false, 'verify' => false, 'confirm'
 
 // Route::get('as',function(){
 //     return response()->json( [shell_exec("getmac")]);
+//     return response()->json(['status'=>0,'message'=>'you shoud login']);
 // })->name('jsonResponse');
 
 

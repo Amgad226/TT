@@ -542,6 +542,24 @@
 
                                     </div>
 
+                                    <!-- Search chats -->
+                                    <!-- search conversation -->
+                                    {{-- <div class="mb-6">
+
+
+                                        <form id="searchhh_chats" action="{{route('search.chat')}}" method="POST">
+                                            @csrf
+                                            <div class="input-group">
+                                                <div class="input-group-text">
+                                                    <div class="icon icon-lg">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                                    </div>
+                                                </div>
+                                                <input id="aso" name="name" type="text" class="form-control form-control-lg ps-0" placeholder="{{__('Search chat')}}" aria-label="Search for messages or users...">
+                                            </div>
+                                        </form>
+                                    </div> --}}
+
 
                                     <!-- Chats -->
                                     <div  class="card-list  security-chats" id="chat-list">
