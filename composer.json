@@ -12,6 +12,7 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.0",
+        "masbug/flysystem-google-drive-ext": "^2.2",
         "pusher/pusher-php-server": "^7.0"
     },
     "require-dev": {

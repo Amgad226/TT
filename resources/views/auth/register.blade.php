@@ -82,12 +82,11 @@
 </html>
 
 
-<script src="{{ asset ('js/jquery.js')}}" ></script>
-<script src="{{ asset ('js/firebase.js')}}" ></script>
-
+<script src="{{ asset ('assets/js/jquery.js')}}" ></script>
+        <script src="{{ asset ('assets/js/firebase.js')}}" ></script>
 <script>
 
-
+  console.log("this is the first message");
     var firebaseConfig = {
     apiKey: "AIzaSyCe0NvBofKhiRr4UiwkW7FRL52KbtRCk0k",
     authDomain: "tt-project-dbf57.firebaseapp.com",
@@ -98,13 +97,12 @@
     measurementId: "G-D6JWRECXPD"
     };
 
-      firebase.initializeApp(firebaseConfig);
-      const messaging = firebase.messaging();
-      // const messaging = firebase.messaging.isSupported() ? firebase.messaging() : null
+      firebase?.initializeApp(firebaseConfig);
+      //const messaging = firebase.messaging();
+       const messaging = firebase?.messaging.isSupported() ? firebase.messaging() : null
 
     console.log(messaging)
       function initFirebaseMessagingRegistration() {
-
               messaging
               .requestPermission()
               .then(function () {
