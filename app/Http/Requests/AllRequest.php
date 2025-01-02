@@ -12,7 +12,8 @@ class AllRequest extends FormRequest
   
     protected function failedValidation(Validator $validator)
     {
-        $response = new Response(['message' => $validator->errors()->first(),'status'=>0], 400);
+        
+        $response = new Response(['message' => $validator->errors()->first(),'status'=>0,'errors' => $validator->errors()], 400);
         throw new ValidationException($validator, $response);
     }
 }

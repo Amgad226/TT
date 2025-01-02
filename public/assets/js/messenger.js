@@ -30,163 +30,162 @@
 
 // ----------------------------------------
 function makeid(length) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var charactersLength = characters.length;
-    for ( var i = 0; i < length; i++ ) {
+    for (var i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
 }
 
-function inputImageMessage(){
+function inputImageMessage() {
     // alert();
-    let fileElm= document.createElement('input');
+    let fileElm = document.createElement('input');
     //    fileElm.type = "text";
     //    fileElm.accept('jpg');
-    fileElm.setAttribute('type','file');
+    fileElm.setAttribute('type', 'file');
 
-    fileElm.addEventListener('change',(e)=>{
-        var random=makeid(5)
+    fileElm.addEventListener('change', (e) => {
+        var random = makeid(5)
         // alert(random);
         // return
         var filePath = fileElm.value;
-        extension= fileElm.value.split('.').pop();
-      console.log(extension);
+        extension = fileElm.value.split('.').pop();
+        console.log(extension);
 
         // var allowedExtensions_ =/(\.jpg|\.jpeg|\.png|\.JPG|\.JPEG|\.PNG|\.gif)$/;
 
-        const allowedExtensions = ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG","webp"];
-        if (allowedExtensions.includes(extension)==false) {
+        const allowedExtensions = ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG", "webp"];
+        if (allowedExtensions.includes(extension) == false) {
             alert('Invalid file type');
             fileElm.value = '';
-            return ;
+            return;
         }
         // return;
         // var x= URL.createObjectURL(e.target.files[0]);
-        var user={'img':`${userimg}`,"name":`${username}`}
+        var user = { 'img': `${userimg}`, "name": `${username}` }
         var msgg = {
-            'input':true,
-            'type':'img',
-            'body':`
+            'input': true,
+            'type': 'img',
+            'body': `
             <img id="${random}" width="200" class="img-fluid rounded" src="${gif}" data-action="zoom" alt="">
             `,
-            'user':user
+            'user': user
         }
 
-        addMessage(msgg,'message-out',true,false)
+        addMessage(msgg, 'message-out', true, false)
 
 
-    // $('.send-image-loader').css('display','block')
-    if(fileElm.files==0){
-        return;
-    }
+        // $('.send-image-loader').css('display','block')
+        if (fileElm.files == 0) {
+            return;
+        }
 
-    let attachment=fileElm.files[0];
-    const formData = new FormData();
+        let attachment = fileElm.files[0];
+        const formData = new FormData();
 
-    formData.append('type', 'img');
-    formData.append('img',attachment);
-    formData.append('conversation_id',response_conversation_id);
+        formData.append('type', 'img');
+        formData.append('img', attachment);
+        formData.append('conversation_id', response_conversation_id);
         fetch('api/messages', {
-        method: 'Post',
-        body: formData ,
-        headers: { 'Authorization':`Bearer ${tokenn}`}
+            method: 'Post',
+            body: formData,
+            headers: { 'Authorization': `Bearer ${tokenn}` }
         }
         ).then((response) => response.json()
         ).then((result) => {
-            if(result.status==0){
+            if (result.status == 0) {
                 alert(result.message);
                 return;
             }
-            else{
-                $('#'+random).attr('src', result.obj_msg.body);
+            else {
+                $('#' + random).attr('src', result.obj_msg.body);
             }
-        // var attachment =result.obj_msg.body
-        // var date = result.obj_msg.created_at
-        // var msg={'body':attachment  ,'created_at':date ,'id':result.obj_msg.id};
-        // addMessage(msg,'message-out',true);
-        // $('.send-image-loader').css('display','none')
+            // var attachment =result.obj_msg.body
+            // var date = result.obj_msg.created_at
+            // var msg={'body':attachment  ,'created_at':date ,'id':result.obj_msg.id};
+            // addMessage(msg,'message-out',true);
+            // $('.send-image-loader').css('display','none')
         })
-        .catch((error) => {
-          console.error('Error:', error);
-          alert('Error:', error);
-          $('.send-image-loader').css('display','none')
-        });
-   });
-   fileElm.click()
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error:', error);
+                $('.send-image-loader').css('display', 'none')
+            });
+    });
+    fileElm.click()
 
 
 }
 
-function selectFile(){
-    let fileElm= document.createElement('input');
+function selectFile() {
+    let fileElm = document.createElement('input');
     //    fileElm.type = "text";
     //    fileElm.accept('jpg');
-    fileElm.setAttribute('type','file');
+    fileElm.setAttribute('type', 'file');
 
-    fileElm.addEventListener('change',()=>{
-        $('.send-image-loader').css('display','block')
+    fileElm.addEventListener('change', () => {
+        $('.send-image-loader').css('display', 'block')
 
         const fsize = fileElm.files[0].size;
-        const file = Math.round((fsize / (1024*1024)));
+        const file = Math.round((fsize / (1024 * 1024)));
         if (file >= 15) {
             alert(
-              "File too Big, please select a file less than 15mb");
-            $('.send-image-loader').css('display','none')
+                "File too Big, please select a file less than 15mb");
+            $('.send-image-loader').css('display', 'none')
 
-              return ;
+            return;
         }
 
 
 
 
-     if(fileElm.files==0){
-         return;
-     }
-     let attachment=fileElm.files[0];
-     const formData = new FormData();
+        if (fileElm.files == 0) {
+            return;
+        }
+        let attachment = fileElm.files[0];
+        const formData = new FormData();
 
-     formData.append('type', 'attachment');
-     formData.append('attachment',attachment);
-     formData.append('conversation_id',response_conversation_id);
-     fetch('api/messages', {
-         method: 'Post',
-         body: formData
-       })
-         .then((response) => response.json())
-         .then((result) => {
-            console.log(result);
-             if(result.status==0)
-             {
-                 alert(result.message);
-                 return;
-             }
+        formData.append('type', 'attachment');
+        formData.append('attachment', attachment);
+        formData.append('conversation_id', response_conversation_id);
+        fetch('api/messages', {
+            method: 'Post',
+            body: formData
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                console.log(result);
+                if (result.status == 0) {
+                    alert(result.message);
+                    return;
+                }
 
-         var msg={
-            'id':result.obj_msg.id,
-            'body':result.obj_msg.body,
-            'type':result.obj_msg.type,
-            'created_at':result.obj_msg.created_at,
-            'attachment':result.obj_msg.attachment,
-         };
-         
-         addMessage(msg,'message-out',true);
-        $('.send-image-loader').css('display','none')
+                var msg = {
+                    'id': result.obj_msg.id,
+                    'body': result.obj_msg.body,
+                    'type': result.obj_msg.type,
+                    'created_at': result.obj_msg.created_at,
+                    'attachment': result.obj_msg.attachment,
+                };
 
-         })
-         .catch((error) => {
-           console.error('Error:', error);
-           alert('Error:', error);
-        $('.send-image-loader').css('display','none')
+                addMessage(msg, 'message-out', true);
+                $('.send-image-loader').css('display', 'none')
 
-         });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error:', error);
+                $('.send-image-loader').css('display', 'none')
+
+            });
 
     });
     fileElm.click()
 
 
- }
+}
 // ----------switch theme--------------
 
 
@@ -196,26 +195,25 @@ function getCookie(name) {
     if (parts.length === 2) return parts.pop().split(';').shift();
 }
 
-if(getCookie('theme')==`<link rel="stylesheet" type="text/css" href="assets/css/template.bundle.css">`){
+if (getCookie('theme') == `<link rel="stylesheet" type="text/css" href="assets/css/template.bundle.css">`) {
     $('head').append(getCookie('theme'));
     $(".toggel").empty();
 
-        $(".toggel").append(`
+    $(".toggel").append(`
         <svg  style="cursor: pointer;"class="toggel" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
         <path fill="#95aac9" d="M29.56 19.36a1 1 0 0 0-1.21.07A10.49 10.49 0 0 1 21.51 22 10.17 10.17 0 0 1 11.2 12a9.94 9.94 0 0 1 4.28-8.1 1 1 0 0 0 .36-1.17 1 1 0 0 0-1-.64A14.1 14.1 0 0 0 2 16a14.21 14.21 0 0 0 14.37 14 14.34 14.34 0 0 0 13.57-9.44 1 1 0 0 0-.38-1.2ZM16.37 28A12.2 12.2 0 0 1 4 16a12 12 0 0 1 7.57-11.11A11.82 11.82 0 0 0 9.2 12a12.17 12.17 0 0 0 12.31 12 12.49 12.49 0 0 0 4.89-1 12.5 12.5 0 0 1-10.03 5Z" data-name="Layer 46"/>
         </svg>
         `);
 }
 
-var dark= true;
-$(`.toggel`).on('click',function(e){
-    if(dark)
-    {
+var dark = true;
+$(`.toggel`).on('click', function (e) {
+    if (dark) {
 
         //light mode
-        dark=false;
+        dark = false;
         $('head').append('<link rel="stylesheet" type="text/css" href="assets/css/template.bundle.css">');
-        document.cookie='theme=<link rel="stylesheet" type="text/css" href="assets/css/template.bundle.css">'
+        document.cookie = 'theme=<link rel="stylesheet" type="text/css" href="assets/css/template.bundle.css">'
         $(".toggel").empty();
 
         $(".toggel").append(`
@@ -224,12 +222,11 @@ $(`.toggel`).on('click',function(e){
         </svg>
         `);
     }
-    else
-    {
+    else {
         //dark mode
-        dark=true;
+        dark = true;
         $('head').append('<link rel="stylesheet" type="text/css" href="assets/css/template.dark.bundle.css">');
-        document.cookie='theme=<link rel="stylesheet" type="text/css" href="assets/css/template.dark.bundle.css">'
+        document.cookie = 'theme=<link rel="stylesheet" type="text/css" href="assets/css/template.dark.bundle.css">'
 
         $(".toggel").empty();
         $(".toggel").append(`
@@ -241,21 +238,21 @@ $(`.toggel`).on('click',function(e){
 });
 
 //----------dropdown----------
-var drop_down=false
-function deleteMessge (element){
-    let id =   $(element).attr('message-id')   ;
+var drop_down = false
+function deleteMessge(element) {
+    let id = $(element).attr('message-id');
     console.log(id)
-var a =$(element.parentElement.parentElement.parentElement.parentElement);
-// return;
+    var a = $(element.parentElement.parentElement.parentElement.parentElement);
+    // return;
 
 
-         fetch(`/api/messages/${id}`, {
-         method: 'POST' ,
-         headers: {
-            'Authorization':`Bearer ${tokenn}`
+    fetch(`/api/messages/${id}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${tokenn}`
         }
-         })
-                a.replaceWith (`
+    })
+    a.replaceWith(`
      <div class="message-content">
 
          <div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
@@ -268,74 +265,72 @@ var a =$(element.parentElement.parentElement.parentElement.parentElement);
 
 
 }
-function dropdown(thiss){
+function dropdown(thiss) {
 
     {
-        if(drop_down==false)
-        {
+        if (drop_down == false) {
 
-        $(thiss.childNodes[3]).removeClass('dropdown-menu');
-        drop_down=true
+            $(thiss.childNodes[3]).removeClass('dropdown-menu');
+            drop_down = true
         }
-        else
-        {
+        else {
 
-        $(thiss.childNodes[3]).addClass('dropdown-menu')
-        drop_down=false
+            $(thiss.childNodes[3]).addClass('dropdown-menu')
+            drop_down = false
         }
     }
 
 }
- //0----------Loader----------
-function hideLoader(thiss=''){
-    if(thiss!='')
-    thiss.css('visibility','visible');
+//0----------Loader----------
+function hideLoader(thiss = '') {
+    if (thiss != '')
+        thiss.css('visibility', 'visible');
 
     $('#Loader').addClass('hide');
 }
-function addLoader(thiss=''){
-    if(thiss!='')
-    thiss.css('visibility','hidden');
+function addLoader(thiss = '') {
+    if (thiss != '')
+        thiss.css('visibility', 'hidden');
 
     $('#Loader').removeClass('hide');
 }
 //----------send message manually----------
 
-$("#targetttt").on('submit',function(e){
+$("#targetttt").on('submit', function (e) {
 
     e.preventDefault();
 
-    let body=$(this).find('.input-have-message').val()
-    if(body==''){
+    let body = $(this).find('.input-have-message').val()
+    if (body == '') {
         return;
     }
-    var data=new FormData
-    data.append('conversation_id',response_conversation_id)
-    data.append('body',body)
-    data.append('title',username+' send message')
+    var data = new FormData
+    data.append('conversation_id', response_conversation_id)
+    data.append('body', body)
+    data.append('title', username + ' send message')
 
-    var random_class_to_add_message_id=makeid(5);
-    var deleteAction =makeid(5);
+    var random_class_to_add_message_id = makeid(5);
+    var deleteAction = makeid(5);
 
-    $.post($(this).attr('action') ,$(this).serialize() , function(response){
+    $.post($(this).attr('action'), $(this).serialize(), function (response) {
         // alert(deleteAction +'   '+random_class_to_add_message_id)
         $(`.${deleteAction}`).removeClass("visibilty-hidden");
-        $(`.${random_class_to_add_message_id}`).attr('message-id',response.obj_msg.id);
+        $(`.${random_class_to_add_message_id}`).attr('message-id', response.obj_msg.id);
 
     }
 
     );
-    var user={'img':`${userimg}`,"name":`${username}`}
+    var user = { 'img': `${userimg}`, "name": `${username}` }
 
     var msgg = {
-        'random_class_to_add_message_id':random_class_to_add_message_id,
-        'deleteAction':deleteAction,
+        'random_class_to_add_message_id': random_class_to_add_message_id,
+        'deleteAction': deleteAction,
         'body': body,
-        'id':102,
-        'user':user,
-        'type':'text'
+        'id': 102,
+        'user': user,
+        'type': 'text'
     }
-    addMessage(msgg,'message-out',true,true ,'visibilty-hidden')
+    addMessage(msgg, 'message-out', true, true, 'visibilty-hidden')
 
     $(this).find('.input-have-message').val('');
     $(this).find('.input-have-message').focus();
@@ -346,7 +341,7 @@ $("#targetttt").on('submit',function(e){
 
 //------------------------get messages in chat -----------------------------------
 
-function appendWithGroupMessageStyle(image, name, message ){
+function appendWithGroupMessageStyle(image, name, message) {
     return `
         <img class="avatar" src="${image}" alt="" style="">
         <div  style=" display: flex;flex-direction: column; ">
@@ -356,9 +351,9 @@ function appendWithGroupMessageStyle(image, name, message ){
         </div>
         `;
 }
-function styleMessage(msg,classDeletMessage){
-    if(msg.type=='text'){
-            something= `<div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
+function styleMessage(msg, classDeletMessage) {
+    if (msg.type == 'text') {
+        something = `<div class="message-text " style=" background-color:  ;height:90% display: flex;flex-direction: column;justify-content: space-between;">
                             <p>${msg.body}
                                 <span class="sended ${msg.deleteAction} ${classDeletMessage}  " style="position:relative ;bottom:-12px;right:-10px;z-index:0;visibility:">
                                     <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"width="15px" height="15px" viewBox="0 0 78.369 78.369" style="enable-background:new 0 0 78.369 78.369;"xml:space="preserve"><g><path fill="var( --bs-white)" d="M78.049,19.015L29.458,67.606c-0.428,0.428-1.121,0.428-1.548,0L0.32,40.015c-0.427-0.426-0.427-1.119,0-1.547l6.704-6.704c0.428-0.427,1.121-0.427,1.548,0l20.113,20.112l41.113-41.113c0.429-0.427,1.12-0.427,1.548,0l6.703,6.704C78.477,17.894,78.477,18.586,78.049,19.015z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
@@ -368,15 +363,15 @@ function styleMessage(msg,classDeletMessage){
                         </div> `
     }
 
-    else if(msg.type=='img'){
-        if(msg?.input==true)
-        something=msg.body;
+    else if (msg.type == 'img') {
+        if (msg?.input == true)
+            something = msg.body;
         else
-        something= ` <img  width="200"  class="img-fluid rounded" src="${msg.body}" data-action="zoom" alt="">`;
+            something = ` <img  width="200"  class="img-fluid rounded" src="${msg.body}" data-action="zoom" alt="">`;
     }
 
-    else if(msg.type=='audio'){
-        something=`
+    else if (msg.type == 'audio') {
+        something = `
         <audio style='border: 5px solid #2787F5; border-radius: 50px;'  controls ><source src="${msg.body}" type="audio/WAV"></audio>
 
         <span class="sended ${msg.deleteAction} ${classDeletMessage}  "   style="position:absolute;right:23px; z-index:120;visibility:visiable">
@@ -386,10 +381,9 @@ function styleMessage(msg,classDeletMessage){
         </span>`;
     }
 
-    else if(msg.type=='attachment')
-    {
-//
-        something=`<div class="message-text">
+    else if (msg.type == 'attachment') {
+        //
+        something = `<div class="message-text">
         <div class="row align-items-center gx-4">
             <div class="col-auto">
                 <a href="${msg.attachment.link_attachment}" class="avatar avatar-sm" target="_blank">
@@ -409,10 +403,10 @@ function styleMessage(msg,classDeletMessage){
         </div>
       </div>`;
     }
-return something
+    return something
 
 }
-function appendDeleteDropDown(deleteAction,classDeletMessage,random_class_to_add_message_id,id,DeleteForAll ){
+function appendDeleteDropDown(deleteAction, classDeletMessage, random_class_to_add_message_id, id, DeleteForAll) {
     return `<div class="message-action  ${deleteAction} ${classDeletMessage} " >
     <div class="dropdown"  onclick="dropdown(this)">
             <a class="icon text-muted" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -435,7 +429,7 @@ function appendDeleteDropDown(deleteAction,classDeletMessage,random_class_to_add
     </div>`;
 
 }
-function appendMessageInChat(c,message,dropdown,created_at ){
+function appendMessageInChat(c, message, dropdown, created_at) {
     $("#messages_container").append(`
 
     <div class="name-to-group message ${c} ">
@@ -445,7 +439,7 @@ function appendMessageInChat(c,message,dropdown,created_at ){
             <div class="message-content">
            ${message}
 
-           ${dropdown }
+           ${dropdown}
             </div>
         </div>
 
@@ -457,77 +451,71 @@ function appendMessageInChat(c,message,dropdown,created_at ){
     `);
 
 }
-function animateMessage(){
-    $('.form-ccontainer').animate({  scrollTop: $('.form-ccontainer').prop('scrollHeight')});
+function animateMessage() {
+    $('.form-ccontainer').animate({ scrollTop: $('.form-ccontainer').prop('scrollHeight') });
 }
-const addMessagesToGroup = function(msg ,c= '' ,isAnimate = true ,deleteAction=true){
+const addMessagesToGroup = function (msg, c = '', isAnimate = true, deleteAction = true) {
 
-    if (isAnimate)
-    {
+    if (isAnimate) {
         animateMessage();
     }
-   var  message=styleMessage(msg, '');
+    var message = styleMessage(msg, '');
 
-        if(c=='')//receiver message //to remove received check from received messages
-        {
-           message=message.replace('visibility:','visibility:hidden');
-           message= appendWithGroupMessageStyle(msg.user.img, msg.user.name, message);/////////
-        }
-        else
-        {
-            if(deleteAction==true)
-            {
-               var dropdown=appendDeleteDropDown('','','',msg.id,DeleteForAll);
-            }
-        }
-        appendMessageInChat(c,message,dropdown='',msg.created_at)
-}
-const addMessage = function(msg ,c= '' ,isAnimate = true ,deleteAction=true ,classDeletMessage=''){
-
-    if (isAnimate)
+    if (c == '')//receiver message //to remove received check from received messages
     {
+        message = message.replace('visibility:', 'visibility:hidden');
+        message = appendWithGroupMessageStyle(msg.user.img, msg.user.name, message);/////////
+    }
+    else {
+        if (deleteAction == true) {
+            var dropdown = appendDeleteDropDown('', '', '', msg.id, DeleteForAll);
+        }
+    }
+    appendMessageInChat(c, message, dropdown = '', msg.created_at)
+}
+const addMessage = function (msg, c = '', isAnimate = true, deleteAction = true, classDeletMessage = '') {
+
+    if (isAnimate) {
         animateMessage();
     }
-    var message =styleMessage(msg,classDeletMessage)
+    var message = styleMessage(msg, classDeletMessage)
 
-        if(c=='') //receiver message //to remove received check from received messages
-        {
-             message=message.replace('visibility:','visibility:hidden')
+    if (c == '') //receiver message //to remove received check from received messages
+    {
+        message = message.replace('visibility:', 'visibility:hidden')
+    }
+    else {
+        if (deleteAction == true) {
+            var dropdown = appendDeleteDropDown(msg.deleteAction, classDeletMessage, msg.random_class_to_add_message_id, msg.id, DeleteForAll);
         }
-        else
-        {
-            if(deleteAction==true)
-            {
-               var dropdown=appendDeleteDropDown(msg.deleteAction,classDeletMessage,msg.random_class_to_add_message_id,msg.id,DeleteForAll);
-            }
-        }
-        appendMessageInChat(c,message,dropdown='',msg.created_at);
+    }
+    appendMessageInChat(c, message, dropdown = '', msg.created_at);
 }
 
-var u=0;
+var u = 0;
 Object.defineProperty(this, 'response_conversation_id', {
     get: function () { return u; },
     set: function (set) {
         // response_conversation_id = v;
-        u=set
+        u = set
 
         $('#is-typing').addClass('d-none')
 
-      console.log('Value changed! New Conversation: ' + set);
+        console.log('Value changed! New Conversation: ' + set);
     }
 });
-var v= 1;
+var v = 1;
 Object.defineProperty(this, 'conversationPageId', {
     get: function () { return v; },
     set: function (set) {
-        v=set
-      console.log('Value changed! New Conversation Page: ' + set);
+        v = set
+        console.log('Value changed! New Conversation Page: ' + set);
     }
 });
 
 
 //when click on chat 
-$(`#chat-list`).on('click','[data-messages]',function(e){
+$(`#chat-list`).on('click', '[data-messages]', function (e) {
     e.preventDefault();
     // $(`#chat-list`)
     // $(`.text-reset`).css('background-color','var(--bs-gray-dark)')
@@ -535,40 +523,35 @@ $(`#chat-list`).on('click','[data-messages]',function(e){
     // $(this).css('background-color','green')
     $(this).addClass('shadowww')
     //to hide (Loader)
-    open_chat($(this).attr('data-messages')  ,$(this));
+    open_chat($(this).attr('data-messages'), $(this));
     // $(this).css('background-color','red')
 });
 
-const showMoreMessages=function(){
+const showMoreMessages = function () {
 
     conversationPageId++;
 
     addLoader();
     $(`#messages_container`).empty();
 
-    $.get(`/api/conversations/${response_conversation_id}/messages?page=${conversationPageId}` , function(response)
-    {
-        if(response.read_more!=1){
-            $(".show-all-messages").css('visibility','hidden');
+    $.get(`/api/conversations/${response_conversation_id}/messages?page=${conversationPageId}`, function (response) {
+        if (response.read_more != 1) {
+            $(".show-all-messages").css('visibility', 'hidden');
 
         }
 
-        if(response.conversation.type=='peer')
-        {
-            for(i in response.messeges)
-            {
+        if (response.conversation.type == 'peer') {
+            for (i in response.messeges) {
                 let msg = response.messeges[i];
-                let c  = msg.user_id ==userId ? 'message-out' :'';
-                addMessage(msg , c ,false)
+                let c = msg.user_id == userId ? 'message-out' : '';
+                addMessage(msg, c, false)
             }
         }
-        else
-        {
-            for(i in response.messeges)
-            {
-            let msg = response.messeges[i];
-            let c  = msg.user_id ==userId ? 'message-out' :'';
-            addMessagesToGroup(msg , c ,false,true)
+        else {
+            for (i in response.messeges) {
+                let msg = response.messeges[i];
+                let c = msg.user_id == userId ? 'message-out' : '';
+                addMessagesToGroup(msg, c, false, true)
             }
         }
         hideLoader();
@@ -578,11 +561,11 @@ const showMoreMessages=function(){
 
     })
 }
-var arrayInviteToGroup=[];
+var arrayInviteToGroup = [];
 
-function  open_chat_css_action(){
-    $('.group-description').css('visibility','hidden');
-    $('.group-description').css('display','none');
+function open_chat_css_action() {
+    $('.group-description').css('visibility', 'hidden');
+    $('.group-description').css('display', 'none');
     $(`#messages_container`).empty();
     $(".to-return-home").removeClass("welcome-text");
     $(".footer-input-chat").css("display", "block");
@@ -592,17 +575,16 @@ function  open_chat_css_action(){
     $(".to-return-home").addClass("welcome-text");
 }
 
-function getAndAppendGroupMembers(conversation_id){
+function getAndAppendGroupMembers(conversation_id) {
 
 
 
     fetch(`api/conversations/${conversation_id}/getParticipants`, {
         method: 'GET',
-        headers: {'Authorization':`Bearer ${tokenn}`}
-        }).then(res =>
-            {return res.json()}).then(data=> {
-                    for(let i in data)
-                    $('.group-description-members').append(`<li class="list-group-item">
+        headers: { 'Authorization': `Bearer ${tokenn}` }
+    }).then(res => { return res.json() }).then(data => {
+        for (let i in data)
+            $('.group-description-members').append(`<li class="list-group-item">
                     <div class="row align-items-center gx-5">
                         <div class="col-auto">
                             <a href="#" class="avatar avatar-online">
@@ -619,25 +601,23 @@ function getAndAppendGroupMembers(conversation_id){
                                 </div>
                     </div>
                 </li>`)
-                 });
+    });
 
     fetch(`api/users_not_in_group/${conversation_id}`,
-    {
-        method: 'GET',
-        headers: {
-           'Authorization':`Bearer ${tokenn}`
-       }
-    })
-        .then(res =>
-            {
-
-              return res.json()
+        {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${tokenn}`
             }
-                ).then(data=>
-                {
+        })
+        .then(res => {
 
-                    for(let i in data)
-                    $('.invite-friend-group').append(`
+            return res.json()
+        }
+        ).then(data => {
+
+            for (let i in data)
+                $('.invite-friend-group').append(`
                     <div class="card-body" style="background-color:var(--bs-body-bg)">
 
                         <div class="row align-items-center gx-5">
@@ -677,59 +657,54 @@ function getAndAppendGroupMembers(conversation_id){
                         </div>
                    <div>
                    `)
-    });
+        });
 
 }
 
-const open_chat=function(conversation_id, toLoader=''){
+const open_chat = function (conversation_id, toLoader = '') {
 
     open_chat_css_action();
     addLoader(toLoader)
-    conversationPageId=1 //to change active page of chat
+    conversationPageId = 1 //to change active page of chat
     $('input[name=conversation_id]').val(conversation_id)
-    $.get(`/api/conversations/${conversation_id}/messages?page=${conversationPageId}` , function(response)
-    {
-        response_conversation_id=conversation_id; //to change active chat id
+    $.get(`/api/conversations/${conversation_id}/messages?page=${conversationPageId}`, function (response) {
+        response_conversation_id = conversation_id; //to change active chat id
         $('#conversation-id-input-target').text(conversation_id)
 
         $('#chat-name').text(response.conversation.lable);
-        $('#chat-img').attr('src',response.conversation.img);
-        $('#chat-img').attr('data-action','zoom');
+        $('#chat-img').attr('src', response.conversation.img);
+        $('#chat-img').attr('data-action', 'zoom');
 
-        if(response.read_more)
-        $(".show-all-messages").css('visibility','visible');
+        if (response.read_more)
+            $(".show-all-messages").css('visibility', 'visible');
 
         else
-        $(".show-all-messages").css('visibility','hidden');
+            $(".show-all-messages").css('visibility', 'hidden');
 
 
-        if(response.conversation.type=='peer')
-        {
-            for(i in response.messeges)
-            {
+        if (response.conversation.type == 'peer') {
+            for (i in response.messeges) {
                 let msg = response.messeges[i];
-                let c  = msg.user_id ==userId ? 'message-out' :'';
-                addMessage(msg , c ,false)
+                let c = msg.user_id == userId ? 'message-out' : '';
+                addMessage(msg, c, false)
             }
         }
-        else
-        {
-            $('.group-description').css('visibility','visible');
-            $('.group-description').css('display','block');
+        else {
+            $('.group-description').css('visibility', 'visible');
+            $('.group-description').css('display', 'block');
             $('.group-description-name').empty();
             $('.group-description-name').append(response.conversation.lable);
             $('.group-description-description').empty();
             $('.group-description-description').append(response.conversation.description);
-            $('.group-description-img').attr('src',response.conversation.img)
+            $('.group-description-img').attr('src', response.conversation.img)
             $('.group-description-members').empty();
 
             getAndAppendGroupMembers(conversation_id)
 
-            for(i in response.messeges)
-            {
+            for (i in response.messeges) {
                 let msg = response.messeges[i];
-                let c  = msg.user_id ==userId ? 'message-out' :'';
-                addMessagesToGroup(msg , c ,false,true)
+                let c = msg.user_id == userId ? 'message-out' : '';
+                addMessagesToGroup(msg, c, false, true)
             }
 
         }
@@ -742,19 +717,19 @@ const open_chat=function(conversation_id, toLoader=''){
 
 //----------------------change_pass -----------------------------------
 
-$("#change_pass").on('submit',function(e){
+$("#change_pass").on('submit', function (e) {
     e.preventDefault();
-    $('.send-image-loader').css('display','block')
+    $('.send-image-loader').css('display', 'block')
 
-    $.post($(this).attr('action') ,$(this).serialize() , function(response){
+    $.post($(this).attr('action'), $(this).serialize(), function (response) {
         // console.log(response.status)
-        if(response.status==0){
+        if (response.status == 0) {
             document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
             $('#profile-current-password').val('')
             play(soundErorr)
 
         }
-        else{
+        else {
             document.documentElement.style.setProperty('--password', 'rgb(15, 161, 44)');
             $('#profile-current-password').val('')
             $('#profile-new-password').val('')
@@ -767,7 +742,7 @@ $("#change_pass").on('submit',function(e){
         $(`.toastPassword`).toast({ delay: 3000 });
         $('.toastPassword').toast('show');
         // alert(response.message)
-        $('.send-image-loader').css('display','none')
+        $('.send-image-loader').css('display', 'none')
     });
 
 });
@@ -775,51 +750,49 @@ $("#change_pass").on('submit',function(e){
 function showHidePassword() {
     var x = document.getElementById("profile-current-password");
     if (x.type === "password") {
-      x.type = "text";
+        x.type = "text";
     } else {
-      x.type = "password";
+        x.type = "password";
     }
     var x = document.getElementById("profile-new-password");
     if (x.type === "password") {
-      x.type = "text";
+        x.type = "text";
     } else {
-      x.type = "password";
+        x.type = "password";
     }
     var x = document.getElementById("profile-verify-password");
     if (x.type === "password") {
-      x.type = "text";
+        x.type = "text";
     } else {
-      x.type = "password";
+        x.type = "password";
     }
 }
 
 //-------------searchhh_chats----------------
-$("#searchhh_chats").on('submit',function(e){
+$("#searchhh_chats").on('submit', function (e) {
     e.preventDefault();
-    $.post($(this).attr('action') ,$(this).serialize() , function(response){
+    $.post($(this).attr('action'), $(this).serialize(), function (response) {
         console.log(response)
         // return;
         search_chats(response)
 
     });
-// $(this).find('#aso').val('');
+    // $(this).find('#aso').val('');
 });
 
-const search_chats = function(res){
+const search_chats = function (res) {
 
-$("#chat-list").replaceWith(`  <div id="chat-list"></div>`);
-for(let i = 0; i<
-    res.length ;i++)
-    {
-        if(res[i].lastMessageType!='text')
-            res[i].body='attachment '
-            else
-            {
-                var message_body_with_slice=res[i].body.slice(140, -129);
-                res[i].body=message_body_with_slice.slice(0,10);
-            }
+    $("#chat-list").replaceWith(`  <div id="chat-list"></div>`);
+    for (let i = 0; i <
+        res.length; i++) {
+        if (res[i].lastMessageType != 'text')
+            res[i].body = 'attachment '
+        else {
+            var message_body_with_slice = res[i].body.slice(140, -129);
+            res[i].body = message_body_with_slice.slice(0, 10);
+        }
 
-    $("#chat-list").append(`
+        $("#chat-list").append(`
     <div id="card_to_append_search" style=" chat-id=${res[i].conversation_id} margin-bottom: 13px   "
     onclick="{   open_chat( ${res[i].conversation_id} );     $('main').addClass('is-visible');   }"   >
 
@@ -858,59 +831,58 @@ for(let i = 0; i<
 
 </div>
 `)
-}
+    }
 }
 
 
-$(`#tab-chats`).on('click',function(e){
+$(`#tab-chats`).on('click', function (e) {
     $(`#chat-list`).empty();
     getConversations();
 
 });
 
-const getConversations=function(pauseLoder=true){
-    if(pauseLoder==true)
-    addLoader($(`#tab-chats`))
-    $.get('/api/conversations',function(response){
+const getConversations = function (pauseLoder = true) {
+    if (pauseLoder == true)
+        addLoader($(`#tab-chats`))
+    $.get('/api/conversations', function (response) {
 
-        for(i in response)
-        {
+        for (i in response) {
             // console.log(response[i].conversation.lable);
-        conversation(response[i])
+            conversation(response[i])
         }
-        if(pauseLoder==true)
-        hideLoader($(`#tab-chats`))
+        if (pauseLoder == true)
+            hideLoader($(`#tab-chats`))
     })
 }
 
-const conversation=function(chat){
+const conversation = function (chat) {
 
-var countUnReadMsg=chat.unRead_message
-// alert(countUnReadMsg)
-if(countUnReadMsg!=0){
-    counter=`
+    var countUnReadMsg = chat.unRead_message
+    // alert(countUnReadMsg)
+    if (countUnReadMsg != 0) {
+        counter = `
     <div class="div-count-msg badge badge-circle bg-primary ms-5 unread-message-count"  style="visibility:visible" onclick={
 
     }>
         <span class="unread-message-count" data-messages=${chat.id} >${countUnReadMsg}</span>
     </div>`;
-}
-else{
-    counter=`
+    }
+    else {
+        counter = `
     <div class="div-count-msg badge badge-circle bg-primary ms-5  unread-message-count  d-none" data-messages=${chat.id} onclick={
     }>
         <span class="unread-message-count" data-messages=${chat.id} style= >new message</span>
     </div>`;
 
-}
+    }
 
     var message_body_with_slice;
-    if(chat.last_massege.type=='text'){
-        aa=chat.last_massege.body.slice(143,-842);
-        message_body_with_slice=aa.slice(0,10);
+    if (chat.last_massege.type == 'text') {
+        aa = chat.last_massege.body.slice(143, -842);
+        message_body_with_slice = aa.slice(0, 10);
     }
     else
-    message_body_with_slice=chat.last_massege.type;
+        message_body_with_slice = chat.last_massege.type;
 
     $('#chat-list').append(`
 
@@ -961,7 +933,7 @@ else{
 }
 
 //-----------return home page-------------
-$(`.welcome-text`).on('click',function(e){
+$(`.welcome-text`).on('click', function (e) {
     $(".to-return-home").removeClass("welcome-text");
     $(".footer-input-chat").css("display", "none");
     $(".app-bar-name-and-img").css("display", "none");
@@ -972,30 +944,28 @@ $(`.welcome-text`).on('click',function(e){
 
 
 //--------------------------notifications--------------------------
-$(`#tab-notifications`).on('click',function(e){
+$(`#tab-notifications`).on('click', function (e) {
     $(`#cards-notification`).empty();
     getNotification($(`#tab-notifications`));
 
 });
 
-const getNotification=function(toLoader){
+const getNotification = function (toLoader) {
     addLoader(toLoader)
 
-    $.get('/api/getNotification',function(response){
+    $.get('/api/getNotification', function (response) {
 
-        for(i in response)
-        {
-        notification(response[i])
+        for (i in response) {
+            notification(response[i])
         }
-    hideLoader(toLoader)
+        hideLoader(toLoader)
 
     })
 }
-
-const notification=function(chat){
-    if(chat.type=='request')
-    {
-    $('#cards-notification').append(`
+console.log("tokenn:", tokenn)
+const notification = function (chat) {
+    if (chat.type == 'request') {
+        $('#cards-notification').append(`
 
     <div id="cardNoti"  class="card border-0 mb-5">
     <div class="card-body">
@@ -1065,10 +1035,10 @@ const notification=function(chat){
                     body:data,
                     headers: {
                        'Authorization':'Bearer ${tokenn}'
-                   }
-                    this.parentNode.parentNode.replaceWith('added succesfuly')
-
-                    }">
+        }});
+                   
+                   this.parentNode.parentNode.replaceWith('added succesfuly')
+                   }">
             </div>
         </div>
     </div>
@@ -1077,9 +1047,8 @@ const notification=function(chat){
     `)
     }
 
-    else
-    {
-    $('#cards-notification').append(`
+    else {
+        $('#cards-notification').append(`
      <div class="card-list mt-8">
 
 
@@ -1123,22 +1092,21 @@ const notification=function(chat){
 }
 
 //--------------------------getFriends------------------------
-styleHi=" text-decoration: none;border-radius: 9px;border:solid 1px #3e444f;cursor : pointer;padding:0px 15px ;text-align: center;color:#fff;background-color: #16191c ; display:block"
-$(`#tab-friends`).on('click',function(e){
+styleHi = " text-decoration: none;border-radius: 9px;border:solid 1px #3e444f;cursor : pointer;padding:0px 15px ;text-align: center;color:#fff;background-color: #16191c ; display:block"
+$(`#tab-friends`).on('click', function (e) {
     $(`#friends_in_searsh`).empty();
     getFriends($(`#tab-friends`));
 
 });
-const getFriends=function(toLoader){
+const getFriends = function (toLoader) {
     // $.get('/api/getUsers',function(response){
     addLoader(toLoader)
 
-        $.get('/api/friend',function(response){
-            // console.log(response)
-        for(i in response)
-        {
+    $.get('/api/friend', function (response) {
+        // console.log(response)
+        for (i in response) {
 
-         $('#friends_in_searsh').append(`
+            $('#friends_in_searsh').append(`
 
             <div id="friends_in_searsh" class="card-list">
 
@@ -1169,7 +1137,7 @@ const getFriends=function(toLoader){
 
                             // alert('message sended')
                             let data = new FormData
-                            data.append('_token','${tokenn}')
+                          
                             data.append(  'body', '${stringHi}' )
                             data.append('user_id',${response[i].id});
                             data.append('type','text');
@@ -1177,7 +1145,6 @@ const getFriends=function(toLoader){
                                 method: 'POST',
                                 body:data,
                                 headers: {
-                                   'Authorization':'Bearer ${tokenn}'
                                }
                                 }).then(res =>
                                     {
@@ -1218,37 +1185,36 @@ const getFriends=function(toLoader){
                  <br>
          `)
         }
-    $('#lodder').addClass('hide');
-    hideLoader(toLoader)
+        $('#lodder').addClass('hide');
+        hideLoader(toLoader)
 
         // user(response[i])
     });
 }
 
 //search friends
-$('#input-search-friends').on('keyup',function() {
+$('#input-search-friends').on('keyup', function () {
     $(`#friends_in_searsh`).empty();
     $("#search_friends").submit();
 });
 
-$("#search_friends").on('submit',function(e){
+$("#search_friends").on('submit', function (e) {
     e.preventDefault();
-    $.post($(this).attr('action') ,$(this).serialize() , function(response){
+    $.post($(this).attr('action'), $(this).serialize(), function (response) {
         search_friends(response)
     });
-// $('#input-search-friends').val('');
+    // $('#input-search-friends').val('');
 });
-const search_friends = function(res){
+const search_friends = function (res) {
 
     $("#friends_in_searsh").replaceWith(`
     <div id="friends_in_searsh" class="card-list">
     </div>
 `);
-for(let i = 0; i<
-    res.length ;i++)
-{
-  console.log(res)
-    $("#friends_in_searsh").append(`
+    for (let i = 0; i <
+        res.length; i++) {
+        console.log(res)
+        $("#friends_in_searsh").append(`
     <div id="friends_in_searsh" class="card-list">
 
     <div class="card border-0">
@@ -1328,23 +1294,22 @@ for(let i = 0; i<
 </div>
 <br>
 `)
-}
+    }
 }
 
 //---------------------get users----------------------
-$(`#tab-all-users`).on('click',function(e){
+$(`#tab-all-users`).on('click', function (e) {
     $(`#all_users_in_app`).empty();
     getUsers($(`#tab-all-users`));
 
 });
 
-const getUsers=function(toLoader){
+const getUsers = function (toLoader) {
     addLoader(toLoader)
 
-    $.get('/api/getUsers',function(response){
+    $.get('/api/getUsers', function (response) {
 
-        for(i in response)
-        {
+        for (i in response) {
 
             $('#all_users_in_app').append(`
 
@@ -1402,7 +1367,7 @@ const getUsers=function(toLoader){
          <br>
             `)
         }
-    hideLoader(toLoader)
+        hideLoader(toLoader)
 
 
     });
@@ -1410,32 +1375,31 @@ const getUsers=function(toLoader){
 
 
 //search users
-$("#form-search-users").on('submit',function(e){
+$("#form-search-users").on('submit', function (e) {
     e.preventDefault();
-    $.post($(this).attr('action') ,$(this).serialize() , function(response){
-    $(`#all_users_in_app`).empty();
+    $.post($(this).attr('action'), $(this).serialize(), function (response) {
+        $(`#all_users_in_app`).empty();
 
-    search_users(response)
+        search_users(response)
     });
-// $('#form-search-users').val('');
+    // $('#form-search-users').val('');
 });
 
 
-$('#input-search-users').on('keyup',function() {
+$('#input-search-users').on('keyup', function () {
     $(`#all_users_in_app`).empty();
     $("#form-search-users").submit();
 });
 
-const search_users = function(res){
+const search_users = function (res) {
 
     $("#all_users_in_app").replaceWith(`
     <div id="all_users_in_app" class="card-list">
     </div>
 `);
-for(let i = 0; i<
-    res.length ;i++)
-{
-    $("#all_users_in_app").append(`
+    for (let i = 0; i <
+        res.length; i++) {
+        $("#all_users_in_app").append(`
 
     <div id="all_users_in_app" class="card-list">
 
@@ -1489,26 +1453,25 @@ for(let i = 0; i<
 </div>
 <br>
 `)
-}
+    }
 }
 
 //---------------------create group---------------------//
-var arrayGroup= [];
+var arrayGroup = [];
 var imgGroup;
-var groupName='';
-var groupDescription='';
-var groupForm=$('#groupForm');
+var groupName = '';
+var groupDescription = '';
+var groupForm = $('#groupForm');
 
-$(`.tap-friend-group`).on('click',function(e){
+$(`.tap-friend-group`).on('click', function (e) {
     $(`.friends-create-group`).empty();
     getFriendsToCreateGroup();
 });
 
- const getFriendsToCreateGroup =function(){
-    $.get('/api/friend',function(response){
+const getFriendsToCreateGroup = function () {
+    $.get('/api/friend', function (response) {
 
-        for(i in response)
-        {
+        for (i in response) {
             $('.friends-create-group  ').append(`
             <div class="card-body" style="background-color:var(--bs-body-bg)">
 
@@ -1554,14 +1517,14 @@ $(`.tap-friend-group`).on('click',function(e){
     })
 }
 
-const ifArrayGroup=function(){
-    if (arrayGroup.length!=0){
+const ifArrayGroup = function () {
+    if (arrayGroup.length != 0) {
         $('.button-create-group').css("display", "");
         $('.if-arrayGroup').empty();
-        $('.if-arrayGroup').append('access is allowable ('+arrayGroup.length+' member)');
+        $('.if-arrayGroup').append('access is allowable (' + arrayGroup.length + ' member)');
         $(".if-arrayGroup").css("background-color", "#198754");
     }
-    else{
+    else {
         $('.button-create-group').css("display", "none");
         $('.if-arrayGroup').empty();
         $('.if-arrayGroup').append('you must add at least 1 member to your group');
@@ -1569,117 +1532,117 @@ const ifArrayGroup=function(){
     }
 }
 
-$('#upload-profile-photo').on('change',function(e){
+$('#upload-profile-photo').on('change', function (e) {
 
-    var x= URL.createObjectURL(e.target.files[0]);
-    var profileImage=e.target.files[0];
-    $('.profile-image').attr('src',x);
+    var x = URL.createObjectURL(e.target.files[0]);
+    var profileImage = e.target.files[0];
+    $('.profile-image').attr('src', x);
 
     let data = new FormData
-     data.append('img',profileImage);
- fetch('/api/updateImg', {
-     method: 'POST',
-     body:data,
-     headers: {
-        'Authorization':`Bearer ${tokenn}`
-    }
-     }).then(response=>{
+    data.append('img', profileImage);
+    fetch('/api/updateImg', {
+        method: 'POST',
+        body: data,
+        headers: {
+            'Authorization': `Bearer ${tokenn}`
+        }
+    }).then(response => {
 
         return response.json()
 
-         }).then(data=>{
-            console.log(data)
-            if(data.status==0){
+    }).then(data => {
+        console.log(data)
+        if (data.status == 0) {
             document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
             play(soundErorr)
 
-             }
-            else{
-                document.documentElement.style.setProperty('--password', 'rgb(15, 161, 44)');
-                 $('.update-profile-img').attr('src',x);
+        }
+        else {
+            document.documentElement.style.setProperty('--password', 'rgb(15, 161, 44)');
+            $('.update-profile-img').attr('src', x);
             play(soundDone)
 
 
-            }
-            $('.bodyToastPassword').empty()
-            $('.bodyToastPassword').append(data.message)
-            $(`.toastPassword`).toast({ delay: 3000 });
-            $('.toastPassword').toast('show');
-         })
+        }
+        $('.bodyToastPassword').empty()
+        $('.bodyToastPassword').append(data.message)
+        $(`.toastPassword`).toast({ delay: 3000 });
+        $('.toastPassword').toast('show');
+    })
 });
 
 
-$('.imgGroup').on('change',function(e){
+$('.imgGroup').on('change', function (e) {
 
-    var x= URL.createObjectURL(e.target.files[0]);
+    var x = URL.createObjectURL(e.target.files[0]);
 
-    imgGroup=e.target.files[0];
-    $('#blah').attr('src',x);
+    imgGroup = e.target.files[0];
+    $('#blah').attr('src', x);
     $('#blah').css("display", "");
     $('.span-icon-group').css("display", "none");
 
 
 });
 
-$('.groupName').on('keyup',function() {
-    groupName=$('.groupName').val()
+$('.groupName').on('keyup', function () {
+    groupName = $('.groupName').val()
 });
 
-$('.groupDescription').on('keyup',function() {
-    groupDescription=$('.groupDescription').val()
+$('.groupDescription').on('keyup', function () {
+    groupDescription = $('.groupDescription').val()
 });
 
-$("#groupForm").on('submit',function(e){
+$("#groupForm").on('submit', function (e) {
     e.preventDefault();
 
     let data = new FormData
-     data.append('img',imgGroup);
-     data.append('users_id',arrayGroup);
-     data.append('groupName',groupName);
-     data.append('groupDescription',groupDescription);
-     fetch('/api/createGroup', {
-     method: 'POST',
-     body:data,
-     headers: {
-        'Authorization':`Bearer ${tokenn}`
-    }
-     }).then(response=>{
+    data.append('img', imgGroup);
+    data.append('users_id', arrayGroup);
+    data.append('groupName', groupName);
+    data.append('groupDescription', groupDescription);
+    fetch('/api/createGroup', {
+        method: 'POST',
+        body: data,
+        headers: {
+            'Authorization': `Bearer ${tokenn}`
+        }
+    }).then(response => {
 
         return response.json()
 
-         }).then(data=>{
-            console.log(data)
-            if(data.status==0){
+    }).then(data => {
+        console.log(data)
+        if (data.status == 0) {
             document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
             play(soundErorr)
 
 
-             }
-            else{
-                arrayGroup=[];
-                imgGroup=''
-                groupDescription=''
-                imgGroup=null
-                $('.groupName').val('')
-                $('.groupDescription').val('')
-                $('.imgGroup').val('')
-                $(".imgGroup").val(null);
-                $('#blah').attr('src','');
-                $('.cheack-group').prop('checked', false);
-                $('.button-create-group').css("display", "none");
-                $('.if-arrayGroup').empty();
-                $('.if-arrayGroup').append(noSelectedMemberYet);
-                $(".if-arrayGroup").css("background-color", "#D32535");
-                document.documentElement.style.setProperty('--password', 'rgb(15, 161, 44)');
+        }
+        else {
+            arrayGroup = [];
+            imgGroup = ''
+            groupDescription = ''
+            imgGroup = null
+            $('.groupName').val('')
+            $('.groupDescription').val('')
+            $('.imgGroup').val('')
+            $(".imgGroup").val(null);
+            $('#blah').attr('src', '');
+            $('.cheack-group').prop('checked', false);
+            $('.button-create-group').css("display", "none");
+            $('.if-arrayGroup').empty();
+            $('.if-arrayGroup').append(noSelectedMemberYet);
+            $(".if-arrayGroup").css("background-color", "#D32535");
+            document.documentElement.style.setProperty('--password', 'rgb(15, 161, 44)');
 
             play(soundDone)
 
-            }
-            $('.bodyToastPassword').empty()
-            $('.bodyToastPassword').append(data.message)
-            $(`.toastPassword`).toast({ delay: 3000 });
-            $('.toastPassword').toast('show');
-         })
+        }
+        $('.bodyToastPassword').empty()
+        $('.bodyToastPassword').append(data.message)
+        $(`.toastPassword`).toast({ delay: 3000 });
+        $('.toastPassword').toast('show');
+    })
 
 
 });
@@ -1690,96 +1653,93 @@ $("#groupForm").on('submit',function(e){
 
 
 //------say_hi-----
-$(".say_hi").on('submit',function(e){
+$(".say_hi").on('submit', function (e) {
     e.preventDefault();
     // let msg=$(this).find('textarea').val()
-    $.post($(this).attr('action') ,$(this).serialize() , function(response){
+    $.post($(this).attr('action'), $(this).serialize(), function (response) {
     });
     alert('Welcome message arrived , go to chat to complete conversation')
 
 });
 
 
-var pop =false
-$(document).mouseup(function(e)
-{
-    if(pop==true){
+var pop = false
+$(document).mouseup(function (e) {
+    if (pop == true) {
 
-var container = $(".popup");
+        var container = $(".popup");
 
-    // if the target of the click isn't the container nor a descendant of the container
-    if (!container.is(e.target) && container.has(e.target).length === 0)
-    {
-        console.log('in edit')
-        // container.hide();
-        // $('.exit').click()
-        $('.layout').removeClass('to-edit-name');
-        // $('.modal').removeClass('to-edit-name');
-        $('.popup').addClass('d-none');
-        $('.modal').removeClass('d-none');
-        pop =false
+        // if the target of the click isn't the container nor a descendant of the container
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            console.log('in edit')
+            // container.hide();
+            // $('.exit').click()
+            $('.layout').removeClass('to-edit-name');
+            // $('.modal').removeClass('to-edit-name');
+            $('.popup').addClass('d-none');
+            $('.modal').removeClass('d-none');
+            pop = false
+        }
+        else
+            console.log('out')
+
     }
-else
-console.log('out')
-
-}
 });
 
 
-function popupFun(){
+function popupFun() {
 
     $('.layout').removeClass('to-edit-name');
     $('.modal').removeClass('to-edit-name');
     $('.modal').removeClass('d-none');
     // $('.popup').addClass('d-none');
 
-    $(".popup").animate({'top':'-1000px'}, "fast");
+    $(".popup").animate({ 'top': '-1000px' }, "fast");
     setTimeout(() => {
-    $(".popup").animate({'top':'45%'}, "fast");
-    $('.popup').addClass('d-none');
+        $(".popup").animate({ 'top': '45%' }, "fast");
+        $('.popup').addClass('d-none');
     }, 100);
 
 
 }
-function fetchUpdateName(){
-    $('.send-image-loader').css('display','block')
+function fetchUpdateName() {
+    $('.send-image-loader').css('display', 'block')
 
     $('.layout').removeClass('to-edit-name');
     $('.modal').removeClass('to-edit-name');
     $('.modal').removeClass('d-none');
     // $('.popup').addClass('d-none');
 
-    $(".popup").animate({'left':'15px'}, "fast");
+    $(".popup").animate({ 'left': '15px' }, "fast");
     setTimeout(() => {
-    $(".popup").animate({'left':'50%'}, "fast");
-    $('.popup').addClass('d-none');
+        $(".popup").animate({ 'left': '50%' }, "fast");
+        $('.popup').addClass('d-none');
     }, 100);
 
     $('.bodyToastPassword').empty()
     var data = new FormData;
-    data.append('new_name',$('.new_name').val())
-    data.append('new_img',$('.new_img').val())
+    data.append('new_name', $('.new_name').val())
+    data.append('new_img', $('.new_img').val())
     fetch('api/updateName'
-    ,{
-        method:'post',body:data,
-        headers: {
-           'Authorization':`Bearer ${tokenn}`
-        }
-})
-    .then(res =>{
-                  if (res.status>=200 && res.status <300)
-                  return res.json()
-                  else
-                  throw new Error();
-                })
-                .then(data=>
-                        {
-                         $('.bodyToastPassword').append(data.message)
-                         $(`.toastPassword`).toast({ delay: 3000 });
-                         $('.toastPassword').toast('show');
-                         play(soundDone)
-                          $('.send-image-loader').css('display','none')
-                        })
+        , {
+            method: 'post', body: data,
+            headers: {
+                'Authorization': `Bearer ${tokenn}`
+            }
+        })
+        .then(res => {
+            if (res.status >= 200 && res.status < 300)
+                return res.json()
+            else
+                throw new Error();
+        })
+        .then(data => {
+            $('.bodyToastPassword').append(data.message)
+            $(`.toastPassword`).toast({ delay: 3000 });
+            $('.toastPassword').toast('show');
+            play(soundDone)
+            $('.send-image-loader').css('display', 'none')
+        })
     $('.username').empty();
     $('.username').append($('.new_name').val());
     $('.modal').removeClass('d-none');
@@ -1789,48 +1749,48 @@ function fetchUpdateName(){
 
 }
 
-function play(sound=tele) {
+function play(sound = tele) {
 
     var url = sound;
-          window.AudioContext = window.AudioContext||window.webkitAudioContext; //fix up prefixing
-          var context = new AudioContext(); //context
-          var source = context.createBufferSource(); //source node
-          source.connect(context.destination); //connect source to speakers so we can hear it
-          var request = new XMLHttpRequest();
-          request.open('GET', url, true);
-          request.responseType = 'arraybuffer'; //the  response is an array of bits
-          request.onload = function() {
-              context.decodeAudioData(request.response, function(response) {
-                  source.buffer = response;
-                  source.start(0); //play audio immediately
-                  source.loop = false;
-              }, function () { console.error('The request failed.'); } );
-          }
-          request.send();
+    window.AudioContext = window.AudioContext || window.webkitAudioContext; //fix up prefixing
+    var context = new AudioContext(); //context
+    var source = context.createBufferSource(); //source node
+    source.connect(context.destination); //connect source to speakers so we can hear it
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.responseType = 'arraybuffer'; //the  response is an array of bits
+    request.onload = function () {
+        context.decodeAudioData(request.response, function (response) {
+            source.buffer = response;
+            source.start(0); //play audio immediately
+            source.loop = false;
+        }, function () { console.error('The request failed.'); });
+    }
+    request.send();
 }
 function countChar(val) {
-    if(envTyping==true || envTyping==1 ){
-    var length = val.value.length;
-    // console.log(length);
-    if( length > 0 )
-    Typing(true);
+    if (envTyping == true || envTyping == 1) {
+        var length = val.value.length;
+        // console.log(length);
+        if (length > 0)
+            Typing(true);
 
-     else
-    Typing(false);
-  }
+        else
+            Typing(false);
+    }
 }
 const Typing = (boolean) => {
 
 
-    if(envTyping==true || envTyping==1 ){
-        setTimeout( () => {
-          console.log('typing'+boolean);
-          let channel = Echo.private('chat')
+    if (envTyping == true || envTyping == 1) {
+        setTimeout(() => {
+            console.log('typing' + boolean);
+            let channel = Echo.private('chat')
 
             channel.whisper('typing', {
-              user_id: userId,
-              conversation_id:response_conversation_id,
-              typing: boolean
+                user_id: userId,
+                conversation_id: response_conversation_id,
+                typing: boolean
             })
         }, 300)
     }

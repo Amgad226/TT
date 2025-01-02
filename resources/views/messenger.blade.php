@@ -876,7 +876,7 @@
                              {{__('Welcome in TT')}}
 
 
-                             {{-- <button onclick="cheakTokennnn()">checkToken</button> --}}
+                             <button onclick="cheakTokennnn()">checkToken</button>
 
                         </div>
                         <script>
@@ -1403,7 +1403,7 @@
             let tokenn = "{{Request::cookie('token')}}"
             // alert(tokenn)
             let userId=                {{    Auth::id();            }} ;
-            let userimg=              "{{    Auth::user()->img;     }}";
+            let userimg=              "{{    Auth::user()->img;     }}"; 
             let username=             "{{    Auth::user()->name     }}";
             let stringHi=             "{{    __('Hi')               }}";
             let stringAdd=            "{{    __('Add')              }}";

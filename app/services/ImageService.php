@@ -16,7 +16,7 @@ class ImageService {
 
         if($lessQuality){
             // $image_resize->resize(1280, 720, function ($constraint) {$constraint->aspectRatio(); });
-            $image_resize->resize(600, 300, function ($constraint) {$constraint->aspectRatio(); });
+            // $image_resize->resize(600, 300, function ($constraint) {$constraint->aspectRatio(); });
         }
 
         $uniqid=uniqid();

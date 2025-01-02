@@ -37,7 +37,7 @@ class ConvarsationController extends Controller
         $groupName=($request->groupName!=null)?$request->groupName:'group';
 
         if ($request->hasFile('img'))
-            $imgToDB=ImageService::store($request->img ,$groupName,'/img/group');
+            $imgToDB="";
         
 
         $group=Conversation::create([
