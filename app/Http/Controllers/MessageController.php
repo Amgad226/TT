@@ -61,7 +61,7 @@ class MessageController extends Controller
        
             $this->sendToPusher($message);
 
-            $this->sendToFirebase($conversation->id, $conversation->lable, $request->type);
+            $this->sendToFirebase($conversation->id,  $request->type,$conversation->lable,);
            
             return response([
             'obj_msg' => $message,
@@ -80,7 +80,7 @@ class MessageController extends Controller
         return ;
 
     }
-    private function sendToFirebase($conversation_id,$title='new message',$body):void{
+    private function sendToFirebase($conversation_id,$body,$title='new message'):void{
         $participants=Participant::where('conversation_id',$conversation_id)->where('user_id','<>',Auth::id())->get('user_id');
         // $a=[];
         foreach($participants as $participant )
