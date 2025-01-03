@@ -26,7 +26,110 @@
 // edit profile                      {done}
 // delete chat
 // voice chat
+const apiUrl = "http://127.0.0.1:8000"
+const getToken = () => {
+    return tokenn
+}
+// NOTE: Some requests are being sent without using apiRequest. These must be refactored.
+const apiRequest = {
+    get: function (url, params = {}, token) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const queryString = new URLSearchParams(params).toString();
+                const response = await fetch(`${url}?${queryString}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`, // Pass Bearer token
+                    }
+                });
 
+                if (!response.ok) {
+                    throw await response.json();
+                }
+
+                const data = await response.json();
+                resolve(data);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    },
+    delete: function (url, params = {}, token) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const queryString = new URLSearchParams(params).toString();
+                const response = await fetch(`${url}?${queryString}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`, // Pass Bearer token
+                    }
+                });
+
+                if (!response.ok) {
+                    throw await response.json();
+                }
+
+                const data = await response.json();
+                resolve(data);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    },
+
+    post: function (url, data = {}, token) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`, // Pass Bearer token
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    throw await response.json();
+                }
+
+                const result = await response.json();
+                resolve(result);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    },
+    put: function (url, data = {}, token) {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`, // Pass Bearer token
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    throw await response.json();
+                }
+
+                const result = await response.json();
+                resolve(result);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    },
+};
 
 // ----------------------------------------
 function makeid(length) {
@@ -83,17 +186,13 @@ function inputImageMessage() {
         }
 
         let attachment = fileElm.files[0];
-        const formData = new FormData();
 
-        formData.append('type', 'img');
-        formData.append('img', attachment);
-        formData.append('conversation_id', response_conversation_id);
-        fetch('api/messages', {
-            method: 'Post',
-            body: formData,
-            headers: { 'Authorization': `Bearer ${tokenn}` }
+        const data = {
+            'type': 'img',
+            'img': attachment,
+            'conversation_id': response_conversation_id
         }
-        ).then((response) => response.json()
+        apiRequest.post('api/messages', data, getToken(),
         ).then((result) => {
             if (result.status == 0) {
                 alert(result.message);
@@ -145,18 +244,13 @@ function selectFile() {
             return;
         }
         let attachment = fileElm.files[0];
-        const formData = new FormData();
-
-        formData.append('type', 'attachment');
-        formData.append('attachment', attachment);
-        formData.append('conversation_id', response_conversation_id);
-        fetch('api/messages', {
-            method: 'Post',
-            body: formData
-        })
-            .then((response) => response.json())
+        const data = {
+            'type': 'attachment',
+            'attachment': attachment,
+            'conversation_id': response_conversation_id
+        }
+        apiRequest.post('api/messages', data, getToken())
             .then((result) => {
-                console.log(result);
                 if (result.status == 0) {
                     alert(result.message);
                     return;
@@ -246,12 +340,7 @@ function deleteMessge(element) {
     // return;
 
 
-    fetch(`/api/messages/${id}`, {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${tokenn}`
-        }
-    })
+    apiRequest.post(`/api/messages/${id}`, {}, getToken())
     a.replaceWith(`
      <div class="message-content">
 
@@ -296,6 +385,14 @@ function addLoader(thiss = '') {
 }
 //----------send message manually----------
 
+const extractBodyFromQueryParam = (str) => {
+    const params = new URLSearchParams(str);
+    const dataObject = {};
+    params.forEach((value, key) => {
+        dataObject[key] = value;
+    });
+    return dataObject
+}
 $("#targetttt").on('submit', function (e) {
 
     e.preventDefault();
@@ -312,14 +409,11 @@ $("#targetttt").on('submit', function (e) {
     var random_class_to_add_message_id = makeid(5);
     var deleteAction = makeid(5);
 
-    $.post($(this).attr('action'), $(this).serialize(), function (response) {
-        // alert(deleteAction +'   '+random_class_to_add_message_id)
-        $(`.${deleteAction}`).removeClass("visibilty-hidden");
-        $(`.${random_class_to_add_message_id}`).attr('message-id', response.obj_msg.id);
 
-    }
+    const dataObject = extractBodyFromQueryParam($(this).serialize());
+    console.log("$$$", dataObject)
+    apiRequest.post($(this).attr("action"), dataObject, getToken())
 
-    );
     var user = { 'img': `${userimg}`, "name": `${username}` }
 
     var msgg = {
@@ -534,33 +628,46 @@ const showMoreMessages = function () {
     addLoader();
     $(`#messages_container`).empty();
 
-    $.get(`/api/conversations/${response_conversation_id}/messages?page=${conversationPageId}`, function (response) {
-        if (response.read_more != 1) {
-            $(".show-all-messages").css('visibility', 'hidden');
+    apiRequest.get(`api/conversations/${response_conversation_id}/messages`, {
+        page: conversationPageId
+    }, getToken()
 
-        }
-
-        if (response.conversation.type == 'peer') {
-            for (i in response.messeges) {
-                let msg = response.messeges[i];
-                let c = msg.user_id == userId ? 'message-out' : '';
-                addMessage(msg, c, false)
+    )
+        .then(response => {
+            if (response.read_more != 1) {
+                document.querySelector(".show-all-messages").style.visibility = 'hidden';
             }
-        }
-        else {
-            for (i in response.messeges) {
-                let msg = response.messeges[i];
-                let c = msg.user_id == userId ? 'message-out' : '';
-                addMessagesToGroup(msg, c, false, true)
+
+            if (response.conversation.type === 'peer') {
+                for (let msg of response.messeges) {
+                    let c = msg.user_id === userId ? 'message-out' : '';
+                    addMessage(msg, c, false);
+                }
+            } else {
+                for (let msg of response.messeges) {
+                    let c = msg.user_id === userId ? 'message-out' : '';
+                    addMessagesToGroup(msg, c, false, true);
+                }
             }
-        }
-        hideLoader();
-        // animateMessage()
 
-        // $('.form-ccontainer').scrollTop( - ($('.form-ccontainer').prop('scrollHeight')) )
 
-    })
+            // animateMessage();
+            // document.querySelector('.form-ccontainer').scrollTop = -document.querySelector('.form-ccontainer').scrollHeight;
+        })
+        .catch(error => {
+
+            console.error('There was an error with the fetch operation:', error);
+        }).finally(() => {
+        
+            hideLoader();
+            // animateMessage()
+
+            // $('.form-ccontainer').scrollTop( - ($('.form-ccontainer').prop('scrollHeight')) )
+
+        })
+
 }
+
 var arrayInviteToGroup = [];
 
 function open_chat_css_action() {
@@ -579,10 +686,7 @@ function getAndAppendGroupMembers(conversation_id) {
 
 
 
-    fetch(`api/conversations/${conversation_id}/getParticipants`, {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${tokenn}` }
-    }).then(res => { return res.json() }).then(data => {
+    apiRequest.get(`api/conversations/${conversation_id}/getParticipants`, {}, getToken()).then(data => {
         for (let i in data)
             $('.group-description-members').append(`<li class="list-group-item">
                     <div class="row align-items-center gx-5">
@@ -603,21 +707,11 @@ function getAndAppendGroupMembers(conversation_id) {
                 </li>`)
     });
 
-    fetch(`api/users_not_in_group/${conversation_id}`,
-        {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${tokenn}`
-            }
-        })
-        .then(res => {
+    apiRequest.get(`api/users_not_in_group/${conversation_id}`, {}, getToken()
+    ).then(data => {
 
-            return res.json()
-        }
-        ).then(data => {
-
-            for (let i in data)
-                $('.invite-friend-group').append(`
+        for (let i in data)
+            $('.invite-friend-group').append(`
                     <div class="card-body" style="background-color:var(--bs-body-bg)">
 
                         <div class="row align-items-center gx-5">
@@ -657,7 +751,7 @@ function getAndAppendGroupMembers(conversation_id) {
                         </div>
                    <div>
                    `)
-        });
+    });
 
 }
 
@@ -667,7 +761,9 @@ const open_chat = function (conversation_id, toLoader = '') {
     addLoader(toLoader)
     conversationPageId = 1 //to change active page of chat
     $('input[name=conversation_id]').val(conversation_id)
-    $.get(`/api/conversations/${conversation_id}/messages?page=${conversationPageId}`, function (response) {
+    apiRequest.get(`/api/conversations/${conversation_id}/messages`, {
+        page: conversationPageId
+    }, getToken()).then(response => {
         response_conversation_id = conversation_id; //to change active chat id
         $('#conversation-id-input-target').text(conversation_id)
 
@@ -708,8 +804,10 @@ const open_chat = function (conversation_id, toLoader = '') {
             }
 
         }
-        hideLoader(toLoader)
         $('.form-ccontainer').scrollTop($('.form-ccontainer').prop('scrollHeight'))
+
+    }).finally(() => {
+        hideLoader(toLoader)
 
     })
 }
@@ -721,8 +819,10 @@ $("#change_pass").on('submit', function (e) {
     e.preventDefault();
     $('.send-image-loader').css('display', 'block')
 
-    $.post($(this).attr('action'), $(this).serialize(), function (response) {
-        // console.log(response.status)
+    const dataObject = extractBodyFromQueryParam($(this).serialize());
+
+    apiRequest.post($(this).attr("action"), dataObject, getToken()).then(response => {
+
         if (response.status == 0) {
             document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
             $('#profile-current-password').val('')
@@ -742,7 +842,9 @@ $("#change_pass").on('submit', function (e) {
         $(`.toastPassword`).toast({ delay: 3000 });
         $('.toastPassword').toast('show');
         // alert(response.message)
+    }).finally(() => {
         $('.send-image-loader').css('display', 'none')
+
     });
 
 });
@@ -771,11 +873,10 @@ function showHidePassword() {
 //-------------searchhh_chats----------------
 $("#searchhh_chats").on('submit', function (e) {
     e.preventDefault();
-    $.post($(this).attr('action'), $(this).serialize(), function (response) {
-        console.log(response)
-        // return;
-        search_chats(response)
+    const dataObject = extractBodyFromQueryParam($(this).serialize());
 
+    apiRequest.post($(this).attr("action"), dataObject, getToken()).then(response => {
+        search_chats(response)
     });
     // $(this).find('#aso').val('');
 });
@@ -841,19 +942,29 @@ $(`#tab-chats`).on('click', function (e) {
 
 });
 
-const getConversations = function (pauseLoder = true) {
-    if (pauseLoder == true)
-        addLoader($(`#tab-chats`))
-    $.get('/api/conversations', function (response) {
+const getConversations = function (pauseLoader = true) {
+    if (pauseLoader) {
+        // addLoader(document.querySelector(`#tab-chats`));
+    }
+    apiRequest.get(`api/conversations`, {}, getToken())
 
-        for (i in response) {
-            // console.log(response[i].conversation.lable);
-            conversation(response[i])
-        }
-        if (pauseLoder == true)
-            hideLoader($(`#tab-chats`))
-    })
-}
+        .then(data => {
+            for (let item of data) {
+                conversation(item);
+            }
+
+        })
+        .catch(error => {
+            console.error('There was an error with the fetch operation:', error);
+
+        }).finally(() => {
+            if (pauseLoader) {
+                hideLoader(document.querySelector(`#tab-chats`));
+            }
+
+        });
+};
+
 
 const conversation = function (chat) {
 
@@ -953,18 +1064,41 @@ $(`#tab-notifications`).on('click', function (e) {
 const getNotification = function (toLoader) {
     addLoader(toLoader)
 
-    $.get('/api/getNotification', function (response) {
+    apiRequest.get('/api/getNotification', {}, getToken())
+        .then(data => {
+            for (let item of data) {
+                notification(item);
+            }
+        })
+        .catch(error => {
+            console.error('There was an error with the fetch operation:', error);
+        }).finally(() => {
+            hideLoader(toLoader);
 
-        for (i in response) {
-            notification(response[i])
-        }
-        hideLoader(toLoader)
-
-    })
+        });
 }
-console.log("tokenn:", tokenn)
+function notificationHideAction(refernce, tag) {
+    {
+        apiRequest.delete(`/api/friend/${refernce}`, {
+        }, getToken())
+
+        tag.parentNode.parentNode.replaceWith('deleted succesfuly')
+
+
+    }
+}
+function notificationConfirmAction(refernce, tag) {
+    {
+
+
+        apiRequest.put(`/api/friend/${refernce}`, data, getToken());
+
+        tag.parentNode.parentNode.replaceWith('added succesfuly')
+    }
+}
 const notification = function (chat) {
     if (chat.type == 'request') {
+
         $('#cards-notification').append(`
 
     <div id="cardNoti"  class="card border-0 mb-5">
@@ -1006,39 +1140,11 @@ const notification = function (chat) {
         <div class="row gx-4">
             <div id = 'button-notification'class="col button-notification">
                 <input href="#2" type="submit" value="${stringHide}" class="btn btn-sm btn-soft-primary w-100"
-                onclick="{
-                    let data = new FormData
-                    data.append('_token','${tokenn}')
-
-                    fetch('/api/friend/${chat.refernce}', {
-                    method: 'DELETE',
-                    body:data,
-                    headers: {
-                       'Authorization':'Bearer ${tokenn}'
-                   }
-                    })
-
-                // this.parentNode.parentNode.style.display = 'none';
-                this.parentNode.parentNode.replaceWith('deleted succesfuly')
-
-
-                }">
+                onclick="notificationHideAction(${chat.refernce},this)">
             </div>
             <div id = 'button-notification' class="col button-notification">
-                <input href="#" value="${stringConfirm}" class="btn btn-sm btn-primary w-100" onclick="{
-                    let data = new FormData
-                    data.append('_token','${tokenn}')
-
-
-                    fetch('/api/friend/${chat.refernce}', {
-                    method: 'PUT',
-                    body:data,
-                    headers: {
-                       'Authorization':'Bearer ${tokenn}'
-        }});
-                   
-                   this.parentNode.parentNode.replaceWith('added succesfuly')
-                   }">
+                <input href="#" value="${stringConfirm}" class="btn btn-sm btn-primary w-100" onclick="
+                notificationConfirmAction(${chat.refernce},this)">
             </div>
         </div>
     </div>
@@ -1098,99 +1204,102 @@ $(`#tab-friends`).on('click', function (e) {
     getFriends($(`#tab-friends`));
 
 });
+const SendHiMessage = (userId, stringHi) => {
+    if (!userId || !stringHi) {
+        console.error('Invalid parameters: userId and stringHi are required.');
+        return;
+    }
+    // Show loading indicator
+    $('.send-image-loader').css('display', 'block');
+
+    // Prepare FormData
+    // const data = new FormData();
+    const data = {
+        'body': stringHi,
+        'user_id': userId,
+        'type': 'text'
+    }
+
+
+    apiRequest.post(`/api/messages`, data, getToken())
+        .then(data => {
+            if (data && data.obj_msg && data.obj_msg.conversation) {
+                // Update toast content
+                $('.hi-headarToast').text(`You sent hi to ${data.obj_msg.conversation.label}`);
+                $('.hi-bodyToast').text('Click here to complete chat.');
+                $('.hi-goToChat').attr('chat-id', data.obj_msg.conversation_id);
+
+                // Show toast notification
+                $('.toast-send-hi').toast({ delay: 3000, animation: true }).toast('show');
+
+                // Play notification sound
+                play(soundDone);
+            } else {
+                console.error('Unexpected response format:', data);
+            }
+        })
+        .catch(err => {
+            console.error('Failed to send hi message:', err);
+        })
+        .finally(() => {
+            // Hide loading indicator
+            $('.send-image-loader').css('display', 'none');
+        });
+};
+
 const getFriends = function (toLoader) {
-    // $.get('/api/getUsers',function(response){
-    addLoader(toLoader)
+    addLoader(toLoader);
 
-    $.get('/api/friend', function (response) {
-        // console.log(response)
-        for (i in response) {
+    const token = tokenn;
 
-            $('#friends_in_searsh').append(`
-
+    apiRequest.get(`${apiUrl}/api/friend`, {}, getToken())
+        .then(response => {
+            for (let i in response) {
+                $('#friends_in_searsh').append(`
+            <div id="friends_in_searsh" class="card-list">
             <div id="friends_in_searsh" class="card-list">
 
-            <div class="card border-0">
-                <div id="users-body" class="card-body">
+                <div id="friends_in_searsh" class="card-list">
 
+                    <div class="card border-0">
+                        <div id="users-body" class="card-body">
                     <div class="row align-items-center gx-5">
                         <div class="col-auto">
                             <a href="#" class="avatar avatar-online">
 
-                                <img class="avatar-img" src="${response[i].img}" alt="">
+                                        <img class="avatar-img" src="${response[i].img}" alt="">
 
 
-                            </a>
-                        </div>
-
-                        <div class="col">
-                            <h5>
-                              <a href="#">${response[i].name}</a></h5>
-                             <!-- <p>${response[i].last_seen_at}</p> -->
-                        </div>
-
-                        <div  class="col-auto">
-                        <input type="submit" value="${stringHi}" user-id=${response[i].id}  style="${styleHi}"
-                        onclick="
-                        {
-                         $('.send-image-loader').css('display','block')
-
-                            // alert('message sended')
-                            let data = new FormData
-                          
-                            data.append(  'body', '${stringHi}' )
-                            data.append('user_id',${response[i].id});
-                            data.append('type','text');
-                            fetch('/api/messages', {
-                                method: 'POST',
-                                body:data,
-                                headers: {
-                               }
-                                }).then(res =>
+                                    </a>
+                                </div>
+                                <div class="col">
+                                    <h5>
+                                      <a href="#">${response[i].name}</a>
+                                    </h5>
+                                </div>
+                                <div class="col-auto">
+                                    <input type="submit" value="${stringHi}" user-id="${response[i].id}" style="${styleHi}"
+                                    onclick="
                                     {
-                                        if (res.status>=200 && res.status <300)
-                                        return res.json()
-                                        else
-                                        throw new Error();
-                                    }
-                                ).then(data=>{
-                                    console.log(data);
-                            $('.hi-headarToast').empty();
-                            $('.hi-bodyToast').empty();
-
-                            $('.hi-goToChat').attr('chat-id',data.obj_msg.conversation_id)
-                            $('.hi-headarToast').append('you send hi to '+data.obj_msg.conversation.lable);
-                            $('.hi-bodyToast').append('click here to complete chat ');
-                            $('.toast-send-hi').toast({ delay: 3000 });
-                            $('.toast-send-hi').toast({animation: true});
-                            $('.toast-send-hi').toast('show');
-                            play(soundDone)
-                            $('.send-image-loader').css('display','none')
-
-
-                                })
-                         }" >
-
-
-
+                                    SendHiMessage(${response[i].id},'asdas');
+                                       
+                                    }"
+                                    >
+                                </div>
+                            </div>
                         </div>
-
                     </div>
-
+                    <br>
                 </div>
-            </div>
-            <!-- Card -->
-
-                 </div>
-                 <br>
-         `)
-        }
-        $('#lodder').addClass('hide');
-        hideLoader(toLoader)
-
-        // user(response[i])
-    });
-}
+            `);
+            }
+            $('#lodder').addClass('hide');
+            hideLoader(toLoader);
+        })
+        .catch(err => {
+            console.error('Error fetching friends:', err);
+        });
+};
 
 //search friends
 $('#input-search-friends').on('keyup', function () {
@@ -1200,7 +1309,9 @@ $('#input-search-friends').on('keyup', function () {
 
 $("#search_friends").on('submit', function (e) {
     e.preventDefault();
-    $.post($(this).attr('action'), $(this).serialize(), function (response) {
+    const dataObject = extractBodyFromQueryParam($(this).serialize());
+
+    apiRequest.post($(this).attr("action"), dataObject, getToken()).then(response => {
         search_friends(response)
     });
     // $('#input-search-friends').val('');
@@ -1253,7 +1364,7 @@ const search_friends = function (res) {
                             method: "POST",
                             body:data,
                             headers: {
-                               'Authorization':'Bearer ${tokenn}'
+                               'Authorization':'Bearer ${getToken()}'
                            }
                         }).then(res =>
                             {
@@ -1306,8 +1417,7 @@ $(`#tab-all-users`).on('click', function (e) {
 
 const getUsers = function (toLoader) {
     addLoader(toLoader)
-
-    $.get('/api/getUsers', function (response) {
+    apiRequest.get(`/api/getUsers`, {}, getToken()).then(response => {
 
         for (i in response) {
 
@@ -1367,8 +1477,10 @@ const getUsers = function (toLoader) {
          <br>
             `)
         }
-        hideLoader(toLoader)
 
+
+    }).finally(() => {
+        hideLoader(toLoader)
 
     });
 }
@@ -1377,7 +1489,9 @@ const getUsers = function (toLoader) {
 //search users
 $("#form-search-users").on('submit', function (e) {
     e.preventDefault();
-    $.post($(this).attr('action'), $(this).serialize(), function (response) {
+    const dataObject = extractBodyFromQueryParam($(this).serialize());
+
+    apiRequest.post($(this).attr("action"), dataObject, getToken()).then(response => {
         $(`#all_users_in_app`).empty();
 
         search_users(response)
@@ -1469,7 +1583,7 @@ $(`.tap-friend-group`).on('click', function (e) {
 });
 
 const getFriendsToCreateGroup = function () {
-    $.get('/api/friend', function (response) {
+    apiRequest.get(`api/friend`, {}, getToken()).then(response => {
 
         for (i in response) {
             $('.friends-create-group  ').append(`
@@ -1538,19 +1652,8 @@ $('#upload-profile-photo').on('change', function (e) {
     var profileImage = e.target.files[0];
     $('.profile-image').attr('src', x);
 
-    let data = new FormData
-    data.append('img', profileImage);
-    fetch('/api/updateImg', {
-        method: 'POST',
-        body: data,
-        headers: {
-            'Authorization': `Bearer ${tokenn}`
-        }
-    }).then(response => {
-
-        return response.json()
-
-    }).then(data => {
+    const data = { 'img': profileImage };
+    apiRequest.post('/api/updateImg', data, getToken()).then(data => {
         console.log(data)
         if (data.status == 0) {
             document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
@@ -1595,22 +1698,14 @@ $('.groupDescription').on('keyup', function () {
 $("#groupForm").on('submit', function (e) {
     e.preventDefault();
 
-    let data = new FormData
-    data.append('img', imgGroup);
-    data.append('users_id', arrayGroup);
-    data.append('groupName', groupName);
-    data.append('groupDescription', groupDescription);
-    fetch('/api/createGroup', {
-        method: 'POST',
-        body: data,
-        headers: {
-            'Authorization': `Bearer ${tokenn}`
-        }
-    }).then(response => {
+    const data = {
+        'img': imgGroup,
+        'users_id': arrayGroup,
+        'groupName': groupName,
+        'groupDescription': groupDescription
+    }
 
-        return response.json()
-
-    }).then(data => {
+    apiRequest.post('/api/createGroup', data, getToken()).then(data => {
         console.log(data)
         if (data.status == 0) {
             document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
@@ -1656,9 +1751,12 @@ $("#groupForm").on('submit', function (e) {
 $(".say_hi").on('submit', function (e) {
     e.preventDefault();
     // let msg=$(this).find('textarea').val()
-    $.post($(this).attr('action'), $(this).serialize(), function (response) {
-    });
-    alert('Welcome message arrived , go to chat to complete conversation')
+    const dataObject = extractBodyFromQueryParam($(this).serialize());
+
+    apiRequest.post($(this).attr("action"), dataObject, getToken()).then(response => {
+        alert('Welcome message arrived , go to chat to complete conversation')
+    })
+
 
 });
 
@@ -1717,35 +1815,20 @@ function fetchUpdateName() {
     }, 100);
 
     $('.bodyToastPassword').empty()
-    var data = new FormData;
-    data.append('new_name', $('.new_name').val())
-    data.append('new_img', $('.new_img').val())
-    fetch('api/updateName'
-        , {
-            method: 'post', body: data,
-            headers: {
-                'Authorization': `Bearer ${tokenn}`
-            }
-        })
-        .then(res => {
-            if (res.status >= 200 && res.status < 300)
-                return res.json()
-            else
-                throw new Error();
-        })
+    // var data = new FormData;
+    const data = { 'new_name': $('.new_name').val() }
+    apiRequest.post('api/updateName', data, getToken())
         .then(data => {
             $('.bodyToastPassword').append(data.message)
             $(`.toastPassword`).toast({ delay: 3000 });
             $('.toastPassword').toast('show');
             play(soundDone)
             $('.send-image-loader').css('display', 'none')
+        }).finally(() => {
+            $('.username').empty();
+            $('.username').append($('.new_name').val());
+            $('.modal').removeClass('d-none');
         })
-    $('.username').empty();
-    $('.username').append($('.new_name').val());
-    $('.modal').removeClass('d-none');
-
-
-
 
 }
 
@@ -1783,16 +1866,16 @@ const Typing = (boolean) => {
 
 
     if (envTyping == true || envTyping == 1) {
-        setTimeout(() => {
-            console.log('typing' + boolean);
-            let channel = Echo.private('chat')
+        // setTimeout(() => {
+        //     console.log('typing' + boolean);
+        //     let channel = Echo.private('chat')
 
-            channel.whisper('typing', {
-                user_id: userId,
-                conversation_id: response_conversation_id,
-                typing: boolean
-            })
-        }, 300)
+        //     channel.whisper('typing', {
+        //         user_id: userId,
+        //         conversation_id: response_conversation_id,
+        //         typing: boolean
+        //     })
+        // }, 300)
     }
 }
 

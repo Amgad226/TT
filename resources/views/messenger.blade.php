@@ -876,14 +876,14 @@
                              {{__('Welcome in TT')}}
 
 
-                             <button onclick="cheakTokennnn()">checkToken</button>
+                             {{-- <button onclick="cheakTokennnn()">checkToken</button> --}}
 
                         </div>
                         <script>
 
                             function cheakTokennnn() {
 
-                                      let Token='{{Cookie::get('apiToken')}}';
+                                      
                                       var FormDataa = new FormData;
                                       FormDataa.append('token',tokenn);
                                       fetch('api/cheakToken',{
@@ -1397,10 +1397,10 @@
         <!-- Layout -->
 
 
-
         <!-- Scripts -->
         <script>
-            let tokenn = "{{Request::cookie('token')}}"
+            // FIXME
+            let tokenn = "{{Request::cookie('token')}}" != ""? "{{Request::cookie('token')}}": "{{auth()->user()->createToken('MyToken')->plainTextToken}}"
             // alert(tokenn)
             let userId=                {{    Auth::id();            }} ;
             let userimg=              "{{    Auth::user()->img;     }}"; 
@@ -1434,7 +1434,7 @@
         @if ( config('app.envTyping')  ==true)
 
          @vite('resources/js/app.js')
-         <script>
+         {{-- <script>
              console.log('Typing working')
 
              setTimeout( () => {
@@ -1459,7 +1459,7 @@
              })
              }, 500)
 
-         </script>
+         </script> --}}
         @endif
 
         <script src="{{ asset ('assets/js/messenger.js')}}" ></script>
