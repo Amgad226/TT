@@ -17,6 +17,7 @@ class profileController extends Controller
 {
     
     public function updateName(Request $request){
+        $request->validate(["new_name"=>"required","string"]);
         Auth::user()->update(['name'=>$request->new_name]);
         return response()->json(['message'=>'name updated ', 'status'=>1]);
 
