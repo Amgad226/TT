@@ -10,8 +10,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('testQuery/{id}',function($id){$user_id=1; return true;});
 
 Route::post('login',[profileController::class,'login']);
+Route::get('as',function(){
+    return response()->json(['status'=>0,'message'=>'you shoud login'],401);
+})->name('jsonResponse');
 
-Route::middleware('auth:sanctum')->group(function(){
+
+Route::middleware(["auth:sanctum"])->group(function(){
     Route::get('conversations'                               ,[ConvarsationController::class,'index']); //عرض محادثاتي
     Route::post('createGroup'                                ,[ConvarsationController::class,'createGroup']);
     Route::get('users_not_in_group/{id}/'                    ,[ConvarsationController::class,'users_not_in_group']);//invite
@@ -40,7 +44,9 @@ Route::middleware('auth:sanctum')->group(function(){
     //----------------------------------------------------------------------------------------------------------------------------------------
     Route::post('pusher/auth'                                ,[PusherController      ::class,'pusherAuth']);
     //----------------------------------------------------------------------------------------------------------------------------------------
-
-});
+    Route::post("cheakToken",function(){
+        return auth()->user();
+    });
+})
 
 
