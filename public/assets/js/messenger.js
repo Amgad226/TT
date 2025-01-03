@@ -1250,7 +1250,6 @@ const SendHiMessage = (userId, stringHi) => {
 const getFriends = function (toLoader) {
     addLoader(toLoader);
 
-    const token = tokenn;
 
     apiRequest.get(`${apiUrl}/api/friend`, {}, getToken())
         .then(response => {
@@ -1453,13 +1452,12 @@ const getUsers = function (toLoader) {
 
                             $(this).attr('class','addfriend_done')
                             let data = new FormData
-                            data.append('_token','${tokenn}')
                             data.append('user_id',$(this).attr('user-id'));
                             fetch('/api/friend', {
                                 method: 'POST',
                                 body:data,
                                 headers: {
-                                   'Authorization':'Bearer ${tokenn}'
+                                   'Authorization':'Bearer ${getToken()}'
                                }
                                 })
                          }" >
@@ -1544,13 +1542,12 @@ const search_users = function (res) {
 
                     $(this).attr('class','addfriend_done')
                     let data = new FormData
-                    data.append('_token','${tokenn}')
                     data.append('user_id',$(this).attr('user-id'));
                     fetch('${a}'+'/api/friend', {
                         method: 'POST',
                         body:data,
                         headers: {
-                           'Authorization':'Bearer ${tokenn}'
+                           'Authorization':'Bearer ${getToken()}'
                        }
                         })
                  }" >
