@@ -47,6 +47,4 @@ Route::middleware(["auth:sanctum"])->group(function(){
     Route::post("cheakToken",function(){
         return auth()->user();
     });
-})
-
-
+});
