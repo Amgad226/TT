@@ -84,14 +84,21 @@ const apiRequest = {
     post: function (url, data = {}, token) {
         return new Promise(async (resolve, reject) => {
             try {
+
+                const formData = new FormData();
+            
+                // Append all fields from the data object to FormData
+                for (const key in data) {
+                    formData.append(key, data[key]);
+                }
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        // 'Content-Type': 'application/json',
                         'Accept': 'application/json',
                         'Authorization': `Bearer ${token}`, // Pass Bearer token
                     },
-                    body: JSON.stringify(data),
+                    body: formData,
                 });
 
                 if (!response.ok) {
@@ -143,21 +150,17 @@ function makeid(length) {
 }
 
 function inputImageMessage() {
-    // alert();
     let fileElm = document.createElement('input');
-    //    fileElm.type = "text";
-    //    fileElm.accept('jpg');
+
     fileElm.setAttribute('type', 'file');
 
     fileElm.addEventListener('change', (e) => {
         var random = makeid(5)
-        // alert(random);
-        // return
+
         var filePath = fileElm.value;
         extension = fileElm.value.split('.').pop();
         console.log(extension);
 
-        // var allowedExtensions_ =/(\.jpg|\.jpeg|\.png|\.JPG|\.JPEG|\.PNG|\.gif)$/;
 
         const allowedExtensions = ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG", "webp"];
         if (allowedExtensions.includes(extension) == false) {
@@ -178,7 +181,6 @@ function inputImageMessage() {
         }
 
         addMessage(msgg, 'message-out', true, false)
-
 
         // $('.send-image-loader').css('display','block')
         if (fileElm.files == 0) {
