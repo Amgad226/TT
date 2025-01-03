@@ -14,8 +14,19 @@ class FriendController extends Controller
 {
   
     public function index(){
-        return  DB::select( "SELECT users.id, users.img, users.name from users  WHERE users.id in (SELECT  CASE     WHEN user1_id = ? THEN user2_id     ELSE user1_id END AS friend_id FROM friends WHERE user1_id = ? OR user2_id = ? AND acceptable = true)" ,[Auth::id(),Auth::id(),Auth::id()]);       
-    }
+        return DB::table('users')
+        ->select('users.id', 'users.img', 'users.name')
+        ->whereIn('users.id', function ($query) {
+            $query->selectRaw('CASE WHEN user1_id = ? THEN user2_id ELSE user1_id END AS friend_id', [Auth::id()])
+                  ->from('friends')
+                  ->where(function ($subQuery) {
+                      $subQuery->where('user1_id', Auth::id())
+                               ->orWhere('user2_id', Auth::id());
+                  })
+                  ->where('acceptable', 1);
+        })
+        ->get();
+       }
     
     public function search_friends(Request $request){
 
