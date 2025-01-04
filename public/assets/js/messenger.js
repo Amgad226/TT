@@ -826,28 +826,25 @@ $("#change_pass").on('submit', function (e) {
     apiRequest.post($(this).attr("action"), dataObject, getToken()).then(response => {
 
         if (response.status == 0) {
-            document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
-            $('#profile-current-password').val('')
+            throw new Error(response.message)
+        }
+
+        $('#profile-current-password').val('')
+        $('#profile-new-password').val('')
+        $('#profile-verify-password').val('')
+        play(soundDone)
+        ShowToast({ message: data.message })
+
+    })
+        .catch(e => {
+            ShowToast({ message: e.message, success: 0 })
             play(soundErorr)
 
-        }
-        else {
-            document.documentElement.style.setProperty('--password', 'rgb(15, 161, 44)');
-            $('#profile-current-password').val('')
-            $('#profile-new-password').val('')
-            $('#profile-verify-password').val('')
-            play(soundDone)
+        })
+        .finally(() => {
+            $('.send-image-loader').css('display', 'none')
 
-        }
-        $('.bodyToastPassword').empty()
-        $('.bodyToastPassword').append(response.message)
-        $(`.toastPassword`).toast({ delay: 3000 });
-        $('.toastPassword').toast('show');
-        // alert(response.message)
-    }).finally(() => {
-        $('.send-image-loader').css('display', 'none')
-
-    });
+        });
 
 });
 
@@ -1653,23 +1650,17 @@ $('#upload-profile-photo').on('change', function (e) {
 
     const data = { 'img': profileImage };
     apiRequest.post('/api/updateImg', data, getToken()).then(data => {
-        console.log(data)
         if (data.status == 0) {
-            document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
-            play(soundErorr)
-
+            throw new Error(data.message)
         }
-        else {
-            document.documentElement.style.setProperty('--password', 'rgb(15, 161, 44)');
-            $('.update-profile-img').attr('src', x);
-            play(soundDone)
 
+        $('.update-profile-img').attr('src', x);
+        play(soundDone)
+        ShowToast({ message: data.message, success: 1 })
 
-        }
-        $('.bodyToastPassword').empty()
-        $('.bodyToastPassword').append(data.message)
-        $(`.toastPassword`).toast({ delay: 3000 });
-        $('.toastPassword').toast('show');
+    }).catch(e => {
+        ShowToast({ message: e.message, success: 0 })
+        play(soundErorr)
     })
 });
 
@@ -1693,7 +1684,7 @@ $('.groupName').on('keyup', function () {
 $('.groupDescription').on('keyup', function () {
     groupDescription = $('.groupDescription').val()
 });
-const ShowToast = ({ delay = 3000, message = "message", success = true}) => {
+const ShowToast = ({ delay = 3000, message = "message", success = true }) => {
     $('.bodyToastPassword').empty()
     $('.bodyToastPassword').append(message)
     if (!success) {
@@ -1707,7 +1698,7 @@ const ShowToast = ({ delay = 3000, message = "message", success = true}) => {
     $('.toastPassword').toast('show');
 }
 function validateRequiredFields(object) {
-    const keys= Object.keys(object)
+    const keys = Object.keys(object)
     const missingFields = keys
         .filter(key => !object[key])
         .map(key => `${key} is required`);
@@ -1730,42 +1721,34 @@ $("#groupForm").on('submit', function (e) {
     }
     const resalt = validateRequiredFields(data)
     if (!resalt.success) {
-        ShowToast({ success: false, message:resalt.message })
+        ShowToast({ success: false, message: resalt.message })
         return
     }
     apiRequest.post('/api/createGroup', data, getToken()).then(data => {
-        console.log(data)
         if (data.status == 0) {
-            document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
             throw new Error(data.message)
-
-
         }
-        else {
-            arrayGroup = [];
-            imgGroup = ''
-            groupDescription = ''
-            imgGroup = null
-            $('.groupName').val('')
-            $('.groupDescription').val('')
-            $('.imgGroup').val('')
-            $(".imgGroup").val(null);
-            $('#blah').attr('src', '');
-            $('.cheack-group').prop('checked', false);
-            $('.button-create-group').css("display", "none");
-            $('.if-arrayGroup').empty();
-            $('.if-arrayGroup').append(noSelectedMemberYet);
-            $(".if-arrayGroup").css("background-color", "#D32535");
-            document.documentElement.style.setProperty('--password', 'rgb(15, 161, 44)');
 
-            play(soundDone)
+        arrayGroup = [];
+        imgGroup = ''
+        groupDescription = ''
+        imgGroup = null
+        $('.groupName').val('')
+        $('.groupDescription').val('')
+        $('.imgGroup').val('')
+        $(".imgGroup").val(null);
+        $('#blah').attr('src', '');
+        $('.cheack-group').prop('checked', false);
+        $('.button-create-group').css("display", "none");
+        $('.if-arrayGroup').empty();
+        $('.if-arrayGroup').append(noSelectedMemberYet);
+        $(".if-arrayGroup").css("background-color", "#D32535");
 
-        }
-        $('.bodyToastPassword').empty()
-        $('.bodyToastPassword').append(data.message)
-        $(`.toastPassword`).toast({ delay: 3000 });
-        $('.toastPassword').toast('show');
+        play(soundDone)
+        ShowToast({ message: data.message })
+
     }).catch(e => {
+        ShowToast({ message: e.message, success: 0 })
         play(soundErorr)
 
     })
@@ -1845,14 +1828,12 @@ function fetchUpdateName() {
         $('.popup').addClass('d-none');
     }, 100);
 
-    $('.bodyToastPassword').empty()
     // var data = new FormData;
     const data = { 'new_name': $('.new_name').val() }
     apiRequest.post('api/updateName', data, getToken())
         .then(data => {
-            $('.bodyToastPassword').append(data.message)
-            $(`.toastPassword`).toast({ delay: 3000 });
-            $('.toastPassword').toast('show');
+            ShowToast({ message: data.message })
+
             play(soundDone)
             $('.send-image-loader').css('display', 'none')
         }).finally(() => {
