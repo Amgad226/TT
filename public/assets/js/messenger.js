@@ -86,7 +86,7 @@ const apiRequest = {
             try {
 
                 const formData = new FormData();
-            
+
                 // Append all fields from the data object to FormData
                 for (const key in data) {
                     formData.append(key, data[key]);
@@ -660,7 +660,7 @@ const showMoreMessages = function () {
 
             console.error('There was an error with the fetch operation:', error);
         }).finally(() => {
-        
+
             hideLoader();
             // animateMessage()
 
@@ -1693,8 +1693,33 @@ $('.groupName').on('keyup', function () {
 $('.groupDescription').on('keyup', function () {
     groupDescription = $('.groupDescription').val()
 });
+const ShowToast = ({ delay = 3000, message = "message", success = true}) => {
+    $('.bodyToastPassword').empty()
+    $('.bodyToastPassword').append(message)
+    if (!success) {
+        document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
+    } else {
+        document.documentElement.style.setProperty('--password', 'rgb(15, 161, 44)');
+
+    }
+
+    $(`.toastPassword`).toast({ delay });
+    $('.toastPassword').toast('show');
+}
+function validateRequiredFields(object) {
+    const keys= Object.keys(object)
+    const missingFields = keys
+        .filter(key => !object[key])
+        .map(key => `${key} is required`);
+
+    return missingFields.length > 0
+        ? { success: 0, message: missingFields.join(", ") }
+        : { success: 1, message: "" }
+
+}
 
 $("#groupForm").on('submit', function (e) {
+    // createGroup
     e.preventDefault();
 
     const data = {
@@ -1703,7 +1728,11 @@ $("#groupForm").on('submit', function (e) {
         'groupName': groupName,
         'groupDescription': groupDescription
     }
-
+    const resalt = validateRequiredFields(data)
+    if (!resalt.success) {
+        ShowToast({ success: false, message:resalt.message })
+        return
+    }
     apiRequest.post('/api/createGroup', data, getToken()).then(data => {
         console.log(data)
         if (data.status == 0) {
@@ -1736,9 +1765,9 @@ $("#groupForm").on('submit', function (e) {
         $('.bodyToastPassword').append(data.message)
         $(`.toastPassword`).toast({ delay: 3000 });
         $('.toastPassword').toast('show');
-    }).catch(e=>{
+    }).catch(e => {
         play(soundErorr)
-        
+
     })
 
 
