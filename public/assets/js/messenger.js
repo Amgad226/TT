@@ -946,7 +946,7 @@ $(`#tab-chats`).on('click', function (e) {
 
 const getConversations = function (pauseLoader = true) {
     if (pauseLoader) {
-        // addLoader(document.querySelector(`#tab-chats`));
+        addLoader($(`#tab-chats`));
     }
     apiRequest.get(`api/conversations`, {}, getToken())
 
@@ -961,7 +961,7 @@ const getConversations = function (pauseLoader = true) {
 
         }).finally(() => {
             if (pauseLoader) {
-                hideLoader(document.querySelector(`#tab-chats`));
+                hideLoader($(`#tab-chats`));
             }
 
         });
@@ -1093,7 +1093,7 @@ function notificationConfirmAction(refernce, tag) {
     {
 
 
-        apiRequest.put(`/api/friend/${refernce}`, data, getToken());
+        apiRequest.put(`/api/friend/${refernce}`, {}, getToken());
 
         tag.parentNode.parentNode.replaceWith('added succesfuly')
     }
@@ -1708,7 +1708,7 @@ $("#groupForm").on('submit', function (e) {
         console.log(data)
         if (data.status == 0) {
             document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
-            play(soundErorr)
+            throw new Error(data.message)
 
 
         }
@@ -1736,6 +1736,9 @@ $("#groupForm").on('submit', function (e) {
         $('.bodyToastPassword').append(data.message)
         $(`.toastPassword`).toast({ delay: 3000 });
         $('.toastPassword').toast('show');
+    }).catch(e=>{
+        play(soundErorr)
+        
     })
 
 
