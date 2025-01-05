@@ -1833,24 +1833,43 @@ function fetchUpdateName() {
 
 }
 
-function play(sound = tele) {
+async function play(soundUrl = 'tele') {
+    try {
+        // Ensure compatibility with older browsers
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) {
+            throw new Error("Web Audio API is not supported in this browser.");
+        }
 
-    var url = sound;
-    window.AudioContext = window.AudioContext || window.webkitAudioContext; //fix up prefixing
-    var context = new AudioContext(); //context
-    var source = context.createBufferSource(); //source node
-    source.connect(context.destination); //connect source to speakers so we can hear it
-    var request = new XMLHttpRequest();
-    request.open('GET', url, true);
-    request.responseType = 'arraybuffer'; //the  response is an array of bits
-    request.onload = function () {
-        context.decodeAudioData(request.response, function (response) {
-            source.buffer = response;
-            source.start(0); //play audio immediately
-            source.loop = false;
-        }, function () { console.error('The request failed.'); });
+        // Create the audio context
+        const audioContext = new AudioContext();
+
+        // Fetch the audio data
+        const response = await fetch(soundUrl);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch audio file: ${response.statusText}`);
+        }
+        const arrayBuffer = await response.arrayBuffer();
+
+        // Decode the audio data
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+        // Create and configure the audio source
+        const source = audioContext.createBufferSource();
+        source.buffer = audioBuffer;
+        source.connect(audioContext.destination);
+        source.loop = false;
+
+        // Start playing the audio
+        source.start(0);
+
+        // Optional: Clean up the audio context after playback
+        source.onended = () => {
+            audioContext.close();
+        };
+    } catch (error) {
+        console.error(`Error playing sound: ${error.message}`);
     }
-    request.send();
 }
 
 $(document).ready(function () {
