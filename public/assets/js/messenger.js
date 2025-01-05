@@ -602,7 +602,7 @@ function animateMessage() {
     $('.form-ccontainer').animate({ scrollTop: $('.form-ccontainer').prop('scrollHeight') });
 }
 const addMessagesToGroup = function (msg, c = '', isAnimate = true, deleteAction = true) {
-
+    
     if (isAnimate) {
         animateMessage();
     }
@@ -1006,7 +1006,7 @@ const getConversations = function (pauseLoader = true) {
 
 const conversation = function (chat) {
 
-    var countUnReadMsg = chat.unRead_message
+    let countUnReadMsg = chat.unRead_message
     if (countUnReadMsg != 0) {
         counter = `
     <div class="div-count-msg badge badge-circle bg-primary ms-5 unread-message-count"  style="visibility:visible" onclick={
@@ -1024,13 +1024,13 @@ const conversation = function (chat) {
 
     }
 
-    var message_body_with_slice;
-    if (chat.last_massege.type == 'text') {
-        aa = chat.last_massege.body.slice(143, -842);
-        message_body_with_slice = aa.slice(0, 10);
+    let message_body_with_slice = '';
+
+    if (chat.last_massege && chat.last_massege.length !== 0) {
+        message_body_with_slice = chat.last_massege.type === 'text' 
+            ? chat.last_massege.body.slice(0, 10) 
+            : chat.last_massege.type;
     }
-    else
-        message_body_with_slice = chat.last_massege.type;
 
     $('#chat-list').append(`
 
