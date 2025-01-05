@@ -406,7 +406,7 @@ $(`.toggel`).on('click', function (e) {
 var drop_down = false
 function deleteMessge(element) {
     let id = $(element).attr('message-id');
-    console.log(id)
+    console.log("deleteMessge",element)
     var a = $(element.parentElement.parentElement.parentElement.parentElement);
     // return;
 
@@ -464,6 +464,7 @@ $("#targetttt").on('submit', function (e) {
     apiRequest.post($(this).attr("action"), dataObject, getToken()).then(response => {
         $(`.${deleteAction}`).removeClass("visibilty-hidden");
         $(`.${random_class_to_add_message_id}`).attr('message-id', response.obj_msg.id);
+        console.log("to", response.obj_msg.id)
 
     })
 
@@ -562,7 +563,7 @@ function appendDeleteDropDown(deleteAction, classDeletMessage, random_class_to_a
 
             <ul id="dropdown-menu" class="dropdown-menu" style ='list-style-type: none' >
 
-                <li  class=${random_class_to_add_message_id} message-id=${id} onclick ="{deleteMessge(this)}" style = 'background-color:var("--delete-message") '>
+                <li  class="${random_class_to_add_message_id}" message-id="${id}" onclick ="{deleteMessge(this)}" style = 'background-color:var("--delete-message") '>
                     <a class="dropdown-item d-flex align-items-center text-danger" href="#">
                         <span class="me-auto" >${DeleteForAll}</span>
                         <div class="icon">
@@ -602,7 +603,7 @@ function animateMessage() {
     $('.form-ccontainer').animate({ scrollTop: $('.form-ccontainer').prop('scrollHeight') });
 }
 const addMessagesToGroup = function (msg, c = '', isAnimate = true, deleteAction = true) {
-    
+
     if (isAnimate) {
         animateMessage();
     }
@@ -633,6 +634,7 @@ const addMessage = function (msg, c = '', isAnimate = true, deleteAction = true,
     }
     else {
         if (deleteAction == true) {
+            console.log("msg.id",msg.id)
             dropdown = appendDeleteDropDown(msg.deleteAction, classDeletMessage, msg.random_class_to_add_message_id, msg.id, DeleteForAll);
         }
     }
