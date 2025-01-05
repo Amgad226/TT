@@ -145,8 +145,16 @@ class MessageController extends Controller
 
     }
     public function destroy($id){
-        $message=Message::find($id);
-        $message->delete();
-        return ' message deleted . . .';
+    $message = Message::findOrFail($id);
+
+    $conversation = $message->conversation;
+
+    $message->delete();
+
+    $latestMessage = $conversation->messages()->latest()->first();
+
+    $conversation->update(['last_message_id' => $latestMessage?->id]);
+
+    return response()->json(['message' => 'Message deleted successfully.']);
     }
 }
