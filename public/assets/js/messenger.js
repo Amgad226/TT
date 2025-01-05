@@ -461,7 +461,11 @@ $("#targetttt").on('submit', function (e) {
 
     const dataObject = extractBodyFromQueryParam($(this).serialize());
     console.log("$$$", dataObject)
-    apiRequest.post($(this).attr("action"), dataObject, getToken())
+    apiRequest.post($(this).attr("action"), dataObject, getToken()).then(response => {
+        $(`.${deleteAction}`).removeClass("visibilty-hidden");
+        $(`.${random_class_to_add_message_id}`).attr('message-id', response.obj_msg.id);
+
+    })
 
     var user = { 'img': `${userimg}`, "name": `${username}` }
 
@@ -603,7 +607,7 @@ const addMessagesToGroup = function (msg, c = '', isAnimate = true, deleteAction
         animateMessage();
     }
     var message = styleMessage(msg, '');
-
+    let dropdown = ''
     if (c == '')//receiver message //to remove received check from received messages
     {
         message = message.replace('visibility:', 'visibility:hidden');
@@ -611,10 +615,10 @@ const addMessagesToGroup = function (msg, c = '', isAnimate = true, deleteAction
     }
     else {
         if (deleteAction == true) {
-            var dropdown = appendDeleteDropDown('', '', '', msg.id, DeleteForAll);
+            dropdown = appendDeleteDropDown('', '', '', msg.id, DeleteForAll);
         }
     }
-    appendMessageInChat(c, message, dropdown = '', msg.created_at)
+    appendMessageInChat(c, message, dropdown, msg.created_at)
 }
 const addMessage = function (msg, c = '', isAnimate = true, deleteAction = true, classDeletMessage = '') {
 
@@ -622,17 +626,17 @@ const addMessage = function (msg, c = '', isAnimate = true, deleteAction = true,
         animateMessage();
     }
     var message = styleMessage(msg, classDeletMessage)
-
+    let dropdown = ''
     if (c == '') //receiver message //to remove received check from received messages
     {
         message = message.replace('visibility:', 'visibility:hidden')
     }
     else {
         if (deleteAction == true) {
-            var dropdown = appendDeleteDropDown(msg.deleteAction, classDeletMessage, msg.random_class_to_add_message_id, msg.id, DeleteForAll);
+            dropdown = appendDeleteDropDown(msg.deleteAction, classDeletMessage, msg.random_class_to_add_message_id, msg.id, DeleteForAll);
         }
     }
-    appendMessageInChat(c, message, dropdown = '', msg.created_at);
+    appendMessageInChat(c, message, dropdown, msg.created_at);
 }
 
 
