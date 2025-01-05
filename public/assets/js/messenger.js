@@ -1312,69 +1312,70 @@ $(`#tab-all-users`).on('click', function (e) {
     getUsers($(`#tab-all-users`));
 
 });
+const AppendUser = ({ img, name, last_seen_at, id, }) => {
+    $('#all_users_in_app').append(`
+
+
+        <div id="user_in_all_user" class="card-list">
+
+        <div class="card border-0">
+            <div id="users-body" class="card-body">
+
+                <div class="row align-items-center gx-5">
+                    <div class="col-auto">
+                        <a href="#" class="avatar avatar-online">
+
+                            <img class="avatar-img" src="${img}" alt="">
+
+
+                        </a>
+                    </div>
+
+                    <div class="col">
+                        <h5>
+                          <a href="#">${name}</a></h5>
+                         <!-- <p>${last_seen_at}</p> -->
+                    </div>
+
+                    <div  class="col-auto">
+
+                    <input class="addfriend" type="submit" value="${stringAdd}" user-id=${id} "
+                    onclick="
+                    {
+
+                        $(this).attr('class','addfriend_done')
+                        let data = new FormData
+                        data.append('user_id',$(this).attr('user-id'));
+                        fetch('/api/friend', {
+                            method: 'POST',
+                            body:data,
+                            headers: {
+                               'Authorization':'Bearer ${getToken()}'
+                           }
+                            })
+                     }" >
+
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- Card -->
+
+     </div>
+     <br>
+        `)
+}
 
 const getUsers = function (toLoader) {
     addLoader(toLoader)
     apiRequest.get(`/api/getUsers`, {}, getToken()).then(response => {
 
         for (i in response) {
-
-            $('#all_users_in_app').append(`
-
-
-            <div id="user_in_all_user" class="card-list">
-
-            <div class="card border-0">
-                <div id="users-body" class="card-body">
-
-                    <div class="row align-items-center gx-5">
-                        <div class="col-auto">
-                            <a href="#" class="avatar avatar-online">
-
-                                <img class="avatar-img" src="${response[i].img}" alt="">
-
-
-                            </a>
-                        </div>
-
-                        <div class="col">
-                            <h5>
-                              <a href="#">${response[i].name}</a></h5>
-                             <!-- <p>${response[i].last_seen_at}</p> -->
-                        </div>
-
-                        <div  class="col-auto">
-
-                        <input class="addfriend" type="submit" value="${stringAdd}" user-id=${response[i].id} "
-                        onclick="
-                        {
-
-                            $(this).attr('class','addfriend_done')
-                            let data = new FormData
-                            data.append('user_id',$(this).attr('user-id'));
-                            fetch('/api/friend', {
-                                method: 'POST',
-                                body:data,
-                                headers: {
-                                   'Authorization':'Bearer ${getToken()}'
-                               }
-                                })
-                         }" >
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-            <!-- Card -->
-
-         </div>
-         <br>
-            `)
+            AppendUser(response[i])
         }
-
 
     }).finally(() => {
         hideLoader(toLoader)
@@ -1391,9 +1392,10 @@ $("#form-search-users").on('submit', function (e) {
     apiRequest.post($(this).attr("action"), dataObject, getToken()).then(response => {
         $(`#all_users_in_app`).empty();
 
-        search_users(response)
-    });
-    // $('#form-search-users').val('');
+        for (let i = 0; i < response.length; i++) {
+            AppendUser(response[i])
+        }
+    }, (err) => { });
 });
 
 
@@ -1402,69 +1404,6 @@ $('#input-search-users').on('keyup', function () {
     $("#form-search-users").submit();
 });
 
-const search_users = function (res) {
-
-    $("#all_users_in_app").replaceWith(`
-    <div id="all_users_in_app" class="card-list">
-    </div>
-`);
-    for (let i = 0; i <
-        res.length; i++) {
-        $("#all_users_in_app").append(`
-
-    <div id="all_users_in_app" class="card-list">
-
-    <div class="card border-0">
-        <div id="users-body" class="card-body">
-
-            <div class="row align-items-center gx-5">
-                <div class="col-auto">
-                    <a href="#" class="avatar avatar-online">
-
-                        <img class="avatar-img" src="${res[i].img}" alt="">
-
-
-                    </a>
-                </div>
-
-                <div class="col">
-                    <h5>
-                      <a href="#">${res[i].name}</a></h5>
-                     <!-- <p>${res[i].last_seen_at}</p> -->
-                </div>
-
-                <div  class="col-auto">
-
-                <input class="addfriend" type="submit" value="${stringAdd}" user-id=${res[i].id} "
-                onclick="
-                {
-
-                    $(this).attr('class','addfriend_done')
-                    let data = new FormData
-                    data.append('user_id',$(this).attr('user-id'));
-                    fetch('${a}'+'/api/friend', {
-                        method: 'POST',
-                        body:data,
-                        headers: {
-                           'Authorization':'Bearer ${getToken()}'
-                       }
-                        })
-                 }" >
-
-
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-    <!-- Card -->
-
-</div>
-<br>
-`)
-    }
-}
 
 //---------------------create group---------------------//
 var arrayGroup = [];
