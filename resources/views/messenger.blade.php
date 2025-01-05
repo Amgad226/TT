@@ -151,44 +151,34 @@
         <div class="loader"></div>
     </div>
 
+    <style>
+        .goToChat {
+            max-height: 85px;
+            max-width: 240px;
+            min-width: 240px;
+            min-height: 85;
+            overflow: hidden;
+        }
+    </style>
     <!-- Notification -->
     <!-- toast new message -->
     <div class="toast toast-recive"
         style="  top: 10%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: example;animation-duration: 3s;">
-        <div class="goToChat" onclick="{open_chat($(this).attr('chat-id'));   $('.toast').toast('hide');  }" chat-id=1
-            style=" max-height:85px;  max-width:240px;min-width:240px;min-height:85  ;overflow: hidden;  ">
+        <div class="goToChat" onclick="{open_chat($(this).attr('chat-id'));   $('.toast').toast('hide');  }" chat-id=1>
             <div class="toast-body " style="  ;border: 3px rgb(32, 3, 138) solid;">
                 <div style="  font-size: 24px; "><i class="headarToast">
-                        <p>Toast</p>
+                        <p>title</p>
                     </i></div>
-                <div class="bodyToast" style=" font-size: 12px;max-height:8px;  max-width:240px;">hi amgad you need help
-                    ?</div>
+                <div class="bodyToast" style=" font-size: 12px;max-height:8px;  max-width:240px;">body</div>
             </div>
         </div>
     </div>
     <!--toast change password and create grope validation-->
-    <div class="toast toastPassword "
-        style="top: 22%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: toastPassword;animation-duration: 3s;">
-        <div class="toast-body "onclick="{console.log(213); $('.toastPassword').toast('hide') }"
+    <div class="toast toast-message "
+        style="top: 22%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: toast-message;animation-duration: 3s;">
+        <div class="toast-body "onclick="{$('.toast-message').toast('hide') }"
             style="  ;border: 3px rgb(32, 3, 138) solid;">
-            {{-- <div  style="  font-size: 24px; "><i class="headarToast"><p>password</p></i></div> --}}
-            <div class="bodyToastPassword" style=" font-size: 18px;  max-width:240px;"> passwoed is wrong bro need
-            </div>
-        </div>
-    </div>
-    <!--toast say hi -->
-    <div class="toast toast-send-hi "
-        style="top: 22%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: toastPassword;animation-duration: 3s;">
-        <div class="hi-goToChat" onclick="{open_chat($(this).attr('chat-id'));   $('.toast-send-hi').toast('hide');  }"
-            chat-id=1>
-            <div class="hi-toast-body " style="border: 3px rgb(32, 3, 138) solid;height:80px; width:250px;">
-                <div style=" margin: 10px 15px">
-                    <div style="  font-size: 20px; "><i class="hi-headarToast">
-                            <p>you send hi,to amgad</p>
-                        </i> </div>
-                    <div class="hi-bodyToast" style=" font-size: 12px;  max-width:240px;"> click here to go complete
-                        chat</div>
-                </div>
+            <div class="bodytoast-message" style=" font-size: 18px;  max-width:240px;"> message
             </div>
         </div>
     </div>
@@ -1011,22 +1001,23 @@
 
                                                 <script>
                                                     function check() {
+                                                        ShowImageLoader();
                                                         //   fetch('http://ipwho.is/', {
-                                                        fetch('http://www.geoplugin.net/json.gp/', {
+                                                        fetch('https://www.geoplugin.net/json.gp/', {
 
                                                                 method: 'GET',
                                                             }).then(res => {
-                                                                $('.send-image-loader').css('display', 'block');
                                                                 if (res.status >= 200 && res.status < 300)
                                                                     return res.json();
                                                             }).then(data => {
-                                                                console.log(data.country)
+                                                                if (data.success === false) {
+                                                                    throw new Error()
+                                                                } 
+                                                                console.log("country:"+data.country)
+                                                                console.log("country:"+data.geoplugin_countryName)
                                                                 // if(data.country=="Syria"){
                                                                 if (data.geoplugin_countryName == "Syria") {
-
-                                                                    alert('you are in banned country please run vpn')
-                                                                } else if (data.success == false) {
-                                                                    alert('we failed to check your region please try again later ')
+                                                                    ShowToast({ message: 'you are in banned country please run vpn',success:0})
                                                                 } else {
                                                                     $('#noti').removeClass('d-none');
                                                                     $('#checkNoti').addClass('d-none');
@@ -1036,8 +1027,9 @@
 
                                                             })
                                                             .catch((error) => {
-                                                                alert('internet very slow');
-                                                                $('.send-image-loader').css('display', 'none');
+                                                                ShowToast({ message: 'Error conncetion contact with developer',success:0})
+
+                                                                HideImageLoader()
 
                                                             });
                                                     }
@@ -1811,7 +1803,7 @@
         const noSelectedMemberYet = "{{ __('no selected members yet') }}"
         const stringPasswordChanged = "{{ __('Password Changed') }}";
         const stringPasswordUpdated = "{{ __('Your password has been updated successfully.') }}";
-        const tele = '{{ asset('sound/tele.mp3') }}';
+        const soundTelegram = '{{ asset('sound/soundTelegram.mp3') }}';
         const soundErorr = '{{ asset('sound/error.mp3') }}';
         const soundDone = '{{ asset('sound/done.mp3') }}';
         const logo = "{{ asset('img/logo.png') }}"

@@ -15,7 +15,7 @@
   0%    {background-color:rgb(56, 6, 6);  margin-top:-0px;  }
   100%  { margin-top:-1000px; display: none;}
 }
-@keyframes toastPassword {
+@keyframes toast-message {
   0%    {background-color:var(--password);    top: 22%;right: -20%;  }
   30%   {   top: 22%;right:  0%;  }
   40%   {  background-color: var(  --bs-gray-dark);  top: 22%;right:  0%;  }

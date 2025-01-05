@@ -164,13 +164,13 @@
             </div>
         </div>
         <!--toast change password and create grope validation-->
-        <div class="toast toastPassword "  style="top: 22%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: toastPassword;animation-duration: 3s;">
-                <div class="toast-body "onclick="{console.log(213); $('.toastPassword').toast('hide') }" style="  ;border: 3px rgb(32, 3, 138) solid;" >
-                    <div class="bodyToastPassword" style=" font-size: 18px;  max-width:240px;"> passwoed is wrong bro need </div>
+        <div class="toast toast-message "  style="top: 22%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: toast-message;animation-duration: 3s;">
+                <div class="toast-body "onclick="{console.log(213); $('.toast-message').toast('hide') }" style="  ;border: 3px rgb(32, 3, 138) solid;" >
+                    <div class="bodytoast-message" style=" font-size: 18px;  max-width:240px;"> passwoed is wrong bro need </div>
                 </div>
         </div>
            <!--toast say hi -->
-        <div class="toast toast-send-hi "  style="top: 22%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: toastPassword;animation-duration: 3s;">
+        <div class="toast toast-send-hi "  style="top: 22%;  background-color: var(  --bs-gray-dark);right: 0%;  z-index: 100000;  position: absolute;animation-name: toast-message;animation-duration: 3s;">
                 <div class="hi-goToChat"  onclick="{open_chat($(this).attr('chat-id'));   $('.toast-send-hi').toast('hide');  }"  chat-id=1>
                     <div  class="hi-toast-body " style="border: 3px rgb(32, 3, 138) solid;height:80px; width:250px;" >
                         <div style=" margin: 10px 15px" >
@@ -1331,7 +1331,7 @@
             let noSelectedMemberYet  ="{{__('no selected members yet')}}"
             let stringPasswordChanged="{{    __('Password Changed') }}";
             let stringPasswordUpdated="{{    __('Your password has been updated successfully.')}}";
-            let tele=      '{{asset("sound/tele.mp3")}}';
+            let soundTelegram=      '{{asset("sound/soundTelegram.mp3")}}';
             let soundErorr= '{{asset("sound/error.mp3")}}';
             let soundDone=  '{{asset("sound/done.mp3")}}';
             let logo = "{{asset('img/logo.png')}}"

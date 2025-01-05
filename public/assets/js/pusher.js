@@ -57,23 +57,13 @@ setTimeout(() => {
                             $(`.unread-message-count[data-messages=${data.message.conversation_id}]`).html(1)
                         }
                     
-                    
-                        $('.goToChat').attr('chat-id',data.message.conversation_id)
-                        $('.headarToast').empty();
-                        $('.bodyToast').empty();
-                        if(data.message.conversation.type=='group'){
-                            $('.headarToast').append(data.message.conversation.lable);
-                            $('.bodyToast').append(data.message.user.name+' : '+message_body_with_slice);
-                        }
-
-                        else{
-                            $('.headarToast').append(data.message.user.name);
-                            $('.bodyToast').append(message_body_with_slice);
-                        }
-                    
-                        $(".toast-recive").toast({ delay: 3000 });
-                        $('.toast-recive').toast({animation: true});
-                        $('.toast-recive').toast('show');
+                        ShowChatToast({
+                            conversationId:data.message.conversation_id,
+                            title:data.message.conversation.type=='group'?data.message.conversation.lable:data.message.user.name,
+                            body:data.message.conversation.type=='group'?data.message.user.name+' : '+message_body_with_slice:message_body_with_slice,
+                            delay: 3000,
+                            animation:true
+                        })
                 }
                 });
 

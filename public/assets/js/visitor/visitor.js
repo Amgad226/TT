@@ -400,7 +400,6 @@ const getFriends=function(){
                  <br>
          `)
         }
-    $('#lodder').addClass('hide');
     // hideLoader(toLoader)
 
         // user(response[i])
@@ -740,7 +739,7 @@ return;
 
  }
 
- function play(sound=tele) {
+ function play(sound=soundDone) {
 
     var url = sound;
           window.AudioContext = window.AudioContext||window.webkitAudioContext; //fix up prefixing

@@ -227,7 +227,7 @@ function selectFile() {
     fileElm.setAttribute('type', 'file');
 
     fileElm.addEventListener('change', () => {
-        $('.send-image-loader').css('display', 'block')
+        ShowImageLoader()
 
         const fsize = fileElm.files[0].size;
         const file = Math.round((fsize / (1024 * 1024)));
@@ -373,6 +373,13 @@ function dropdown(thiss) {
 
 }
 //0----------Loader----------
+const ShowImageLoader = () => {
+    $('.send-image-loader').css('display', 'block');
+}
+const HideImageLoader = () => {
+    $('.send-image-loader').css('display', 'none');
+
+}
 function hideLoader(thiss = '') {
     if (thiss != '')
         thiss.css('visibility', 'visible');
@@ -808,7 +815,7 @@ const open_chat = function (conversation_id, toLoader = '') {
 
 $("#change_pass").on('submit', function (e) {
     e.preventDefault();
-    $('.send-image-loader').css('display', 'block')
+    ShowImageLoader()
 
     const dataObject = extractBodyFromQueryParam($(this).serialize());
 
@@ -1192,49 +1199,75 @@ $(`#tab-friends`).on('click', function (e) {
     getFriends($(`#tab-friends`));
 
 });
-const SendHiMessage = (userId, stringHi) => {
-    if (!userId || !stringHi) {
-        console.error('Invalid parameters: userId and stringHi are required.');
+
+const SendHiMessage = (userId) => {
+    if (!userId) {
+        console.error('Invalid parameter: userId is required.');
         return;
     }
     // Show loading indicator
-    $('.send-image-loader').css('display', 'block');
+    ShowImageLoader()
 
-    // Prepare FormData
-    // const data = new FormData();
-    const data = {
+    const body = {
         'body': stringHi,
         'user_id': userId,
         'type': 'text'
     }
 
-
-    apiRequest.post(`/api/messages`, data, getToken())
-        .then(data => {
-            if (data && data.obj_msg && data.obj_msg.conversation) {
-                // Update toast content
-                $('.hi-headarToast').text(`You sent hi to ${data.obj_msg.conversation.label}`);
-                $('.hi-bodyToast').text('Click here to complete chat.');
-                $('.hi-goToChat').attr('chat-id', data.obj_msg.conversation_id);
-
-                // Show toast notification
-                $('.toast-send-hi').toast({ delay: 3000, animation: true }).toast('show');
-
-                // Play notification sound
-                play(soundDone);
-            } else {
-                console.error('Unexpected response format:', data);
-            }
+    apiRequest.post(`/api/messages`, body, getToken())
+        .then((response) => {
+            ShowChatToast({
+                conversationId: response.obj_msg.conversation.id,
+                body: 'Click here to complete chat.',
+                title: `You sent hi to ${response.obj_msg.conversation.lable}`
+            })
+            play(soundDone);
         })
         .catch(err => {
             console.error('Failed to send hi message:', err);
         })
         .finally(() => {
-            // Hide loading indicator
-            $('.send-image-loader').css('display', 'none');
+            HideImageLoader()
         });
 };
+const appendFriend = ({ img, name, id: userId, }) => {
+    $('#friends_in_searsh').append(`
+        <div id="friends_in_searsh" class="card-list">
+        <div id="friends_in_searsh" class="card-list">
 
+            <div id="friends_in_searsh" class="card-list">
+
+                <div class="card border-0">
+                    <div id="users-body" class="card-body">
+                <div class="row align-items-center gx-5">
+                    <div class="col-auto">
+                        <a href="#" class="avatar avatar-online">
+
+                                    <img class="avatar-img" src="${img}" alt="">
+
+
+                                </a>
+                            </div>
+                            <div class="col">
+                                <h5>
+                                  <a href="#">${name}</a>
+                                </h5>
+                            </div>
+                            <div class="col-auto">
+                                <input type="submit" value="${stringHi}" user-id="${userId}" style="${styleHi}"
+                                onclick="
+                                {
+                                SendHiMessage(${userId});
+                                }"
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        `);
+}
 const getFriends = function (toLoader) {
     addLoader(toLoader);
 
@@ -1242,49 +1275,13 @@ const getFriends = function (toLoader) {
     apiRequest.get(`${apiUrl}/api/friend`, {}, getToken())
         .then(response => {
             for (let i in response) {
-                $('#friends_in_searsh').append(`
-            <div id="friends_in_searsh" class="card-list">
-            <div id="friends_in_searsh" class="card-list">
-
-                <div id="friends_in_searsh" class="card-list">
-
-                    <div class="card border-0">
-                        <div id="users-body" class="card-body">
-                    <div class="row align-items-center gx-5">
-                        <div class="col-auto">
-                            <a href="#" class="avatar avatar-online">
-
-                                        <img class="avatar-img" src="${response[i].img}" alt="">
-
-
-                                    </a>
-                                </div>
-                                <div class="col">
-                                    <h5>
-                                      <a href="#">${response[i].name}</a>
-                                    </h5>
-                                </div>
-                                <div class="col-auto">
-                                    <input type="submit" value="${stringHi}" user-id="${response[i].id}" style="${styleHi}"
-                                    onclick="
-                                    {
-                                    SendHiMessage(${response[i].id},'asdas');
-                                       
-                                    }"
-                                    >
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                </div>
-            `);
+                appendFriend(response[i])
             }
-            $('#lodder').addClass('hide');
-            hideLoader(toLoader);
         })
         .catch(err => {
             console.error('Error fetching friends:', err);
+        }).finally(() => {
+            hideLoader(toLoader);
         });
 };
 
@@ -1299,101 +1296,15 @@ $("#search_friends").on('submit', function (e) {
     const dataObject = extractBodyFromQueryParam($(this).serialize());
 
     apiRequest.post($(this).attr("action"), dataObject, getToken()).then(response => {
-        search_friends(response)
-    });
-    // $('#input-search-friends').val('');
+        $(`#friends_in_searsh`).empty();
+
+        for (let i = 0; i < response.length; i++) {
+            appendFriend(response[i])
+        }
+    }, err => { });
 });
-const search_friends = function (res) {
-
-    $("#friends_in_searsh").replaceWith(`
-    <div id="friends_in_searsh" class="card-list">
-    </div>
-`);
-    for (let i = 0; i <
-        res.length; i++) {
-        console.log(res)
-        $("#friends_in_searsh").append(`
-    <div id="friends_in_searsh" class="card-list">
-
-    <div class="card border-0">
-        <div id="users-body" class="card-body">
-
-            <div class="row align-items-center gx-5">
-                <div class="col-auto">
-                    <a href="#" class="avatar avatar-online">
-
-                        <img class="avatar-img" src="${res[i].img}" alt="">
 
 
-                    </a>
-                </div>
-
-                <div class="col">
-                    <h5>
-                      <a href="#">${res[i].name}</a></h5>
-                     <!-- <p>${res[i].last_seen_at}</p> -->
-                </div>
-
-                <div  class="col-auto">
-
-                    <input class="onlL" onclick=myFunction()  type="submit" value="${stringHi}"  style="text-decoration: none;border-radius: 9px;border:solid 1px #3e444f ;cursor : pointer;padding:0px 15px ;text-align: center;color:#fff;background-color: #16191c ;" >
-                    <script>
-                    function myFunction() {
-                        // alert('message [hi] sended , go to chat to complete conversation');
-        $('.send-image-loader').css('display','block')
-
-                        let data = new FormData
-                                data.append(  'body', '${stringHi}' )
-                                data.append('user_id',${res[i].id});
-                                data.append('type','text');
-
-                        fetch("/api/messages", {
-                            method: "POST",
-                            body:data,
-                            headers: {
-                               'Authorization':'Bearer ${getToken()}'
-                           }
-                        }).then(res =>
-                            {
-                                if (res.status>=200 && res.status <300)
-                                return res.json()
-                                else
-                                throw new Error();
-                            }
-                        ).then(data=>{
-                            console.log(data);
-                    $('.hi-headarToast').empty();
-                    $('.hi-bodyToast').empty();
-
-                    $('.hi-goToChat').attr('chat-id',data.obj_msg.conversation_id)
-                    $('.hi-headarToast').append('you send hi to '+data.obj_msg.conversation.lable);
-                    $('.hi-bodyToast').append('click here to complete chat ');
-                    $('.toast-send-hi').toast({ delay: 3000 });
-                    $('.toast-send-hi').toast({animation: true});
-                    $('.toast-send-hi').toast('show');
-                    play(soundDone)
-                    $('.send-image-loader').css('display','none')
-
-
-                        })
-                    }
-                    </script>
-
-
-
-                </div>
-
-            </div>
-
-        </div>
-    </div>
-    <!-- Card -->
-
-</div>
-<br>
-`)
-    }
-}
 
 //---------------------get users----------------------
 $(`#tab-all-users`).on('click', function (e) {
@@ -1674,8 +1585,8 @@ $('.groupDescription').on('keyup', function () {
     groupDescription = $('.groupDescription').val()
 });
 const ShowToast = ({ delay = 3000, message = "message", success = true }) => {
-    $('.bodyToastPassword').empty()
-    $('.bodyToastPassword').append(message)
+    $('.bodytoast-message').empty()
+    $('.bodytoast-message').append(message)
     if (!success) {
         document.documentElement.style.setProperty('--password', 'rgb(246, 30, 37)');
     } else {
@@ -1683,9 +1594,20 @@ const ShowToast = ({ delay = 3000, message = "message", success = true }) => {
 
     }
 
-    $(`.toastPassword`).toast({ delay });
-    $('.toastPassword').toast('show');
+    $(`.toast-message`).toast({ delay });
+    $('.toast-message').toast('show');
 }
+const ShowChatToast = ({ title = "title", body = "body", conversationId, delay = 3000, animation = true }) => {
+    $('.goToChat').attr('chat-id', conversationId)
+    $('.headarToast').empty();
+    $('.bodyToast').empty();
+    $('.headarToast').append(title);
+    $('.bodyToast').append(body);
+    $(".toast-recive").toast({ delay, animation });
+    $('.toast-recive').toast('show');
+}
+
+
 function validateRequiredFields(object) {
     const keys = Object.keys(object)
     const missingFields = keys
@@ -1805,7 +1727,7 @@ function popupFun() {
 
 }
 function fetchUpdateName() {
-    $('.send-image-loader').css('display', 'block')
+    ShowImageLoader()
 
     $('.layout').removeClass('to-edit-name');
     $('.modal').removeClass('to-edit-name');
@@ -1834,7 +1756,7 @@ function fetchUpdateName() {
 
 }
 
-async function play(soundUrl = 'tele') {
+async function play(soundUrl = soundDone) {
     try {
         // Ensure compatibility with older browsers
         const AudioContext = window.AudioContext || window.webkitAudioContext;
