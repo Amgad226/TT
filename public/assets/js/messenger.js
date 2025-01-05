@@ -588,24 +588,13 @@ const addMessage = function (msg, c = '', isAnimate = true, deleteAction = true,
     appendMessageInChat(c, message, dropdown = '', msg.created_at);
 }
 
-var u = 0;
-Object.defineProperty(this, 'response_conversation_id', {
-    get: function () { return u; },
-    set: function (set) {
-        // response_conversation_id = v;
-        u = set
 
-        $('#is-typing').addClass('d-none')
 
-        console.log('Value changed! New Conversation: ' + set);
-    }
-});
 var v = 1;
 Object.defineProperty(this, 'conversationPageId', {
     get: function () { return v; },
     set: function (set) {
         v = set
-        console.log('Value changed! New Conversation Page: ' + set);
     }
 });
 
@@ -1862,33 +1851,6 @@ function play(sound = tele) {
         }, function () { console.error('The request failed.'); });
     }
     request.send();
-}
-function countChar(val) {
-    if (envTyping == true || envTyping == 1) {
-        var length = val.value.length;
-        // console.log(length);
-        if (length > 0)
-            Typing(true);
-
-        else
-            Typing(false);
-    }
-}
-const Typing = (boolean) => {
-
-
-    if (envTyping == true || envTyping == 1) {
-        // setTimeout(() => {
-        //     console.log('typing' + boolean);
-        //     let channel = Echo.private('chat')
-
-        //     channel.whisper('typing', {
-        //         user_id: userId,
-        //         conversation_id: response_conversation_id,
-        //         typing: boolean
-        //     })
-        // }, 300)
-    }
 }
 
 $(document).ready(function () {
