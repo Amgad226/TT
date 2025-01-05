@@ -532,12 +532,6 @@
 
                                     <!-- List -->
                                     <div id="friends_in_searsh" class="card-list">
-                                         {{-- <form class= "say_hi"  action="api/messages" method="post">
-                                            @csrf
-                                            <input type= "hidden"  name="message" value="Hi">
-                                            <input type= "hidden"  name="user_id" value=1>
-                                            <input type= "submit"  value="Hi">
-                                            </form>  --}}
 
 
                                     </div>

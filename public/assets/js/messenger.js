@@ -137,7 +137,86 @@ const apiRequest = {
         });
     },
 };
+//0----------Loader----------
+const ShowImageLoader = () => {
+    $('.send-image-loader').css('display', 'block');
+}
+const HideImageLoader = () => {
+    $('.send-image-loader').css('display', 'none');
 
+}
+function hideLoader(thiss = '') {
+    if (thiss != '')
+        thiss.css('visibility', 'visible');
+
+    $('#Loader').addClass('hide');
+}
+function addLoader(thiss = '') {
+    if (thiss != '')
+        thiss.css('visibility', 'hidden');
+
+    $('#Loader').removeClass('hide');
+}
+//----------send message manually----------
+
+const extractBodyFromQueryParam = (str) => {
+    const params = new URLSearchParams(str);
+    const dataObject = {};
+    params.forEach((value, key) => {
+        dataObject[key] = value;
+    });
+    return dataObject
+}
+
+function validateRequiredFields(object) {
+    const keys = Object.keys(object)
+    const missingFields = keys
+        .filter(key => !object[key])
+        .map(key => `${key} is required`);
+
+    return missingFields.length > 0
+        ? { success: 0, message: missingFields.join(", ") }
+        : { success: 1, message: "" }
+
+}
+async function play(soundUrl = soundDone) {
+    try {
+        // Ensure compatibility with older browsers
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) {
+            throw new Error("Web Audio API is not supported in this browser.");
+        }
+
+        // Create the audio context
+        const audioContext = new AudioContext();
+
+        // Fetch the audio data
+        const response = await fetch(soundUrl);
+        if (!response.ok) {
+            throw new Error(`Failed to fetch audio file: ${response.statusText}`);
+        }
+        const arrayBuffer = await response.arrayBuffer();
+
+        // Decode the audio data
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
+        // Create and configure the audio source
+        const source = audioContext.createBufferSource();
+        source.buffer = audioBuffer;
+        source.connect(audioContext.destination);
+        source.loop = false;
+
+        // Start playing the audio
+        source.start(0);
+
+        // Optional: Clean up the audio context after playback
+        source.onended = () => {
+            audioContext.close();
+        };
+    } catch (error) {
+        console.error(`Error playing sound: ${error.message}`);
+    }
+}
 // ----------------------------------------
 function makeid(length) {
     var result = '';
@@ -149,6 +228,11 @@ function makeid(length) {
     return result;
 }
 
+
+
+//-----------------------------------------------------------------------------------------------/
+
+
 function inputImageMessage() {
     let fileElm = document.createElement('input');
 
@@ -159,17 +243,16 @@ function inputImageMessage() {
 
         var filePath = fileElm.value;
         extension = fileElm.value.split('.').pop();
-        console.log(extension);
 
 
         const allowedExtensions = ["jpg", "jpeg", "png", "JPG", "JPEG", "PNG", "webp"];
         if (allowedExtensions.includes(extension) == false) {
-            alert('Invalid file type');
+            ShowToast({ message: extension + ' is invalid file type', success: 0 })
+
             fileElm.value = '';
             return;
         }
-        // return;
-        // var x= URL.createObjectURL(e.target.files[0]);
+
         var user = { 'img': `${userimg}`, "name": `${username}` }
         var msgg = {
             'input': true,
@@ -182,7 +265,6 @@ function inputImageMessage() {
 
         addMessage(msgg, 'message-out', true, false)
 
-        // $('.send-image-loader').css('display','block')
         if (fileElm.files == 0) {
             return;
         }
@@ -197,22 +279,16 @@ function inputImageMessage() {
         apiRequest.post('api/messages', data, getToken(),
         ).then((result) => {
             if (result.status == 0) {
-                alert(result.message);
-                return;
+                throw new Error(result.message);
             }
-            else {
-                $('#' + random).attr('src', result.obj_msg.body);
-            }
-            // var attachment =result.obj_msg.body
-            // var date = result.obj_msg.created_at
-            // var msg={'body':attachment  ,'created_at':date ,'id':result.obj_msg.id};
-            // addMessage(msg,'message-out',true);
-            // $('.send-image-loader').css('display','none')
+            $('#' + random).attr('src', result.obj_msg.body);
+
+
         })
             .catch((error) => {
-                console.error('Error:', error);
-                alert('Error:', error);
-                $('.send-image-loader').css('display', 'none')
+                ShowToast({ message: error.message, success: 0 })
+            }).finally(() => {
+                HideImageLoader()
             });
     });
     fileElm.click()
@@ -222,8 +298,7 @@ function inputImageMessage() {
 
 function selectFile() {
     let fileElm = document.createElement('input');
-    //    fileElm.type = "text";
-    //    fileElm.accept('jpg');
+
     fileElm.setAttribute('type', 'file');
 
     fileElm.addEventListener('change', () => {
@@ -232,17 +307,14 @@ function selectFile() {
         const fsize = fileElm.files[0].size;
         const file = Math.round((fsize / (1024 * 1024)));
         if (file >= 15) {
-            alert(
-                "File too Big, please select a file less than 15mb");
-            $('.send-image-loader').css('display', 'none')
+            ShowToast({ message: "File too Big, please select a file less than 15mb", success: 0 })
+            HideImageLoader()
 
             return;
         }
 
-
-
-
         if (fileElm.files == 0) {
+            HideImageLoader()
             return;
         }
         let attachment = fileElm.files[0];
@@ -254,8 +326,7 @@ function selectFile() {
         apiRequest.post('api/messages', data, getToken())
             .then((result) => {
                 if (result.status == 0) {
-                    alert(result.message);
-                    return;
+                    throw new Error(result.message);
                 }
 
                 var msg = {
@@ -267,14 +338,12 @@ function selectFile() {
                 };
 
                 addMessage(msg, 'message-out', true);
-                $('.send-image-loader').css('display', 'none')
 
             })
             .catch((error) => {
-                console.error('Error:', error);
-                alert('Error:', error);
-                $('.send-image-loader').css('display', 'none')
-
+                ShowToast({ message: error.message, success: 0 })
+            }).finally(() => {
+                HideImageLoader()
             });
 
     });
@@ -372,36 +441,7 @@ function dropdown(thiss) {
     }
 
 }
-//0----------Loader----------
-const ShowImageLoader = () => {
-    $('.send-image-loader').css('display', 'block');
-}
-const HideImageLoader = () => {
-    $('.send-image-loader').css('display', 'none');
 
-}
-function hideLoader(thiss = '') {
-    if (thiss != '')
-        thiss.css('visibility', 'visible');
-
-    $('#Loader').addClass('hide');
-}
-function addLoader(thiss = '') {
-    if (thiss != '')
-        thiss.css('visibility', 'hidden');
-
-    $('#Loader').removeClass('hide');
-}
-//----------send message manually----------
-
-const extractBodyFromQueryParam = (str) => {
-    const params = new URLSearchParams(str);
-    const dataObject = {};
-    params.forEach((value, key) => {
-        dataObject[key] = value;
-    });
-    return dataObject
-}
 $("#targetttt").on('submit', function (e) {
 
     e.preventDefault();
@@ -838,8 +878,7 @@ $("#change_pass").on('submit', function (e) {
 
         })
         .finally(() => {
-            $('.send-image-loader').css('display', 'none')
-
+            HideImageLoader()
         });
 
 });
@@ -964,7 +1003,6 @@ const getConversations = function (pauseLoader = true) {
 const conversation = function (chat) {
 
     var countUnReadMsg = chat.unRead_message
-    // alert(countUnReadMsg)
     if (countUnReadMsg != 0) {
         counter = `
     <div class="div-count-msg badge badge-circle bg-primary ms-5 unread-message-count"  style="visibility:visible" onclick={
@@ -1547,18 +1585,6 @@ const ShowChatToast = ({ title = "title", body = "body", conversationId, delay =
 }
 
 
-function validateRequiredFields(object) {
-    const keys = Object.keys(object)
-    const missingFields = keys
-        .filter(key => !object[key])
-        .map(key => `${key} is required`);
-
-    return missingFields.length > 0
-        ? { success: 0, message: missingFields.join(", ") }
-        : { success: 1, message: "" }
-
-}
-
 $("#groupForm").on('submit', function (e) {
     // createGroup
     e.preventDefault();
@@ -1610,21 +1636,6 @@ $("#groupForm").on('submit', function (e) {
 
 // --------------responsive-----------
 //to show message page in mobile
-
-
-//------say_hi-----
-$(".say_hi").on('submit', function (e) {
-    e.preventDefault();
-    // let msg=$(this).find('textarea').val()
-    const dataObject = extractBodyFromQueryParam($(this).serialize());
-
-    apiRequest.post($(this).attr("action"), dataObject, getToken()).then(response => {
-        alert('Welcome message arrived , go to chat to complete conversation')
-    })
-
-
-});
-
 
 var pop = false
 $(document).mouseup(function (e) {
@@ -1684,10 +1695,9 @@ function fetchUpdateName() {
     apiRequest.post('api/updateName', data, getToken())
         .then(data => {
             ShowToast({ message: data.message })
-
             play(soundDone)
-            $('.send-image-loader').css('display', 'none')
         }).finally(() => {
+            HideImageLoader()
             $('.username').empty();
             $('.username').append($('.new_name').val());
             $('.modal').removeClass('d-none');
@@ -1695,44 +1705,7 @@ function fetchUpdateName() {
 
 }
 
-async function play(soundUrl = soundDone) {
-    try {
-        // Ensure compatibility with older browsers
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (!AudioContext) {
-            throw new Error("Web Audio API is not supported in this browser.");
-        }
 
-        // Create the audio context
-        const audioContext = new AudioContext();
-
-        // Fetch the audio data
-        const response = await fetch(soundUrl);
-        if (!response.ok) {
-            throw new Error(`Failed to fetch audio file: ${response.statusText}`);
-        }
-        const arrayBuffer = await response.arrayBuffer();
-
-        // Decode the audio data
-        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-
-        // Create and configure the audio source
-        const source = audioContext.createBufferSource();
-        source.buffer = audioBuffer;
-        source.connect(audioContext.destination);
-        source.loop = false;
-
-        // Start playing the audio
-        source.start(0);
-
-        // Optional: Clean up the audio context after playback
-        source.onended = () => {
-            audioContext.close();
-        };
-    } catch (error) {
-        console.error(`Error playing sound: ${error.message}`);
-    }
-}
 
 $(document).ready(function () {
 
