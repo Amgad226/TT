@@ -1042,7 +1042,7 @@
                                                 <button
                                                     onclick="{
                                                     fetch('api/disableNoti',
-                                                     {method: 'get',})
+                                                     {method: 'post',})
                                                      .then((response) => response.json()) .then((result) => {location.reload();  })
 
 
