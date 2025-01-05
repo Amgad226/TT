@@ -1710,6 +1710,7 @@ $("#groupForm").on('submit', function (e) {
     }
     const resalt = validateRequiredFields(data)
     if (!resalt.success) {
+        play(soundErorr)
         ShowToast({ success: false, message: resalt.message })
         return
     }
