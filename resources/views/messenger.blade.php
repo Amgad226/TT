@@ -996,7 +996,10 @@
 
                                                 <script>
                                                     function check() {
+                                                        ShowToast({ message: 'push notification is not available, please contact with developer',success:0})
+                                                        return 
                                                         ShowImageLoader();
+
                                                         //   fetch('http://ipwho.is/', {
                                                         fetch('https://www.geoplugin.net/json.gp/', {
 
