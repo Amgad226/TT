@@ -26,7 +26,7 @@
 // edit profile                      {done}
 // delete chat
 // voice chat
-const apiUrl = "http://127.0.0.1:8000"
+const apiUrl = apiUrl ?? "http://127.0.0.1:8000"
 const getToken = () => {
     return tokenn
 }
@@ -406,7 +406,7 @@ $(`.toggel`).on('click', function (e) {
 var drop_down = false
 function deleteMessge(element) {
     let id = $(element).attr('message-id');
-    console.log("deleteMessge",element)
+    console.log("deleteMessge", element)
     var a = $(element.parentElement.parentElement.parentElement.parentElement);
     // return;
 
@@ -634,7 +634,7 @@ const addMessage = function (msg, c = '', isAnimate = true, deleteAction = true,
     }
     else {
         if (deleteAction == true) {
-            console.log("msg.id",msg.id)
+            console.log("msg.id", msg.id)
             dropdown = appendDeleteDropDown(msg.deleteAction, classDeletMessage, msg.random_class_to_add_message_id, msg.id, DeleteForAll);
         }
     }
@@ -1029,8 +1029,8 @@ const conversation = function (chat) {
     let message_body_with_slice = '';
 
     if (chat.last_massege && chat.last_massege.length !== 0) {
-        message_body_with_slice = chat.last_massege.type === 'text' 
-            ? chat.last_massege.body.slice(0, 10) 
+        message_body_with_slice = chat.last_massege.type === 'text'
+            ? chat.last_massege.body.slice(0, 10)
             : chat.last_massege.type;
     }
 

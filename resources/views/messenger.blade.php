@@ -1807,6 +1807,7 @@
         const logo = "{{ asset('img/logo.png') }}"
         const gif = "{{ asset('/img/loading.gif') }}"
         const envTyping = " {{ config('app.envTyping') }}"
+        const apiUrl = "{{config(app.apiUrl)}}";
         console.log(envTyping)
     </script>
 

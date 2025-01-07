@@ -16,7 +16,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-
+    "apiUrl"=>env("API_URL","127.0.0.0:8000"),
     'storeGoogleDrive'=>env('STORE_IN_GOOGLE_DRIVE',false),
     'envTyping'=>env('envTyping',false)   ,
     /*
