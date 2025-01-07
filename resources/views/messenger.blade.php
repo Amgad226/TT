@@ -1108,7 +1108,7 @@
                     <!-- Chat: Header -->
 
                     <div class="welcome-text welcome" style="">
-                        {{ __('Welcome in TT') }}
+                        {{ __('Welcome in TT') }} v1
 
 
                         {{-- <button onclick="cheakTokennnn()">checkToken</button> --}}
