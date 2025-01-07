@@ -1807,7 +1807,7 @@
         const logo = "{{ asset('img/logo.png') }}"
         const gif = "{{ asset('/img/loading.gif') }}"
         const envTyping = " {{ config('app.envTyping') }}"
-        const apiUrl = "{{config('app.apiUrl')}}";
+        const apiUrl = "{{config('app.apiUrl')}}" ??"http://127.0.0.1:8000";
         console.log(envTyping)
     </script>
 

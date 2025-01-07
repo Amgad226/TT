@@ -26,7 +26,7 @@
 // edit profile                      {done}
 // delete chat
 // voice chat
-const apiUrl = apiUrl ?? "http://127.0.0.1:8000"
+
 const getToken = () => {
     return tokenn
 }
