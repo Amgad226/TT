@@ -875,7 +875,7 @@ $("#change_pass").on('submit', function (e) {
         $('#profile-new-password').val('')
         $('#profile-verify-password').val('')
         play(soundDone)
-        ShowToast({ message: data.message })
+        ShowToast({ message: response.message })
 
     })
         .catch(e => {
