@@ -1,23 +1,46 @@
+name: Remote Git Pull Workflow
+
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-  
+
 jobs:
   run_pull:
-    name: run pull
+    name: Run Pull
     runs-on: ubuntu-latest
     
     steps:
-    - name: install ssh keys
-      # check this thread to understand why its needed:
-      # https://stackoverflow.com/a/70447517
+    - name: Set up SSH Key
       run: |
-        install -m 600 -D /dev/null ~/.ssh/id_rsa
+        mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-    - name: connect and pull
-      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ secrets.MAIN_BRANCH }} && git pull && exit"
-    - name: cleanup
-      run: rm -rf ~/.ssh
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+      shell: bash
+
+    - name: Pull Latest Changes
+      run: |
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << EOF
+        cd ${{ secrets.WORK_DIR }}
+        git checkout ${{ secrets.MAIN_BRANCH }}
+        git pull
+        EOF
+      shell: bash
+      env:
+        WORK_DIR: ${{ secrets.WORK_DIR }}
+        MAIN_BRANCH: ${{ secrets.MAIN_BRANCH }}
+
+    - name: Cleanup SSH Keys
+      run: |
+        rm -rf ~/.ssh
+      shell: bash
+
+    - name: Notify Completion (Optional)
+      if: ${{ success() }}
+      run: echo "Git pull operation completed successfully."
+
+    - name: Handle Failure (Optional)
+      if: ${{ failure() }}
+      run: echo "Git pull operation failed. Check the logs for details."
