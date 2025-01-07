@@ -1316,7 +1316,7 @@ const getFriends = function (toLoader) {
     addLoader(toLoader);
 
 
-    apiRequest.get(`${apiUrl}/api/friend`, {}, getToken())
+    apiRequest.get(`/api/friend`, {}, getToken())
         .then(response => {
             for (let i in response) {
                 appendFriend(response[i])
