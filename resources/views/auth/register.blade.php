@@ -130,3 +130,41 @@
     </script>
 {{-- <script src="https://www.gstatic.com/firebasejs/7.23.0/firebase.js"></script> --}}
 {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
+<style>
+    body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: '';
+    background-color: #1A1D21;
+    background-image: url("home.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(10px);
+    transform: scale(1.05);
+    z-index: -1; /* Keeps the background behind all content */
+}
+
+@media (max-width: 800px) {
+
+    body::before {
+      background-color: #1A1D21;
+      background-image: url("home2.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+         /* Adjusts the size of the logo */
+       }
+}
+</style>
