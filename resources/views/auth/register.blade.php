@@ -142,7 +142,7 @@
 body::before {
     content: '';
     background-color: #1A1D21;
-    background-image: url("home.png");
+    background-image: url("home.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -160,7 +160,7 @@ body::before {
 
     body::before {
       background-color: #1A1D21;
-      background-image: url("home2.png");
+      background-image: url("home2.jpg");
         background-position: center;
         background-repeat: no-repeat;
         background-size: contain;
