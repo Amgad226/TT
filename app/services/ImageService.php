@@ -1,49 +1,45 @@
 <?php
 
-namespace App\services;
-
-use Illuminate\Support\Facades\File;
-use Image;
+namespace App\Services;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\Facades\Image;
 
 class ImageService
 {
     public static function store($image, $name, $path = "", $lessQuality = true)
     {
-
-        $extension = $image->getclientoriginalextension();
-
-
-        $image_resize = Image::make($image->getRealPath())->encode($extension);
+        $extension = $image->getClientOriginalExtension();
+        $imageResize = Image::make($image->getRealPath())->encode($extension);
 
         if ($lessQuality) {
-            // $image_resize->resize(1280, 720, function ($constraint) {$constraint->aspectRatio(); });
-            // $image_resize->resize(600, 300, function ($constraint) {$constraint->aspectRatio(); });
+            // Optionally compress or resize the image here
         }
 
-        $uniqid = uniqid();
+        $uniqueName = $name . uniqid() . '.' . $extension;
+        $fullPath = trim($path, '/') . '/' . $uniqueName;
 
-        $path_to_store  = $path . '/' . $name . $uniqid . '.' . $extension;
-        if (config('app.storeGoogleDrive') == true) {
-            $image = Storage::disk('google')->put($path_to_store, $image_resize);
-            Storage::disk('google')->setVisibility($path_to_store, "public");
+        if (config('app.storeGoogleDrive')) {
+            $disk = Storage::disk('google');
+            $disk->put($fullPath, (string) $imageResize, ['visibility' => 'public']);
+            
+            // Construct Google Drive link directly without extra metadata calls
+            // $fileId = $disk->getAdapter()->getMetadata($fullPath)['id'];
+            $fileId  = $disk
+            ->getAdapter()
+            ->getMetadata($fullPath)
+            ->extraMetadata()['id'];
+            $link = "https://lh3.googleusercontent.com/d/$fileId";
 
-            $image_meta  = Storage::disk("google")
-                ->getAdapter()
-                ->getMetadata($path_to_store)
-                ->extraMetadata();
-
-            $image_id = $image_meta['id'];
-            // FIXME must store just google drive file id in database and add the correct suffix in the resource   
-            $link = "https://lh3.googleusercontent.com/d/$image_id";
-
-            // $link = Storage::disk('google')->url($path_to_store);
+            // $link = "https://drive.google.com/uc?id={$fileId}&export=view";
         } else {
-            if (! File::isDirectory(public_path($path_to_store)))
-                File::makeDirectory(public_path($path_to_store));
-            $image_resize->save(public_path($path_to_store));
-            $link = $path_to_store;
+            $storagePath = public_path($fullPath);
+            if (!File::isDirectory(dirname($storagePath))) {
+                File::makeDirectory(dirname($storagePath), 0755, true);
+            }
+            $imageResize->save($storagePath);
+            $link = asset($fullPath);
         }
 
         return $link;
