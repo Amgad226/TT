@@ -26,6 +26,7 @@ class ImageService
             
             // Construct Google Drive link directly without extra metadata calls
             // $fileId = $disk->getAdapter()->getMetadata($fullPath)['id'];
+            // FIXME must store just the google drive file id in database and add the suffix in the resource
             $fileId  = $disk
             ->getAdapter()
             ->getMetadata($fullPath)
